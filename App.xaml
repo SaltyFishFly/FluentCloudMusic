@@ -1,0 +1,11 @@
+﻿<Application
+    x:Class="FluentNetease.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:classes="using:FluentNetease.Classes"
+    xmlns:local="using:FluentNetease">
+
+    <Application.Resources>
+        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls"/>
+    </Application.Resources>
+</Application>

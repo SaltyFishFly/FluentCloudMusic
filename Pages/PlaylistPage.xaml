@@ -1,0 +1,159 @@
+﻿<Page
+    x:Class="FluentNetease.Pages.PlaylistPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FluentNetease.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:classes="using:FluentNetease.Classes"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlTransparentBrush}">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:DataType="classes:Song" x:Key="SongList">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <HyperlinkButton
+                    DataContext="{x:Bind Path=Music.ID}"
+                    Grid.Column="0"
+                    Click="MusicNameButton_Click"
+                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        <HyperlinkButton.Content>
+                            <TextBlock
+                            x:Name="MusicNameButton"
+                            Width="Auto"
+                            Text="{x:Bind Path=Music.Name}"/>
+                        </HyperlinkButton.Content>
+                    </HyperlinkButton>
+                    <HyperlinkButton
+                    DataContext="{x:Bind Path=Artists.MainArtistID}"
+                    Grid.Column="2"
+                    Click="ArtistNameButton_Click"
+                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        <HyperlinkButton.Content>
+                            <TextBlock
+                            x:Name="ArtistNameButton"
+                            Width="Auto"
+                            Text="{x:Bind Path=Artists.MainArtistName}"/>
+                        </HyperlinkButton.Content>
+                    </HyperlinkButton>
+                    <HyperlinkButton
+                    DataContext="{x:Bind Path=Album.ID}"
+                    Grid.Column="4"
+                    Click="AlbumNameButton_Click"
+                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        <HyperlinkButton.Content>
+                            <TextBlock
+                            x:Name="AlbumNameButton"
+                            Width="Auto"
+                            Text="{x:Bind Path=Album.Name}"/>
+                        </HyperlinkButton.Content>
+                    </HyperlinkButton>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Page.Resources>
+    
+    <Grid>
+        <ListView
+            x:Name="ContentListView"
+            ItemsSource="{x:Bind Path=ContentCollection}"
+            ItemTemplate="{StaticResource SongList}"
+            SelectionMode="None">
+            <ListView.Header>
+                <Grid
+                    Height="250">
+                    <Grid.RowDefinitions>
+                        <RowDefinition  Height="*"/>
+                        <RowDefinition  Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Grid
+                        Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="230"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border
+                        Height="200"
+                        Width="200"
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        CornerRadius="8">
+                            <Border.Background>
+                                <ImageBrush
+                                    x:Name="CoverPicture"/>
+                            </Border.Background>
+                        </Border>
+                        <Grid
+                            Margin="17,0,30,0"
+                            Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                x:Name="TitleText"
+                                Grid.Row="0"
+                                VerticalAlignment="Center"
+                                TextWrapping="Wrap"
+                                FontSize="32"
+                                FontWeight="Normal"/>
+                            <TextBlock
+                                x:Name="DescriptionText"
+                                Grid.Row="1"
+                                VerticalAlignment="Center"
+                                TextWrapping="Wrap"/>
+                            <Grid
+                                Grid.Row="2"
+                                VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Button>
+                                    
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid
+                        Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            x:Uid="MusicNameColumnText"
+                            x:Name="MusicNameColumnText"
+                            FontSize="18"
+                            Padding="27,0,0,10"
+                            Grid.Column="0"/>
+                        <TextBlock
+                            x:Uid="ArtistNameColumnText"
+                            x:Name="ArtistNameColumnText"
+                            FontSize="18"
+                            Padding="13,0,0,10"
+                            Grid.Column="2"/>
+                        <TextBlock
+                            x:Uid="AlbumNameColumnText"
+                            x:Name="AlbumNameColumnText"
+                            FontSize="18"
+                            Padding="5,0,0,10"
+                            Grid.Column="4"/>
+                    </Grid>
+                </Grid>
+            </ListView.Header>
+        </ListView>
+    </Grid>
+</Page>
