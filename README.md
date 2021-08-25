@@ -19,3 +19,8 @@
 
 ## 关于开源:
 此软件使用[MIT License](https://mit-license.org/)开源
+
+使用了[Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
+及其C#版本[wwh1004/NeteaseCloudMusicApi](https://github.com/wwh1004/NeteaseCloudMusicApi)
+
+感谢API开发者的付出
