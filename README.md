@@ -7,3 +7,6 @@
 
 ### 方法二:
 使用Visual Studio Clone此软件并自行构建
+
+## 关于开源:
+此软件使用[MIT License](https://mit-license.org/)开源
