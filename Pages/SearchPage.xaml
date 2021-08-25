@@ -69,7 +69,8 @@
             ItemsSource="{x:Bind Path=ContentCollection}"
             ItemTemplate="{StaticResource SongList}">
         <ListView.Header>
-            <Grid>
+            <Grid
+                Margin="0,0,0,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="10"/>
@@ -78,23 +79,23 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock
-                x:Uid="MusicNameColumnText"
-                x:Name="MusicNameColumnText"
-                FontSize="18"
-                Padding="27,0,0,10"
-                Grid.Column="0"/>
+                    x:Uid="MusicNameColumnText"
+                    x:Name="MusicNameColumnText"
+                    FontSize="18"
+                    Margin="27,0,0,0"
+                    Grid.Column="0"/>
                 <TextBlock
-                x:Uid="ArtistNameColumnText"
-                x:Name="ArtistNameColumnText"
-                FontSize="18"
-                Padding="13,0,0,10"
-                Grid.Column="2"/>
+                    x:Uid="ArtistNameColumnText"
+                    x:Name="ArtistNameColumnText"
+                    FontSize="18"
+                    Margin="13,0,0,0"
+                    Grid.Column="2"/>
                 <TextBlock
-                x:Uid="AlbumNameColumnText"
-                x:Name="AlbumNameColumnText"
-                FontSize="18"
-                Padding="5,0,0,10"
-                Grid.Column="4"/>
+                    x:Uid="AlbumNameColumnText"
+                    x:Name="AlbumNameColumnText"
+                    FontSize="18"
+                    Margin="5,0,0,0"
+                    Grid.Column="4"/>
             </Grid>
         </ListView.Header>
         <ListView.Footer>

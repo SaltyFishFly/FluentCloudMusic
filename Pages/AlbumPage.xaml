@@ -73,6 +73,7 @@
                     Height="250">
                     <Grid.RowDefinitions>
                         <RowDefinition  Height="*"/>
+                        <RowDefinition  Height="10"/>
                         <RowDefinition  Height="30"/>
                     </Grid.RowDefinitions>
                     <Grid

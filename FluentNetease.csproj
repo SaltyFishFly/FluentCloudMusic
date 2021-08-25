@@ -298,7 +298,7 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="FluentNetease_TemporaryKey.pfx" />
-    <None Include="Todo" />
+    <None Include="Todolist.md" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

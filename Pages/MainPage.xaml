@@ -31,9 +31,8 @@
         </muxc:NavigationView.AutoSuggestBox>
         <muxc:NavigationView.Header>
             <TextBlock
-            Margin="-20,0,0,0"
-            Text="HEADER"
-            FontWeight="Normal"/>
+                Text="HEADER"
+                FontWeight="Normal"/>
         </muxc:NavigationView.Header>
         <muxc:NavigationView.MenuItems>
             <muxc:NavigationViewItem x:Name="NavItemDiscover" x:Uid="NavItemDiscover" Tag="Discover" Icon="Calendar" />

@@ -14,7 +14,6 @@ namespace FluentNetease
     sealed partial class App : Application
     {
         public static CloudMusicApi CLOUD_MUSIC_API = new CloudMusicApi();
-        public static double GLOBAL_LISTVIEW_WIDTH = new double();
 
         /// <summary>
         /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
