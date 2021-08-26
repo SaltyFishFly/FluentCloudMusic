@@ -1,10 +1,8 @@
 ﻿using FluentNetease.Classes;
 using System;
 using System.Collections.Generic;
-using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
-using Windows.Storage.Pickers;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,27 +16,30 @@ namespace FluentNetease.Controls
     public sealed partial class MusicPlayer : UserControl
     {
         public MediaPlayer Player { get; set; }
+        public List<Music> PlayItemList { get; set; }
         public int CurrentPlayIndex { get; set; }
+        public int CurrentPosition { get; set; }
         public PlayModeEnum PlayMode { get; set; }
         public DispatcherTimer Timer { get; set; }
         public enum PlayModeEnum
         {
-            Random, Loop, Sequence
+            Sequence, Loop, Random
         }
         public MusicPlayer()
         {
             this.InitializeComponent();
             InitalizePlayer();
-            InitalizeTimer();
         }
 
         /// <summary>
-        /// 初始化播放器
+        /// 初始化内容
         /// Initalize Player.
         /// </summary>
         private void InitalizePlayer()
         {
-            object LocalVolume = ApplicationData.Current.LocalSettings.Values["Volume"];
+            //初始化播放器
+            PlayItemList = new List<Music>();
+
             PlayMode = PlayModeEnum.Sequence;
             Player = new MediaPlayer
             {
@@ -47,26 +48,24 @@ namespace FluentNetease.Controls
                 IsLoopingEnabled = false,
                 Volume = VolumeSlider.Value
             };
-            VolumeSlider.Value = LocalVolume == null ? 100 : (double)LocalVolume;
             Player.PlaybackSession.PlaybackStateChanged += Player_PlaybackSession_PlaybackStateChanged;
-        }
+            Player.MediaEnded += Player_MediaEnded;
 
-        /// <summary>
-        /// 初始化计时器
-        /// Initalize Timer.
-        /// </summary>
-        private void InitalizeTimer()
-        {
+            //初始化计时器
             Timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(1),
             };
             Timer.Tick += Timer_Tick;
             Timer.Start();
+
+            //从设置中读取音量
+            object LocalVolume = ApplicationData.Current.LocalSettings.Values["Volume"];
+            VolumeSlider.Value = LocalVolume == null ? 100 : (double)LocalVolume;
         }
 
         /// <summary>
-        /// 将时间轴与播放位置做同步
+        /// 更新数据绑定
         /// Sync timeline with position.
         /// </summary>
         /// <param name="sender"></param>
@@ -76,36 +75,9 @@ namespace FluentNetease.Controls
             Bindings.Update();
         }
 
-        /// <summary>
-        /// 导航到新页面展示当前音乐信息
-        /// Navigate to a new page to show info of current music.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private async void MusicButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            //测试用
-            FileOpenPicker picker = new FileOpenPicker()
-            {
-                ViewMode = PickerViewMode.Thumbnail,
-                SuggestedStartLocation = PickerLocationId.MusicLibrary
-            };
-            picker.FileTypeFilter.Add(".mp3");
-            picker.FileTypeFilter.Add(".aac");
-            picker.FileTypeFilter.Add(".flac");
-            IReadOnlyList<StorageFile> files = await picker.PickMultipleFilesAsync();
-            if (files.Count > 0)
-            {
-                MediaPlaybackList playbackList = new MediaPlaybackList()
-                {
-                    AutoRepeatEnabled = true
-                };
-                foreach (StorageFile file in files)
-                {
-                    playbackList.Items.Add(new MediaPlaybackItem(MediaSource.CreateFromStorageFile(file)));
-                }
-                Player.Source = playbackList;
-            }
+            throw new NotImplementedException();
         }
 
         private void PlayButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -121,15 +93,9 @@ namespace FluentNetease.Controls
             }
         }
 
-        /// <summary>
-        /// 同步时间滑块与播放器时间
-        /// Sync time between time slider and player.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Timeline_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        private void Timeline_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
         {
-            Player.PlaybackSession.Position = TimeSpan.FromSeconds(e.NewValue);
+            Player.PlaybackSession.Position = TimeSpan.FromSeconds(((Slider)sender).Value);
         }
 
         private void Player_PlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
@@ -154,8 +120,21 @@ namespace FluentNetease.Controls
                     _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         PlayButton.IsEnabled = false;
-                        PlayButton_Icon.Symbol = Symbol.Refresh;
+                        PlayButton_Icon.Symbol = Symbol.Download;
                     });
+                    break;
+            }
+        }
+
+        private void Player_MediaEnded(MediaPlayer sender, object args)
+        {
+            switch (PlayMode)
+            {
+                case PlayModeEnum.Sequence:
+                    PlayNext();
+                    break;
+                case PlayModeEnum.Loop:
+                    Play(CurrentPlayIndex);
                     break;
             }
         }
@@ -172,30 +151,41 @@ namespace FluentNetease.Controls
             ApplicationData.Current.LocalSettings.Values["Volume"] = e.NewValue;
         }
 
-        public async void PlaySingle(string id)
+        private async void Play(int index)
         {
-            var (IsSuccess, RequestResult) = await Network.GetMusicUrlAsync(id);
-            if (IsSuccess)
+            if (PlayItemList.Count > index)
             {
-                Player.Source = RequestResult;
+                CurrentPlayIndex = index;
+                Player.Source = await PlayItemList[index].ToMediaPlaybackItem();
+                Player.Play();
             }
         }
 
-        public async void PlaySingle(Song song)
+        public void Play(Music music)
         {
-            var (IsSuccess, RequestResult) = await Network.GetMusicUrlAsync(song.Music.ID);
-            if (IsSuccess)
+            PlayItemList = new List<Music> { music };
+            Play(0);
+        }
+
+        public void Play(List<Music> musicList)
+        {
+            PlayItemList = musicList;
+            Play(0);
+        }
+
+        private void PlayPrevious()
+        {
+            if (CurrentPlayIndex > 0)
             {
-                Player.Source = RequestResult;
+                Play(--CurrentPlayIndex);
             }
         }
 
-        public async void PlayList(IList<Song> songs)
+        private void PlayNext()
         {
-            var (IsSuccess, RequestResult) = await Network.GetMusicUrlAsync(songs);
-            if (IsSuccess)
+            if (CurrentPlayIndex <= PlayItemList.Count)
             {
-                Player.Source = RequestResult;
+                Play(++CurrentPlayIndex);
             }
         }
     }

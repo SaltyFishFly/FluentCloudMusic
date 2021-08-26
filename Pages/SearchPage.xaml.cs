@@ -32,7 +32,7 @@ namespace FluentNetease.Pages
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER_INSTANCE.PlaySingle((string)((FrameworkElement)sender).DataContext);
+            MainPage.PLAYER_INSTANCE.Play(new Music { ID = (string)((FrameworkElement)sender).DataContext });
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)

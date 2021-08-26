@@ -1,5 +1,6 @@
 ﻿using FluentNetease.Classes;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -33,18 +34,17 @@ namespace FluentNetease.Pages
                     UriSource = new Uri(PlaylistInfo["coverImgUrl"].ToString())
                 };
                 TitleText.Text = PlaylistInfo["name"].ToString();
-                DescriptionText.Text += PlaylistInfo["description"].ToString().Replace("\n", "");
+                DescriptionText.Text += PlaylistInfo["description"].ToString();
                 foreach (var Item in Result)
                 {
                     ContentCollection.Add(Item);
                 }
             }
-
         }
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER_INSTANCE.PlaySingle((string)((FrameworkElement)sender).DataContext);
+            MainPage.PLAYER_INSTANCE.Play(new Music { ID = (string)((FrameworkElement)sender).DataContext });
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -55,6 +55,16 @@ namespace FluentNetease.Pages
         private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
         {
             MainPage.NAV_FRAME.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).DataContext);
+        }
+
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            var PlayList = new List<Music>();
+            foreach (var Item in ContentCollection)
+            {
+                PlayList.Add(Item.Music);
+            }
+            MainPage.PLAYER_INSTANCE.Play(PlayList);
         }
     }
 }

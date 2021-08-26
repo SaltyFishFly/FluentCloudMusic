@@ -5,7 +5,6 @@
     xmlns:local="using:FluentNetease.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:root="using:FluentNetease"
     xmlns:classes="using:FluentNetease.Classes"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
@@ -13,7 +12,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <DataTemplate x:DataType="classes:Song" x:Key="SongList">
-                <Grid Width="Auto">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="10"/>
@@ -115,13 +114,12 @@
                                 <TextBlock
                                     x:Name="DescriptionText"
                                     Grid.Row="1"
-                                    Margin="0,0,10,0"
-                                    VerticalAlignment="Center"
+                                    Margin="0,2,10,0"
                                     TextWrapping="Wrap"/>
                             </ScrollViewer>
                             <Grid
                                 Grid.Row="2"
-                                VerticalAlignment="Center">
+                                Margin="0,0,0,-6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>

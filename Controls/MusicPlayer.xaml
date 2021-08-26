@@ -6,9 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    mc:Ignorable="d"
-    d:DesignHeight="70"
-    d:DesignWidth="300">
+    mc:Ignorable="d">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -58,17 +56,17 @@
             Margin="10,0,2,0"
             Grid.Column="2"
             Minimum="0"
-            Maximum="{x:Bind Path=Player.PlaybackSession.NaturalDuration, Converter={StaticResource TimeToDoubleConverter}, FallbackValue=0}"
-            Value="{x:Bind Path=Player.PlaybackSession.Position, Converter={StaticResource TimeToDoubleConverter}, FallbackValue=0}"
+            Maximum="{x:Bind Path=Player.NaturalDuration, Converter={StaticResource TimeToDoubleConverter}}"
+            Value="{x:Bind Path=Player.Position, Converter={StaticResource TimeToDoubleConverter}}"
             VerticalAlignment="Center"
             ThumbToolTipValueConverter="{StaticResource DoubleToStringConverter}"
-            ValueChanged="Timeline_ValueChanged">
+            PointerCaptureLost="Timeline_PointerCaptureLost">
         </Slider>
         <TextBlock 
             x:Name="PlayPosition"
             Margin="0,0,-5,3"
             Grid.Column="3"
-            Text="{x:Bind Path=Timeline.Maximum, Converter={StaticResource DoubleToStringConverter}, FallbackValue=--:--}"
+            Text="{x:Bind Path=Timeline.Maximum, Converter={StaticResource DoubleToStringConverter}}"
             FontSize="16"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"/>

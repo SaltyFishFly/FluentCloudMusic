@@ -9,8 +9,7 @@
     xmlns:classes="using:FluentNetease.Classes"
     xmlns:pages="using:FluentNetease.Pages"
     mc:Ignorable="d"
-    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
-
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
     <muxc:NavigationView
         x:Name="MainNav"
         x:Uid="MainNav"
@@ -70,7 +69,8 @@
                     Width="Auto"
                     Height="Auto"
                     Grid.Row="0"
-                    Padding="20,10,20,0"
+                    Padding="20,10,0,0"
+                    CacheSize="5"
                     Navigated="ContentFrame_Navigated"/>
                 <local:MusicPlayer
                     x:Name="MusicPlayer"

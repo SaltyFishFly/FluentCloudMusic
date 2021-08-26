@@ -44,7 +44,7 @@ namespace FluentNetease.Pages
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER_INSTANCE.PlaySingle((string)((FrameworkElement)sender).DataContext);
+            MainPage.PLAYER_INSTANCE.Play(new Music { ID = (string)((FrameworkElement)sender).DataContext });
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -59,7 +59,12 @@ namespace FluentNetease.Pages
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER_INSTANCE.PlayList(ContentCollection);
+            var PlayList = new List<Music>();
+            foreach (var Item in ContentCollection)
+            {
+                PlayList.Add(Item.Music);
+            }
+            MainPage.PLAYER_INSTANCE.Play(PlayList);
         }
     }
 }

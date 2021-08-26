@@ -21,39 +21,39 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
-                    DataContext="{x:Bind Path=Music.ID}"
-                    Grid.Column="0"
-                    Click="MusicNameButton_Click"
-                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        DataContext="{x:Bind Path=Music.ID}"
+                        Grid.Column="0"
+                        Click="MusicNameButton_Click"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <HyperlinkButton.Content>
                             <TextBlock
-                            x:Name="MusicNameButton"
-                            Width="Auto"
-                            Text="{x:Bind Path=Music.Name}"/>
+                                x:Name="MusicNameButton"
+                                Width="Auto"
+                                Text="{x:Bind Path=Music.Name}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
-                    DataContext="{x:Bind Path=Artists.MainArtistID}"
-                    Grid.Column="2"
-                    Click="ArtistNameButton_Click"
-                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        DataContext="{x:Bind Path=Artists.MainArtistID}"
+                        Grid.Column="2"
+                        Click="ArtistNameButton_Click"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <HyperlinkButton.Content>
                             <TextBlock
-                            x:Name="ArtistNameButton"
-                            Width="Auto"
-                            Text="{x:Bind Path=Artists.MainArtistName}"/>
+                                x:Name="ArtistNameButton"
+                                Width="Auto"
+                                Text="{x:Bind Path=Artists.MainArtistName}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
-                    DataContext="{x:Bind Path=Album.ID}"
-                    Grid.Column="4"
-                    Click="AlbumNameButton_Click"
-                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        DataContext="{x:Bind Path=Album.ID}"
+                        Grid.Column="4"
+                        Click="AlbumNameButton_Click"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <HyperlinkButton.Content>
                             <TextBlock
-                            x:Name="AlbumNameButton"
-                            Width="Auto"
-                            Text="{x:Bind Path=Album.Name}"/>
+                                x:Name="AlbumNameButton"
+                                Width="Auto"
+                                Text="{x:Bind Path=Album.Name}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                 </Grid>
@@ -108,19 +108,25 @@
                                 TextWrapping="Wrap"
                                 FontSize="32"
                                 FontWeight="Normal"/>
-                            <TextBlock
-                                x:Name="DescriptionText"
+                            <ScrollViewer
                                 Grid.Row="1"
-                                VerticalAlignment="Center"
-                                TextWrapping="Wrap"/>
+                                VerticalScrollMode="Enabled">
+                                <TextBlock
+                                    x:Name="DescriptionText"
+                                    Grid.Row="1"
+                                    Margin="0,2,10,0"
+                                    TextWrapping="Wrap"/>
+                            </ScrollViewer>
                             <Grid
                                 Grid.Row="2"
-                                VerticalAlignment="Center">
+                                Margin="0,0,0,-6">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Button>
-                                    
+                                <Button
+                                    x:Name="PlayButton"
+                                    Click="PlayButton_Click">
+                                    <SymbolIcon Symbol="Play"/>
                                 </Button>
                             </Grid>
                         </Grid>

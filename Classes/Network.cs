@@ -90,26 +90,11 @@ namespace FluentNetease.Classes
         {
             var Parameters = new Dictionary<string, object> { { "id", musicId } };
             var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.SongUrl, Parameters);
-            if (IsSuccess && RequestResult["code"].Value<int>() == 200)
+            if (IsSuccess &&
+                RequestResult["code"].Value<int>() == 200 &&
+                RequestResult["data"].First["url"].ToString() != "")
             {
-                return (true, new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri(RequestResult["data"].First["url"].ToString()))));
-            }
-            return (false, null);
-        }
-
-        public static async Task<(bool IsSuccess, MediaPlaybackList Result)> GetMusicUrlAsync(IList<Song> musicIdList)
-        {
-            var Result = new MediaPlaybackList();
-            foreach (var Item in musicIdList)
-            {
-                var (IsSuccess, RequestResult) = await GetMusicUrlAsync(Item.Music.ID);
-                if (IsSuccess)
-                {
-                    Result.Items.Add(RequestResult);
-                }
-            }
-            if (Result.Items.Count > 0)
-            {
+                var Result = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri(RequestResult["data"].First["url"].ToString())));
                 return (true, Result);
             }
             return (false, null);
@@ -120,7 +105,7 @@ namespace FluentNetease.Classes
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
-        public static async Task<(bool IsSuccess, JToken PlaylistInfo , LinkedList<Song> SongList)> GetPlaylistDetailAsync(string playlistID)
+        public static async Task<(bool IsSuccess, JToken PlaylistInfo, LinkedList<Song> SongList)> GetPlaylistDetailAsync(string playlistID)
         {
             var Parameters = new Dictionary<string, object> { { "id", playlistID } };
             var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, Parameters);
