@@ -14,7 +14,7 @@
 需要以下组件:
 - .NET桌面开发
 - 通用Windows平台开发
-- Windows 10 1809(Build 17763)及以上 (测试环境为Windows11,Windows10上可能会出现某些界面排版问题，不影响使用，后续修复)
+- Windows 10 1903(Build 18362)及以上 (测试环境为Windows11,Windows10上可能会出现某些界面排版问题，不影响使用，后续修复)
 
 完成后安装输出的.msix或.msixbundle文件
 
