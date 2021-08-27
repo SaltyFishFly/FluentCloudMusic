@@ -17,10 +17,11 @@ namespace FluentNetease.Classes
         /// <param name="account">账号</param>
         /// <param name="password">密码</param>
         /// <returns>(Code, JObject) 返回代码和JSON对象</returns>
-        public static async Task<(int, JObject)> LoginAsync(string account, string password)
+        public static async Task<(int Code, JObject Result)> LoginAsync(string countryCode, string account, string password)
         {
             var Parameters = new Dictionary<string, object>
                 {
+                    { "countrycode", countryCode},
                     { "phone", account },
                     { "password", password }
                 };
@@ -35,6 +36,17 @@ namespace FluentNetease.Classes
                 return (RequestCode, null);
             }
             return (404, null);
+        }
+
+        public static async Task<bool> LogoutAsync()
+        {
+
+            var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.Logout);
+            if (IsSuccess && RequestResult["code"].Value<int>() == 200)
+            {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -92,7 +104,7 @@ namespace FluentNetease.Classes
             var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.SongUrl, Parameters);
             if (IsSuccess &&
                 RequestResult["code"].Value<int>() == 200 &&
-                RequestResult["data"].First["url"].ToString() != "")
+                RequestResult["data"].First["url"].ToString() != string.Empty)
             {
                 var Result = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri(RequestResult["data"].First["url"].ToString())));
                 return (true, Result);

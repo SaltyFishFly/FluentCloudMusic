@@ -1,5 +1,6 @@
 ﻿using FluentNetease.Dialogs;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
@@ -8,66 +9,89 @@ namespace FluentNetease.Classes
 {
     public class Account
     {
-        public static Account INSTANCE = new Account();
+        public static UserProfile Profile { get; set; } = new UserProfile();
 
-        public delegate void UserProfileChangedHandler(UserProfile profile);
-        public event UserProfileChangedHandler ProfileChanged;
-        public UserProfile Profile { get; set; }
-        public async Task<int> LoginWithLocalSettings()
+        public static async Task<int> LoginWithLocalSettings()
         {
             ApplicationDataContainer AppSettings = ApplicationData.Current.LocalSettings;
             if (AppSettings.Values.ContainsKey("Account") && AppSettings.Values.ContainsKey("Password"))
             {
+                string CountryCode = (string)AppSettings.Values["CountryCode"];
                 string Account = (string)AppSettings.Values["Account"];
                 string Password = (string)AppSettings.Values["Password"];
-                return await LoginAsync(Account, Password);
+                return await LoginAsync(CountryCode, Account, Password);
             }
             return 0;
-        }
-
-        public async void LoginWithDialogAsync()
-        {
-            (ContentDialogResult, string, string) DialogResult = await new LoginDialog() { IsPrimaryButtonEnabled = false }.ShowDialogAsync();
-            if (DialogResult.Item1 == ContentDialogResult.Primary)
-            {
-                await LoginAsync(DialogResult.Item2, DialogResult.Item3);
-            }
         }
 
         /// <summary>
         /// 传入账号密码进行登录,登录失败弹出错误对话框
         /// </summary>
-        /// <param name="Account"></param>
-        /// <param name="Password"></param>
-        public async Task<int> LoginAsync(string Account, string Password)
+        /// <param name="account"></param>
+        /// <param name="password"></param>
+        public static async Task<int> LoginAsync(string countryCode, string account, string password)
         {
             ApplicationDataContainer AppSettings = ApplicationData.Current.LocalSettings;
-            var Result = await Network.LoginAsync(Account, Password);
-            if (Result.Item1 == 200)
+            var (Code, RequestResult) = await Network.LoginAsync(countryCode, account, password);
+            if (Code == 200)
             {
-                AppSettings.Values["Account"] = Account;
-                AppSettings.Values["Password"] = Password;
-                Profile = new UserProfile(Result.Item2);
-                ProfileChanged(Profile);
+                AppSettings.Values["CountryCode"] = countryCode;
+                AppSettings.Values["Account"] = account;
+                AppSettings.Values["Password"] = password;
+                Profile.SetLoginData(RequestResult);
             }
             else
             {
+                AppSettings.Values["CountryCode"] = null;
                 AppSettings.Values["Account"] = null;
                 AppSettings.Values["Password"] = null;
-                _ = new LoginFailedDialog().SetErrorCode(Result.Item1).ShowAsync();
+                _ = new LoginFailedDialog().SetErrorCode(Code).ShowAsync();
             }
-            return Result.Item2["code"].Value<int>();
+            return RequestResult["code"].Value<int>();
+        }
+
+        public static async void LogoutAsync()
+        {
+            bool IsSuccess = await Network.LogoutAsync();
+            if (IsSuccess)
+            {
+                ApplicationDataContainer AppSettings = ApplicationData.Current.LocalSettings;
+                AppSettings.Values["CountryCode"] = null;
+                AppSettings.Values["Account"] = null;
+                AppSettings.Values["Password"] = null;
+                Profile.Logout();
+            }
         }
 
         public class UserProfile
         {
+            public delegate void LoginEventHandler();
+            public event LoginEventHandler LoginEvent;
+
+            public delegate void LogoutEventHandler();
+            public event LogoutEventHandler LogoutEvent;
+
+            public bool LoginFlag { get; set; }
             public string Nickname { get; set; }
             public string AvatarUrl { get; set; }
 
-            public UserProfile(JObject RequestResult)
+            public UserProfile()
             {
+                LoginFlag = false;
+            }
+
+            public void SetLoginData(JObject RequestResult)
+            {
+                LoginFlag = true;
                 Nickname = RequestResult["profile"]["nickname"].ToString();
                 AvatarUrl = RequestResult["profile"]["avatarUrl"].ToString();
+                LoginEvent();
+            }
+
+            public void Logout()
+            {
+                LoginFlag = false;
+                LogoutEvent();
             }
         }
     }

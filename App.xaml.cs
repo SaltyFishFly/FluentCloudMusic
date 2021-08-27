@@ -1,7 +1,12 @@
-﻿using NeteaseCloudMusicApi;
+﻿using FluentNetease.Classes;
+using FluentNetease.Pages;
+using NeteaseCloudMusicApi;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -30,7 +35,7 @@ namespace FluentNetease
         /// 将在启动应用程序以打开特定文件等情况下使用。
         /// </summary>
         /// <param name="e">有关启动请求和过程的详细信息。</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -52,6 +57,12 @@ namespace FluentNetease
                 Window.Current.Content = rootFrame;
             }
 
+            Account.Profile.LoginEvent += OnLogin;
+            Account.Profile.LogoutEvent += OnLogout;
+
+            //尝试使用本地设置登录
+            await Account.LoginWithLocalSettings();
+
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
@@ -59,11 +70,47 @@ namespace FluentNetease
                     // 当导航堆栈尚未还原时，导航到第一页，
                     // 并通过将所需信息作为导航参数传入来配置
                     // 参数
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    if (Account.Profile.LoginFlag)
+                    {
+                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                        
+                    }
+                    else
+                    {
+                        rootFrame.Navigate(typeof(LoginPage), e.Arguments);
+                        
+                    }
                 }
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
             }
+
+            //设置最小尺寸
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(
+                new Windows.Foundation.Size
+                {
+                    Height = 500,
+                    Width = 500
+                }
+            );
+
+            //任务栏透明
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+        }
+
+        private void OnLogin()
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            rootFrame.Navigate(typeof(MainPage), null);
+        }
+
+        private void OnLogout()
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            rootFrame.Navigate(typeof(LoginPage), null);
         }
 
         /// <summary>

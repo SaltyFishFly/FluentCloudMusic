@@ -44,31 +44,14 @@ namespace FluentNetease
         public MainPage()
         {
             InitializeComponent();
-            InitalizePage();
+            MainNav.SelectedItem = NavItemDiscover;
             PLAYER_INSTANCE = MusicPlayer;
             NAV_FRAME = ContentFrame;
-        }
-
-        private async void InitalizePage()
-        {
-            //更新用户信息
-            Account.INSTANCE.ProfileChanged += Account_ProfileChanged;
-            await Account.INSTANCE.LoginWithLocalSettings();
-            //任务栏透明
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonBackgroundColor = Colors.Transparent;
-            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-            //设置最小尺寸
-            ApplicationView.GetForCurrentView().SetPreferredMinSize(
-                new Windows.Foundation.Size
-                {
-                    Height = 500,
-                    Width = 500
-                }
-                );
-            //初始化导航栏
-            MainNav.SelectedItem = NavItemDiscover;
+            NavItemAccount.Content = Account.Profile.Nickname;
+            NavItemAccount.Icon = new ImageIcon()
+            {
+                Source = new BitmapImage(new Uri(Account.Profile.AvatarUrl))
+            };
         }
 
         /// <summary>
@@ -80,14 +63,10 @@ namespace FluentNetease
         {
             if (args.SelectedItemContainer != null)
             {
-                //对Settings和Account两个特殊按钮作处理
+                //对Settings按钮作特殊处理
                 if (args.IsSettingsSelected)
                 {
                     MainNav_Navigate("Settings", args.RecommendedNavigationTransitionInfo);
-                }
-                else if (args.SelectedItemContainer.Tag.ToString() == "Account" && Account.INSTANCE.Profile == null)
-                {
-                    Account.INSTANCE.LoginWithDialogAsync();
                 }
                 else
                 {
@@ -150,7 +129,7 @@ namespace FluentNetease
 
         private void NavSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (sender.Text != "")
+            if (sender.Text != string.Empty)
             {
                 SearchRequest Request = new SearchRequest(sender.Text);
                 if (ContentFrame.CurrentSourcePageType == typeof(SearchPage))
@@ -162,16 +141,6 @@ namespace FluentNetease
                     ContentFrame.Navigate(typeof(SearchPage), Request);
                 }
             }
-        }
-
-        private void Account_ProfileChanged(Account.UserProfile profile)
-        {
-            NavItemAccount.Content = profile.Nickname;
-            NavItemAccount.Icon = new ImageIcon()
-            {
-                Source = new BitmapImage(new Uri(profile.AvatarUrl))
-            };
-
         }
     }
 }

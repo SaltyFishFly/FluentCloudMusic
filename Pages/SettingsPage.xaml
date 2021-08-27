@@ -8,7 +8,31 @@
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <Grid>
-        
-    </Grid>
+    <StackPanel
+        Orientation="Vertical">
+        <Grid
+            Height="70">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Border
+                Width="50"
+                Height="50"
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <Border.Background>
+                    <ImageBrush ImageSource=""/>
+                </Border.Background>
+            </Border>
+            <Button
+                x:Name="LogoutButton"
+                x:Uid="LogoutButton"
+                Content="退出登录"
+                Grid.Column="2"
+                Click="LogoutButton_Click"/>
+        </Grid>
+    </StackPanel>
 </Page>

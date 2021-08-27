@@ -14,7 +14,7 @@
         x:Name="MainNav"
         x:Uid="MainNav"
         IsPaneToggleButtonVisible="True"
-        IsBackEnabled="{x:Bind Path=ContentFrame.CanGoBack, Mode=OneWay}"
+        IsBackEnabled="{x:Bind Path=ContentFrame.CanGoBack}"
         PaneTitle="FluentNetease"
         PaneDisplayMode="Auto"
         OpenPaneLength="200"
