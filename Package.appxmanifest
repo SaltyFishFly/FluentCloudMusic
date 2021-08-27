@@ -8,15 +8,15 @@
   IgnorableNamespaces="uap mp uap3">
 
   <Identity
-    Name="af6b0ff2-6a93-4e77-aa50-1f5b60e9b26c"
-    Publisher="CN=FishFly"
-    Version="0.1.0.0" />
+    Name="19757FishFly.FluentNetease"
+    Publisher="CN=605C3560-FB11-4435-96A1-ABF9F0D41C29"
+    Version="0.2.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="af6b0ff2-6a93-4e77-aa50-1f5b60e9b26c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="4b03171e-7f36-4446-816f-0d61b6386f62" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>FluentNetease</DisplayName>
-    <PublisherDisplayName>FishFly</PublisherDisplayName>
+    <PublisherDisplayName>Fish_Fly_</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -38,7 +38,7 @@
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="FluentNetease"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
