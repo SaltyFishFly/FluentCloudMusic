@@ -1,7 +1,5 @@
 # FluentNetease
-~~颜值就是第一生产力~~
-
-一个第三方的网易云音乐客户端,基于UWP和WinUI库
+一个第三方的网易云音乐客户端,基于UWP和WinUI
 ## 如何获取?
 ### 方法一:
 ~~在Microsoft Store下载~~
@@ -21,7 +19,9 @@
 ## 关于开源:
 此软件使用[MIT License](https://mit-license.org/)开源
 
-使用了[Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
-及其C#版本[wwh1004/NeteaseCloudMusicApi](https://github.com/wwh1004/NeteaseCloudMusicApi)
+使用了
+- [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
 
-感谢API开发者的付出
+- [wwh1004/NeteaseCloudMusicApi](https://github.com/wwh1004/NeteaseCloudMusicApi)
+
+- [Newtonsoft.Json](https://www.newtonsoft.com/json)

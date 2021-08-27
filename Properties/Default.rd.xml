@@ -23,9 +23,7 @@
 -->
     <Assembly Name="*Application*" Dynamic="Required All" />
     
-    
     <!-- 在此处添加应用程序特定的运行时指令。-->
-
 
   </Application>
 </Directives>

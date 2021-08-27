@@ -86,7 +86,6 @@ namespace NeteaseCloudMusicApi.Utils {
 				}
 				return array;
 			}
-
 			static BigInteger GetBigIntegerBigEndian(byte[] value) {
 				byte[] value2 = new byte[value.Length + 1];
 				for (int i = 0; i < value.Length; i++)

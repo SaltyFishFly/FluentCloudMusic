@@ -25,20 +25,24 @@ namespace FluentNetease.Classes
                     { "phone", account },
                     { "password", password }
                 };
-            var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.LoginCellphone, Parameters);
-            var RequestCode = RequestResult["code"].Value<int>();
-            if (RequestCode == 200)
+            var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.LoginCellphone, Parameters);
+            if (IsSuccess)
             {
-                return (RequestCode, RequestResult);
+                var RequestCode = RequestResult["code"].Value<int>();
+                if (RequestCode == 200)
+                {
+                    return (RequestCode, RequestResult);
+                }
+                return (RequestCode, null);
             }
-            return (RequestCode, null);
+            return (404, null);
         }
 
         public static async Task<bool> LogoutAsync()
         {
 
-            var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.Logout);
-            if (RequestResult["code"].Value<int>() == 200)
+            var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.Logout);
+            if (IsSuccess && RequestResult["code"].Value<int>() == 200)
             {
                 return true;
             }
@@ -51,7 +55,7 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<LinkedList<Playlist>> GetDailyPlaylistAsync()
         {
-            var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.RecommendResource);
+            var RequestResult = (await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.RecommendResource)).Item2;
             var Result = new LinkedList<Playlist> { };
             if (RequestResult["code"].Value<int>() == 200)
             {
@@ -73,13 +77,13 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<(LinkedList<Song> SearchResults, int CurrentPage)> SearchAsync(SearchRequest Request)
         {
-            var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.Search, Request.ToDictionary());
-            if (RequestResult["code"].Value<int>() == 200)
+            var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.Cloudsearch, Request.ToDictionary());
+            if (IsSuccess && RequestResult["code"].Value<int>() == 200)
             {
                 var Result = new LinkedList<Song>();
                 foreach (JToken JsonSearchResult in RequestResult["result"]["songs"])
                 {
-                    var SearchResult = new Song(JsonSearchResult, Song.SongSource.Search);
+                    var SearchResult = new Song(JsonSearchResult);
                     Result.AddLast(SearchResult);
                 }
                 //计算页数
@@ -97,8 +101,9 @@ namespace FluentNetease.Classes
         public static async Task<(bool IsSuccess, MediaPlaybackItem Result)> GetMusicUrlAsync(string musicId)
         {
             var Parameters = new Dictionary<string, object> { { "id", musicId } };
-            var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.SongUrl, Parameters);
-            if (RequestResult["code"].Value<int>() == 200 &&
+            var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.SongUrl, Parameters);
+            if (IsSuccess &&
+                RequestResult["code"].Value<int>() == 200 &&
                 RequestResult["data"].First["url"].ToString() != string.Empty)
             {
                 var Result = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri(RequestResult["data"].First["url"].ToString())));
@@ -115,8 +120,8 @@ namespace FluentNetease.Classes
         public static async Task<(bool IsSuccess, JToken PlaylistInfo, LinkedList<Song> SongList)> GetPlaylistDetailAsync(string playlistID)
         {
             var Parameters = new Dictionary<string, object> { { "id", playlistID } };
-            var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, Parameters);
-            if (RequestResult["code"].Value<int>() == 200)
+            var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, Parameters);
+            if (IsSuccess && RequestResult["code"].Value<int>() == 200)
             {
                 StringBuilder MusicIds = new StringBuilder();
                 foreach (var Item in RequestResult["playlist"]["trackIds"])
@@ -127,12 +132,12 @@ namespace FluentNetease.Classes
                 MusicIds.Remove(MusicIds.Length - 1, 1);
                 var Result = new LinkedList<Song>();
                 var Parameters2 = new Dictionary<string, object> { { "ids", MusicIds.ToString() } };
-                var RequestResult2 = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.SongDetail, Parameters2);
-                if (RequestResult2["code"].Value<int>() == 200)
+                var (IsSuccess2, RequestResult2) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.SongDetail, Parameters2);
+                if (IsSuccess2 && RequestResult2["code"].Value<int>() == 200)
                 {
                     foreach (var Item in RequestResult2["songs"])
                     {
-                        Result.AddLast(new Song(Item, Song.SongSource.PlayList));
+                        Result.AddLast(new Song(Item));
                     }
                     return (true, RequestResult["playlist"], Result);
                 }
@@ -152,13 +157,13 @@ namespace FluentNetease.Classes
             {
                 { "id", albumID }
             };
-            var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.Album, Parameters);
-            if (RequestResult["code"].Value<int>() == 200)
+            var (IsSuccess, RequestResult) = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.Album, Parameters);
+            if (IsSuccess && RequestResult["code"].Value<int>() == 200)
             {
                 var Result = new LinkedList<Song>();
                 foreach (var Item in RequestResult["songs"])
                 {
-                    Result.AddLast(new Song(Item, Song.SongSource.PlayList));
+                    Result.AddLast(new Song(Item));
                 }
                 return (true, RequestResult["album"], Result);
             }
