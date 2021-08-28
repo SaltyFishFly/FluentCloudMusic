@@ -77,7 +77,7 @@ namespace FluentNetease.Controls
 
         private async void MusicButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            
         }
 
         private void PlayButton_Tapped(object sender, TappedRoutedEventArgs e)

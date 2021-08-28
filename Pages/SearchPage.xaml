@@ -11,49 +11,55 @@
 
     <Page.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Themes/Generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:DataType="classes:Song" x:Key="SongList">
-                <Grid Width="Auto">
+                <Grid
+                    Width="{Binding ElementName=ContentListView, Path=Width, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
-                    DataContext="{x:Bind Path=Music.ID}"
-                    Grid.Column="0"
-                    Click="MusicNameButton_Click"
-                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        DataContext="{x:Bind Path=Music.ID}"
+                        Grid.Column="0"
+                        Click="MusicNameButton_Click"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <HyperlinkButton.Content>
-                            <TextBlock
-                            x:Name="MusicNameButton"
-                            Width="Auto"
-                            Text="{x:Bind Path=Music.Name}"/>
+                            <TextBlock>
+                                <Run
+                                    Text="{x:Bind Music.Name}"/>
+                                <Run
+                                    Text="{x:Bind Music.Translation}"
+                                    Foreground="{ThemeResource AliasTextBrush}"/>
+                                <Run
+                                    Text="{x:Bind Music.Alias}"
+                                    Foreground="{ThemeResource AliasTextBrush}"/>
+                            </TextBlock>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
-                    DataContext="{x:Bind Path=Artists.MainArtistID}"
-                    Grid.Column="2"
-                    Click="ArtistNameButton_Click"
-                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        DataContext="{x:Bind Path=Artists.MainArtistID}"
+                        Grid.Column="2"
+                        Click="ArtistNameButton_Click"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <HyperlinkButton.Content>
                             <TextBlock
-                            x:Name="ArtistNameButton"
-                            Width="Auto"
-                            Text="{x:Bind Path=Artists.MainArtistName}"/>
+                                Text="{x:Bind Path=Artists.MainArtistName}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
-                    DataContext="{x:Bind Path=Album.ID}"
-                    Grid.Column="4"
-                    Click="AlbumNameButton_Click"
-                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        DataContext="{x:Bind Path=Album.ID}"
+                        Grid.Column="4"
+                        Click="AlbumNameButton_Click"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <HyperlinkButton.Content>
                             <TextBlock
-                            x:Name="AlbumNameButton"
-                            Width="Auto"
-                            Text="{x:Bind Path=Album.Name}"/>
+                                Text="{x:Bind Path=Album.Name}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                 </Grid>
@@ -62,42 +68,13 @@
     </Page.Resources>
 
     <ListView
-            Width="Auto"
-            Grid.Row="0"
-            SelectionMode="None"
-            IsItemClickEnabled="False"
-            ItemsSource="{x:Bind Path=ContentCollection}"
-            ItemTemplate="{StaticResource SongList}">
-        <ListView.Header>
-            <Grid
-                Margin="0,0,0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock
-                    x:Uid="MusicNameColumnText"
-                    x:Name="MusicNameColumnText"
-                    FontSize="18"
-                    Margin="27,0,0,0"
-                    Grid.Column="0"/>
-                <TextBlock
-                    x:Uid="ArtistNameColumnText"
-                    x:Name="ArtistNameColumnText"
-                    FontSize="18"
-                    Margin="13,0,0,0"
-                    Grid.Column="2"/>
-                <TextBlock
-                    x:Uid="AlbumNameColumnText"
-                    x:Name="AlbumNameColumnText"
-                    FontSize="18"
-                    Margin="5,0,0,0"
-                    Grid.Column="4"/>
-            </Grid>
-        </ListView.Header>
+        x:Name="ContentListView"
+        Width="Auto"
+        Grid.Row="0"
+        SelectionMode="None"
+        IsItemClickEnabled="True"
+        ItemsSource="{x:Bind Path=ContentCollection}"
+        ItemTemplate="{StaticResource SongList}">
         <ListView.Footer>
             <Grid
                 Height="60"

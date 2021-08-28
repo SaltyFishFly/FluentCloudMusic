@@ -69,7 +69,7 @@
                     Width="Auto"
                     Height="Auto"
                     Grid.Row="0"
-                    Padding="20,10,0,0"
+                    Padding="24,10,0,0"
                     CacheSize="5"
                     Navigated="ContentFrame_Navigated"/>
                 <local:MusicPlayer

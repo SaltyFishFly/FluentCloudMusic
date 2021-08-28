@@ -7,6 +7,8 @@ namespace FluentNetease.Classes
     {
         public string ID { get; set; }
         public string Name { get; set; }
+        public string Translation { get; set; }
+        public string Alias { get; set; }
 
         public async Task<MediaPlaybackItem> ToMediaPlaybackItem()
         {
