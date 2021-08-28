@@ -17,11 +17,11 @@ namespace FluentNetease.Classes
             };
             if (jsonSongObject["tns"] != null && jsonSongObject["tns"].HasValues)
             {
-                Music.Translation = "(" + jsonSongObject["tns"].First.ToString() + ")";
+                Music.Translation = "( " + jsonSongObject["tns"].First.ToString() + " )";
             }
             if (jsonSongObject["alia"] != null && jsonSongObject["alia"].HasValues)
             {
-                Music.Alias = "(" + jsonSongObject["alia"].First.ToString() + ")";
+                Music.Alias = "( " + jsonSongObject["alia"].First.ToString() + " )";
             }
 
             Album = new Album()

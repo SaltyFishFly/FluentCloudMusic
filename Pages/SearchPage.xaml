@@ -69,8 +69,6 @@
 
     <ListView
         x:Name="ContentListView"
-        Width="Auto"
-        Grid.Row="0"
         SelectionMode="None"
         IsItemClickEnabled="True"
         ItemsSource="{x:Bind Path=ContentCollection}"

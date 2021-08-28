@@ -41,22 +41,7 @@ namespace FluentNetease.Pages
                 }
             }
         }
-
-        private void MusicNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainPage.PLAYER_INSTANCE.Play(new Music { ID = (string)((FrameworkElement)sender).DataContext });
-        }
-
-        private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainPage.NAV_FRAME.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).DataContext);
-        }
-
+        
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             var PlayList = new List<Music>();
@@ -65,6 +50,11 @@ namespace FluentNetease.Pages
                 PlayList.Add(Item.Music);
             }
             MainPage.PLAYER_INSTANCE.Play(PlayList);
+        }
+
+        private void MusicNameButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainPage.PLAYER_INSTANCE.Play(new Music() { ID = (string)((FrameworkElement)sender).DataContext });
         }
     }
 }

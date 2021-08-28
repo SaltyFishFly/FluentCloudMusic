@@ -66,79 +66,72 @@
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>
-    
-    <Grid>
-        <ListView
-            x:Name="ContentListView"
-            ItemsSource="{x:Bind Path=ContentCollection}"
-            ItemTemplate="{StaticResource SongList}"
-            SelectionMode="None">
-            <ListView.Header>
+
+    <ListView
+        x:Name="ContentListView"
+        SelectionMode="None"
+        IsItemClickEnabled="True"
+        ItemsSource="{x:Bind Path=ContentCollection}"
+        ItemTemplate="{StaticResource SongList}">
+        <ListView.Header>
+            <Grid
+                Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="230"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border
+                    Height="200"
+                    Width="200"
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="8">
+                    <Border.Background>
+                        <ImageBrush
+                            x:Name="CoverPicture"/>
+                    </Border.Background>
+                </Border>
                 <Grid
-                    Height="250">
+                    Margin="20,0,0,0"
+                    Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition  Height="*"/>
-                        <RowDefinition  Height="10"/>
-                        <RowDefinition  Height="30"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
-                    <Grid
-                        Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="230"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border
-                        Height="200"
-                        Width="200"
-                        Grid.Column="0"
-                        HorizontalAlignment="Center"
+                    <TextBlock
+                        x:Name="TitleText"
+                        Grid.Row="0"
                         VerticalAlignment="Center"
-                        CornerRadius="8">
-                            <Border.Background>
-                                <ImageBrush
-                                    x:Name="CoverPicture"/>
-                            </Border.Background>
-                        </Border>
-                        <Grid
-                            Margin="20,0,30,0"
-                            Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="50"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock
-                                x:Name="TitleText"
-                                Grid.Row="0"
-                                VerticalAlignment="Center"
-                                TextWrapping="Wrap"
-                                FontSize="28"
-                                FontWeight="Normal"/>
-                            <ScrollViewer
-                                Grid.Row="1"
-                                VerticalScrollMode="Enabled">
-                                <TextBlock
-                                    x:Name="DescriptionText"
-                                    Grid.Row="1"
-                                    Margin="0,2,10,0"
-                                    TextWrapping="Wrap"/>
-                            </ScrollViewer>
-                            <Grid
-                                Grid.Row="2"
-                                Margin="0,0,0,-6">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Button
-                                    x:Name="PlayButton"
-                                    Click="PlayButton_Click">
-                                    <SymbolIcon Symbol="Play"/>
-                                </Button>
-                            </Grid>
-                        </Grid>
+                        TextWrapping="Wrap"
+                        FontSize="28"
+                        FontWeight="Normal"/>
+                    <ScrollViewer
+                        Grid.Row="1"
+                        Height="130"
+                        Margin="0,0,10,0"
+                        VerticalScrollMode="Enabled">
+                        <TextBlock
+                            x:Name="DescriptionText"
+                            Grid.Row="1"
+                            Margin="0,2,10,0"
+                            TextWrapping="Wrap"/>
+                    </ScrollViewer>
+                    <Grid
+                        Grid.Row="2"
+                        Margin="0,0,0,-6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            x:Name="PlayButton"
+                            Click="PlayButton_Click">
+                            <SymbolIcon Symbol="Play"/>
+                        </Button>
                     </Grid>
                 </Grid>
-            </ListView.Header>
-        </ListView>
-    </Grid>
+            </Grid>
+        </ListView.Header>
+    </ListView>
 </Page>
