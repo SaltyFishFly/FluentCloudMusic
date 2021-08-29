@@ -32,7 +32,7 @@ namespace FluentNetease.Pages
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER_INSTANCE.Play(new Music { ID = (string)((FrameworkElement)sender).DataContext });
+            MainPage.PLAYER.Play(new Music { ID = (string)((FrameworkElement)sender).DataContext });
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -42,7 +42,7 @@ namespace FluentNetease.Pages
 
         private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.NAV_FRAME.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).DataContext);
+            MainPage.FRAME.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).DataContext);
         }
 
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)

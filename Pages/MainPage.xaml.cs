@@ -4,6 +4,7 @@ using FluentNetease.Pages;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
@@ -26,8 +27,11 @@ namespace FluentNetease
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public static MusicPlayer PLAYER_INSTANCE;
-        public static Frame NAV_FRAME;
+        public static MusicPlayer PLAYER;
+        public static Frame FRAME;
+
+        public ObservableCollection<muxc.NavigationViewItem> PlaylistsCreated { get; }
+        public ObservableCollection<muxc.NavigationViewItem> PlaylistsBookmarked { get; }
 
         private readonly Hashtable NavPages = new Hashtable
         {
@@ -45,13 +49,51 @@ namespace FluentNetease
         {
             InitializeComponent();
             MainNav.SelectedItem = NavItemDiscover;
-            PLAYER_INSTANCE = MusicPlayer;
-            NAV_FRAME = ContentFrame;
+            PLAYER = MusicPlayer;
+            FRAME = ContentFrame;
+            GetUserProfile();
+            PlaylistsCreated = new ObservableCollection<muxc.NavigationViewItem>();
+            PlaylistsBookmarked = new ObservableCollection<muxc.NavigationViewItem>();
+            GetUserPlaylists();
+        }
+
+        private void GetUserProfile()
+        {
             NavItemAccount.Content = Account.Profile.Nickname;
             NavItemAccount.Icon = new ImageIcon()
             {
                 Source = new BitmapImage(new Uri(Account.Profile.AvatarUrl))
             };
+        }
+
+        /// <summary>
+        /// 获取用户的歌单并添加到左侧导航栏内
+        /// </summary>
+        private async void GetUserPlaylists()
+        {
+            var (IsSuccess, RequestResult) = await Network.GetUserPlaylist(Account.Profile.UserID);
+            if (IsSuccess)
+            {
+                PlaylistsCreated.Clear();
+                PlaylistsBookmarked.Clear();
+                foreach (var Item in RequestResult)
+                {
+                    var PlaylistItem = new muxc.NavigationViewItem {
+                        Tag = "Playlist",
+                        Content = Item.Name,
+                        DataContext = Item
+                    };
+                    PlaylistItem.Tag = "Playlist";
+                    if (Item.CreatorID == Account.Profile.UserID)
+                    {
+                        PlaylistsCreated.Add(PlaylistItem);
+                    }
+                    else
+                    {
+                        PlaylistsBookmarked.Add(PlaylistItem);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -68,11 +110,14 @@ namespace FluentNetease
                 {
                     MainNav_Navigate("Settings", args.RecommendedNavigationTransitionInfo);
                 }
+                if (args.SelectedItemContainer.Tag.ToString() == "Playlist")
+                {
+                    ContentFrame.Navigate(typeof(PlaylistPage), args.SelectedItemContainer.DataContext);
+                }
                 else
                 {
                     //导航
-                    string ItemTag = args.SelectedItemContainer.Tag.ToString();
-                    MainNav_Navigate(ItemTag, args.RecommendedNavigationTransitionInfo);
+                    MainNav_Navigate(args.SelectedItemContainer.Tag.ToString(), args.RecommendedNavigationTransitionInfo);
                 }
             }
         }
@@ -103,20 +148,34 @@ namespace FluentNetease
             {
                 Type NavPageType = null;
                 muxc.NavigationViewItem SelectedItem = null;
-                //如果MainNav包含所选页面则更新
+                //先在预先设置好的按钮中找
                 foreach (DictionaryEntry Entry in NavPages)
                 {
-                    NavPageType = (Type)Entry.Value == e.SourcePageType ? e.SourcePageType : NavPageType;
+                    if ((Type)Entry.Value == e.SourcePageType)
+                    {
+                        NavPageType = e.SourcePageType;
+                        break;
+                    }
                 }
                 if (NavPageType != null)
                 {
-                    //对两个特殊值做处理
+                    //对三个特殊值做处理
                     if (NavPageType == typeof(AccountPage)) { SelectedItem = NavItemAccount; }
                     else if (NavPageType == typeof(SettingsPage)) { SelectedItem = (muxc.NavigationViewItem)MainNav.SettingsItem; }
                     //在Pages中查找相关页面
                     else { SelectedItem = MainNav.MenuItems.OfType<muxc.NavigationViewItem>().First(n => (Type)NavPages[n.Tag.ToString()] == e.SourcePageType); }
                 }
-                //否则置空
+                //如果前面没找到就在动态生成的按钮里找
+                else
+                {
+                    foreach (var Item in PlaylistsCreated) {
+                        if (Item.DataContext == e.Parameter)
+                        {
+                            SelectedItem = Item;
+                            break;
+                        }
+                    }
+                }
                 MainNav.SelectedItem = SelectedItem;
                 MainNav.Header = new TextBlock
                 {

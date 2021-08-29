@@ -1,4 +1,5 @@
 ﻿using FluentNetease.Classes;
+using FluentNetease.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,7 +31,11 @@ namespace FluentNetease.Pages
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            await Account.LoginAsync(CountryCodeInputBox.Text, AccountInputBox.Text, PasswordInputBox.Password);
+            int Code = await Account.LoginAsync(CountryCodeInputBox.Text, AccountInputBox.Text, PasswordInputBox.Password);
+            if (Code != 200)
+            {
+                _ = new LoginFailedDialog().SetErrorCode(Code).ShowAsync();
+            }
         }
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)

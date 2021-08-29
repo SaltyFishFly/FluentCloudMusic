@@ -49,12 +49,12 @@ namespace FluentNetease.Pages
             {
                 PlayList.Add(Item.Music);
             }
-            MainPage.PLAYER_INSTANCE.Play(PlayList);
+            MainPage.PLAYER.Play(PlayList);
         }
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER_INSTANCE.Play(new Music() { ID = (string)((FrameworkElement)sender).DataContext });
+            MainPage.PLAYER.Play(new Music() { ID = (string)((FrameworkElement)sender).DataContext });
         }
     }
 }

@@ -56,8 +56,8 @@
             Margin="10,0,2,0"
             Grid.Column="2"
             Minimum="0"
-            Maximum="{x:Bind Path=Player.NaturalDuration, Converter={StaticResource TimeToDoubleConverter}}"
-            Value="{x:Bind Path=Player.Position, Converter={StaticResource TimeToDoubleConverter}}"
+            Maximum="{x:Bind Path=Player.PlaybackSession.NaturalDuration, Converter={StaticResource TimeToDoubleConverter}}"
+            Value="{x:Bind Path=Player.PlaybackSession.Position, Converter={StaticResource TimeToDoubleConverter}}"
             VerticalAlignment="Center"
             ThumbToolTipValueConverter="{StaticResource DoubleToStringConverter}"
             PointerCaptureLost="Timeline_PointerCaptureLost">

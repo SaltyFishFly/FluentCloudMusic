@@ -48,7 +48,7 @@
     
     <Grid>
         <GridView
-            ItemsSource="{x:Bind Path=PlaylistList}"
+            ItemsSource="{x:Bind Path=ContentCollection}"
             ItemTemplate="{StaticResource PlayListTemplate}"
             SelectionMode="None"
             IsItemClickEnabled="True"

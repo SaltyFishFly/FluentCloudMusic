@@ -12,27 +12,34 @@ namespace FluentNetease.Pages
     /// </summary>
     public sealed partial class DiscoverPage : Page
     {
-        public ObservableCollection<Playlist> PlaylistList;
+        public ObservableCollection<Playlist> ContentCollection;
         public DiscoverPage()
         {
             this.InitializeComponent();
-            PlaylistList = new ObservableCollection<Playlist> { };
-            UpdatePlayList();
+            ContentCollection = new ObservableCollection<Playlist> { };
         }
 
-        private async void UpdatePlayList()
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            PlaylistList.Clear();
-            var ResultList = await Network.GetDailyPlaylistAsync();
-            foreach (var Result in ResultList)
-            {
-                PlaylistList.Add(Result);
-            }
+            LoadPageContent();
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            MainPage.NAV_FRAME.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem);
+            MainPage.FRAME.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem);
+        }
+
+        private async void LoadPageContent()
+        {
+            ContentCollection.Clear();
+            var RequestResult = await Network.GetDailyRecommendPlaylistAsync();
+            if (RequestResult != null)
+            {
+                foreach (var Item in RequestResult)
+                {
+                    ContentCollection.Add(Item);
+                }
+            }
         }
     }
 }

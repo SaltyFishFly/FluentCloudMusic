@@ -10,6 +10,7 @@
     xmlns:pages="using:FluentNetease.Pages"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+    
     <muxc:NavigationView
         x:Name="MainNav"
         x:Uid="MainNav"
@@ -17,7 +18,7 @@
         IsBackEnabled="{x:Bind Path=ContentFrame.CanGoBack, Mode=OneWay}"
         PaneTitle="FluentNetease"
         PaneDisplayMode="Auto"
-        OpenPaneLength="200"
+        OpenPaneLength="250"
         ExpandedModeThresholdWidth="1000"
         SelectionChanged="MainNav_SelectionChanged"
         BackRequested="MainNav_BackRequested">
@@ -34,32 +35,84 @@
                 FontWeight="Normal"/>
         </muxc:NavigationView.Header>
         <muxc:NavigationView.MenuItems>
-            <muxc:NavigationViewItem x:Name="NavItemDiscover" x:Uid="NavItemDiscover" Tag="Discover" Icon="Calendar" />
-            <muxc:NavigationViewItemHeader x:Uid="NavHeader1"/>
-            <muxc:NavigationViewItem x:Name="NavItemHistory"  x:Uid="NavItemHistory" Tag="History" Icon="MusicInfo"/>
-            <muxc:NavigationViewItem x:Name="NavItemDownloads" x:Uid="NavItemDownloads" Tag="Downloads" Icon="Download"/>
-            <muxc:NavigationViewItem x:Name="NavItemCloud" x:Uid="NavItemCloud" Tag="Cloud">
+            <muxc:NavigationViewItem
+                x:Name="NavItemDiscover"
+                x:Uid="NavItemDiscover"
+                Tag="Discover"
+                Icon="Calendar" />
+            <muxc:NavigationViewItemHeader
+                x:Uid="NavHeader1"/>
+            <muxc:NavigationViewItem
+                x:Name="NavItemHistory"
+                x:Uid="NavItemHistory"
+                Tag="History"
+                Icon="MusicInfo"/>
+            <muxc:NavigationViewItem
+                x:Name="NavItemDownloads"
+                x:Uid="NavItemDownloads"
+                Tag="Downloads"
+                Icon="Download"/>
+            <muxc:NavigationViewItem
+                x:Name="NavItemCloud"
+                x:Uid="NavItemCloud"
+                Tag="Cloud">
                 <muxc:NavigationViewItem.Icon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE753;"/>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Glyph="&#xE753;"/>
                 </muxc:NavigationViewItem.Icon>
             </muxc:NavigationViewItem>
-            <muxc:NavigationViewItem x:Name="NavItemFavorites" x:Uid="NavItemFavorites" Tag="Favorites">
+            <muxc:NavigationViewItem
+                x:Name="NavItemFavorites"
+                x:Uid="NavItemFavorites"
+                Tag="Favorites">
                 <muxc:NavigationViewItem.Icon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE728;"/>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Glyph="&#xE728;"/>
                 </muxc:NavigationViewItem.Icon>
             </muxc:NavigationViewItem>
-            <muxc:NavigationViewItem x:Name="NavItemPodcasts" x:Uid="NavItemPodcasts" Tag="Podcasts">
+            <muxc:NavigationViewItem
+                x:Name="NavItemPodcasts"
+                x:Uid="NavItemPodcasts"
+                Tag="Podcasts">
                 <muxc:NavigationViewItem.Icon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE93E;"/>
+                    <FontIcon
+                        FontFamily="Segoe MDL2 Assets"
+                        Glyph="&#xE93E;"/>
                 </muxc:NavigationViewItem.Icon>
             </muxc:NavigationViewItem>
-            <muxc:NavigationViewItemHeader x:Uid="NavHeader2"/>
+            <muxc:NavigationViewItemHeader
+                x:Uid="NavHeader2"/>
+            <muxc:NavigationViewItem
+                x:Name="NavItemPlaylistsCreated"
+                x:Uid="NavItemPlaylistsCreated"
+                Icon="List"
+                SelectsOnInvoked="False"
+                MenuItemsSource="{x:Bind Path=PlaylistsCreated, Mode=OneWay}">
+            </muxc:NavigationViewItem>
+            <muxc:NavigationViewItem
+                x:Name="NavItemPlaylistsBookmarked"
+                x:Uid="NavItemPlaylistsBookmarked"
+                Icon="List"
+                SelectsOnInvoked="False"
+                MenuItemsSource="{x:Bind Path=PlaylistsBookmarked, Mode=OneWay}">
+            </muxc:NavigationViewItem>
         </muxc:NavigationView.MenuItems>
         <muxc:NavigationView.FooterMenuItems>
-            <muxc:NavigationViewItem x:Name="NavItemAccount" x:Uid="NavItemAccount" Tag="Account" Icon="Contact"/>
+            <muxc:NavigationViewItem
+                x:Name="NavItemAccount"
+                x:Uid="NavItemAccount"
+                Tag="Account"
+                Icon="Contact"/>
         </muxc:NavigationView.FooterMenuItems>
         <muxc:NavigationView.Content>
-            <Grid Width="Auto">
+            <Grid
+                Width="Auto">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="181*"/>
+                    <ColumnDefinition Width="624*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="70"/>
@@ -71,12 +124,12 @@
                     Grid.Row="0"
                     Padding="24,10,0,0"
                     CacheSize="5"
-                    Navigated="ContentFrame_Navigated"/>
+                    Navigated="ContentFrame_Navigated" Grid.ColumnSpan="2" Margin="0,0,0,70" Grid.RowSpan="2"/>
                 <local:MusicPlayer
                     x:Name="MusicPlayer"
                     Width="Auto"
                     Margin="10,0,10,0"
-                    Grid.Row="1"/>
+                    Grid.Row="1" Grid.ColumnSpan="2"/>
             </Grid>
         </muxc:NavigationView.Content>
     </muxc:NavigationView>

@@ -1,5 +1,6 @@
 ﻿using FluentNetease.Dialogs;
 using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -45,9 +46,8 @@ namespace FluentNetease.Classes
                 AppSettings.Values["CountryCode"] = null;
                 AppSettings.Values["Account"] = null;
                 AppSettings.Values["Password"] = null;
-                _ = new LoginFailedDialog().SetErrorCode(Code).ShowAsync();
             }
-            return RequestResult["code"].Value<int>();
+            return Code;
         }
 
         public static async void LogoutAsync()
@@ -72,6 +72,7 @@ namespace FluentNetease.Classes
             public event LogoutEventHandler LogoutEvent;
 
             public bool LoginFlag { get; set; }
+            public string UserID { get; set; }
             public string Nickname { get; set; }
             public string AvatarUrl { get; set; }
 
@@ -80,9 +81,10 @@ namespace FluentNetease.Classes
                 LoginFlag = false;
             }
 
-            public void SetLoginData(JObject RequestResult)
+            public async void SetLoginData(JObject RequestResult)
             {
                 LoginFlag = true;
+                UserID = RequestResult["profile"]["userId"].ToString();
                 Nickname = RequestResult["profile"]["nickname"].ToString();
                 AvatarUrl = RequestResult["profile"]["avatarUrl"].ToString();
                 LoginEvent();

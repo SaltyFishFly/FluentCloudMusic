@@ -5,12 +5,7 @@
         public string ID { get; set; }
         public string Name { get; set; }
         public string CoverPictureUrl { get; set; }
-
-        public Playlist(string ID, string Name, string CoverPictureUrl)
-        {
-            this.ID = ID;
-            this.Name = Name;
-            this.CoverPictureUrl = CoverPictureUrl;
-        }
+        public string CreatorID { get; set; }
+        public int Privacy { get; set; }
     }
 }
