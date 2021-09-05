@@ -1,19 +1,7 @@
 ﻿using FluentNetease.Classes;
 using FluentNetease.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -29,18 +17,50 @@ namespace FluentNetease.Pages
             this.InitializeComponent();
         }
 
+        private void AccountInputBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CheckInputBoxes();
+        }
+
+        private void PasswordInputBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            CheckInputBoxes();
+        }
+
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            int Code = await Account.LoginAsync(CountryCodeInputBox.Text, AccountInputBox.Text, PasswordInputBox.Password);
-            if (Code != 200)
+            try
             {
-                _ = new LoginFailedDialog().SetErrorCode(Code).ShowAsync();
+                int Code = await Account.LoginAsync("86", AccountInputBox.Text, PasswordInputBox.Password);
+            }
+            catch
+            {
+                _ = new LoginFailedDialog().ShowAsync();
             }
         }
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void CheckInputBoxes()
+        {
+            bool AccountIsEmpty = AccountInputBox.Text == string.Empty;
+            bool PasswordIsEmpty = PasswordInputBox.Password == string.Empty;
+            if (!AccountIsEmpty && !PasswordIsEmpty)
+            {
+                LoginButton.IsEnabled = true;
+            }
+            else
+            {
+                LoginButton.IsEnabled = false;
+                PasswordInputBox.IsEnabled = !AccountIsEmpty;
+                if (AccountIsEmpty)
+                {
+                    PasswordInputBox.Password = string.Empty;
+                }
+            }
         }
     }
 }

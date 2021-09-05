@@ -64,6 +64,12 @@ namespace FluentNetease.Controls
             VolumeSlider.Value = LocalVolume == null ? 100 : (double)LocalVolume;
         }
 
+        public void Dispose()
+        {
+            Timer.Stop();
+            Player.Dispose();
+        }
+
         /// <summary>
         /// 更新数据绑定
         /// Sync timeline with position.
@@ -77,7 +83,7 @@ namespace FluentNetease.Controls
 
         private async void MusicButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            
+
         }
 
         private void PlayButton_Tapped(object sender, TappedRoutedEventArgs e)

@@ -10,7 +10,7 @@
   <Identity
     Name="19757FishFly.FluentNetease"
     Publisher="CN=605C3560-FB11-4435-96A1-ABF9F0D41C29"
-    Version="0.2.0.0" />
+    Version="0.2.1.0" />
 
   <mp:PhoneIdentity PhoneProductId="4b03171e-7f36-4446-816f-0d61b6386f62" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

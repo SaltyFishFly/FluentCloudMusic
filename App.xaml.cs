@@ -73,12 +73,12 @@ namespace FluentNetease
                     if (Account.Profile.LoginFlag)
                     {
                         rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                        
+
                     }
                     else
                     {
                         rootFrame.Navigate(typeof(LoginPage), e.Arguments);
-                        
+
                     }
                 }
                 // 确保当前窗口处于活动状态

@@ -5,8 +5,9 @@
     xmlns:local="using:FluentNetease.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowMediumHighBrush}">
+    Background="{ThemeResource BackgroundAcrylicBrush}">
 
     <FlyoutPresenter
         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -35,15 +36,16 @@
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox
-                    x:Name="CountryCodeInputBox"
-                    x:Uid="CountryCodeInputBox"
+                <muxc:DropDownButton
+                    x:Name="CountryCodeSelector"
+                    x:Uid="CountryCodeSelector"
                     Grid.Column="0"
-                    Text="86"/>
+                    Content="+86"/>
                 <TextBox
                     x:Name="AccountInputBox"
                     x:Uid="AccountInputBox"
-                    Grid.Column="2"/>
+                    Grid.Column="2"
+                    TextChanged="AccountInputBox_TextChanged"/>
             </Grid>
             <PasswordBox
                 x:Name="PasswordInputBox"
@@ -51,7 +53,9 @@
                 Grid.Row="4"
                 Grid.Column="0"
                 Grid.ColumnSpan="1"
-                Width="250"/>
+                Width="250"
+                IsEnabled="False"
+                PasswordChanged="PasswordInputBox_PasswordChanged"/>
             <Grid
                 Grid.Row="6">
                 <Grid.ColumnDefinitions>
@@ -62,7 +66,8 @@
                 <Button
                     x:Name="LoginButton"
                     Grid.Column="0"
-                    Click="LoginButton_Click">
+                    Click="LoginButton_Click"
+                    IsEnabled="False">
                     <Button.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8FB;"/>
                     </Button.Content>
@@ -72,7 +77,7 @@
                     Grid.Column="2"
                     Click="HelpButton_Click">
                     <Button.Content>
-                        <SymbolIcon Symbol="Help"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;"/>
                     </Button.Content>
                 </Button>
             </Grid>

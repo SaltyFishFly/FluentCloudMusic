@@ -2,12 +2,10 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
-using Windows.Storage;
 
 namespace FluentNetease.Classes
 {
@@ -117,7 +115,7 @@ namespace FluentNetease.Classes
         }
 
         /// <summary>
-        /// 获取歌单的封面和所有歌曲
+        /// 获取歌单信息和所有歌曲
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
@@ -127,15 +125,15 @@ namespace FluentNetease.Classes
             var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, Parameters);
             if (RequestResult["code"].Value<int>() == 200)
             {
-                StringBuilder MusicIds = new StringBuilder();
+                StringBuilder MusicIdsBuilder = new StringBuilder();
                 foreach (var Item in RequestResult["playlist"]["trackIds"])
                 {
-                    MusicIds.Append(Item["id"].ToString());
-                    MusicIds.Append(",");
+                    MusicIdsBuilder.Append(Item["id"].ToString()).Append(",");
                 }
-                MusicIds.Remove(MusicIds.Length - 1, 1);
+                string MusicIds = MusicIdsBuilder.Remove(MusicIdsBuilder.Length - 1, 1).ToString();
+
                 var Result = new LinkedList<Song>();
-                var Parameters2 = new Dictionary<string, object> { { "ids", MusicIds.ToString() } };
+                var Parameters2 = new Dictionary<string, object> { { "ids", MusicIds } };
                 var RequestResult2 = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.SongDetail, Parameters2);
                 if (RequestResult2["code"].Value<int>() == 200)
                 {
@@ -157,10 +155,7 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<(bool IsSuccess, JToken AlbumInfo, LinkedList<Song> Result)> GetAlbumDetailAsync(string albumID)
         {
-            var Parameters = new Dictionary<string, object>
-                {
-                    { "id", albumID }
-                };
+            var Parameters = new Dictionary<string, object> { { "id", albumID } };
             var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.Album, Parameters);
             if (RequestResult["code"].Value<int>() == 200)
             {
@@ -181,10 +176,7 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<(bool IsSuccess, LinkedList<Playlist>)> GetUserPlaylist(string uid)
         {
-            var Parameters = new Dictionary<string, object>
-                {
-                    { "uid", uid }
-                };
+            var Parameters = new Dictionary<string, object> { { "uid", uid } };
             var RequestResult = await App.CLOUD_MUSIC_API.RequestAsync(CloudMusicApiProviders.UserPlaylist, Parameters);
             if (RequestResult["code"].Value<int>() == 200)
             {

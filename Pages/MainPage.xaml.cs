@@ -1,20 +1,15 @@
 ﻿using FluentNetease.Classes;
 using FluentNetease.Controls;
 using FluentNetease.Pages;
-using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
-using Windows.UI;
 using Windows.UI.Text;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using muxc = Microsoft.UI.Xaml.Controls;
 
@@ -48,22 +43,17 @@ namespace FluentNetease
         public MainPage()
         {
             InitializeComponent();
+            PlaylistsCreated = new ObservableCollection<muxc.NavigationViewItem>();
+            PlaylistsBookmarked = new ObservableCollection<muxc.NavigationViewItem>();
             MainNav.SelectedItem = NavItemDiscover;
             PLAYER = MusicPlayer;
             FRAME = ContentFrame;
-            GetUserProfile();
-            PlaylistsCreated = new ObservableCollection<muxc.NavigationViewItem>();
-            PlaylistsBookmarked = new ObservableCollection<muxc.NavigationViewItem>();
             GetUserPlaylists();
         }
 
-        private void GetUserProfile()
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            NavItemAccount.Content = Account.Profile.Nickname;
-            NavItemAccount.Icon = new ImageIcon()
-            {
-                Source = new BitmapImage(new Uri(Account.Profile.AvatarUrl))
-            };
+            PLAYER.Dispose();
         }
 
         /// <summary>
@@ -78,7 +68,8 @@ namespace FluentNetease
                 PlaylistsBookmarked.Clear();
                 foreach (var Item in RequestResult)
                 {
-                    var PlaylistItem = new muxc.NavigationViewItem {
+                    var PlaylistItem = new muxc.NavigationViewItem
+                    {
                         Tag = "Playlist",
                         Content = Item.Name,
                         DataContext = Item
@@ -159,7 +150,7 @@ namespace FluentNetease
                 }
                 if (NavPageType != null)
                 {
-                    //对三个特殊值做处理
+                    //因为Account按钮在FooterItems里，所以在MenuItems里找不到，需要提前判断好
                     if (NavPageType == typeof(AccountPage)) { SelectedItem = NavItemAccount; }
                     else if (NavPageType == typeof(SettingsPage)) { SelectedItem = (muxc.NavigationViewItem)MainNav.SettingsItem; }
                     //在Pages中查找相关页面
@@ -168,7 +159,8 @@ namespace FluentNetease
                 //如果前面没找到就在动态生成的按钮里找
                 else
                 {
-                    foreach (var Item in PlaylistsCreated) {
+                    foreach (var Item in PlaylistsCreated)
+                    {
                         if (Item.DataContext == e.Parameter)
                         {
                             SelectedItem = Item;

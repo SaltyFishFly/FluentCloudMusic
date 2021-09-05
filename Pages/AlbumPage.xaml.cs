@@ -41,7 +41,7 @@ namespace FluentNetease.Pages
                 }
             }
         }
-        
+
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             var PlayList = new List<Music>();

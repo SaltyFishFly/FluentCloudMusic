@@ -6,14 +6,27 @@
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
             <SolidColorBrush x:Key="AliasTextBrush" Color="Gray"/>
+            <AcrylicBrush
+                x:Key="BackgroundAcrylicBrush"
+                BackgroundSource="HostBackdrop"
+                TintColor="#FFFFFFFF"
+                TintOpacity="0.7"
+                FallbackColor="#CCF1F1F1"/>
         </ResourceDictionary>
             
         <ResourceDictionary x:Key="Dark">
             <SolidColorBrush x:Key="AliasTextBrush" Color="LightGray"/>
+            <AcrylicBrush
+                x:Key="BackgroundAcrylicBrush"
+                BackgroundSource="HostBackdrop"
+                TintColor="#FF1C1C1C"
+                TintOpacity="0.7"
+                FallbackColor="#CC303030"/>
         </ResourceDictionary>
             
         <ResourceDictionary x:Key="HighContrast">
             <SolidColorBrush x:Key="AliasTextBrush" Color="Yellow"/>
+            <SolidColorBrush x:Key="BackgroundAcrylicBrush" Color="{StaticResource SystemColorWindowColor}" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 </ResourceDictionary>

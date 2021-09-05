@@ -11,41 +11,39 @@
 
     <Page.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///Themes/Generic.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:DataType="classes:Song" x:Key="SongList">
-                <Grid
-                    Width="{Binding ElementName=ContentListView, Path=Width, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
-                        DataContext="{x:Bind Path=Music.ID}"
                         Grid.Column="0"
                         Click="MusicNameButton_Click"
+                        DataContext="{x:Bind Path=Music.ID}"
+                        ToolTipService.ToolTip="{x:Bind Path=Music.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <HyperlinkButton.Content>
                             <TextBlock>
                                 <Run
-                                    Text="{x:Bind Music.Name}"/>
+                                    Text="{x:Bind Path=Music.Name}"/>
                                 <Run
-                                    Text="{x:Bind Music.Translation}"
+                                    Text="{x:Bind Path=Music.Translation}"
                                     Foreground="{ThemeResource AliasTextBrush}"/>
                                 <Run
-                                    Text="{x:Bind Music.Alias}"
+                                    Text="{x:Bind Path=Music.Alias}"
                                     Foreground="{ThemeResource AliasTextBrush}"/>
                             </TextBlock>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
-                        DataContext="{x:Bind Path=Artists.MainArtistID}"
                         Grid.Column="2"
                         Click="ArtistNameButton_Click"
+                        DataContext="{x:Bind Path=Artists.MainArtistID}"
+                        ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtistName}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <HyperlinkButton.Content>
                             <TextBlock
@@ -53,9 +51,10 @@
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
-                        DataContext="{x:Bind Path=Album.ID}"
                         Grid.Column="4"
                         Click="AlbumNameButton_Click"
+                        DataContext="{x:Bind Path=Album.ID}"
+                        ToolTipService.ToolTip="{x:Bind Path=Album.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <HyperlinkButton.Content>
                             <TextBlock
@@ -75,7 +74,7 @@
         ItemTemplate="{StaticResource SongList}">
         <ListView.Header>
             <Grid
-                Margin="0,0,24,10">
+                Margin="12,5,24,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="230"/>
                     <ColumnDefinition Width="*"/>
@@ -94,12 +93,12 @@
                 </Border>
                 <Grid
                     Height="200"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="32"/>
                     </Grid.RowDefinitions>
                     <TextBlock
                         x:Name="TitleText"
@@ -110,7 +109,6 @@
                         FontWeight="Normal"/>
                     <ScrollViewer
                         Grid.Row="1"
-                        Margin="0,0,10,0"
                         VerticalScrollMode="Enabled">
                         <TextBlock
                             x:Name="DescriptionText"
@@ -119,8 +117,7 @@
                             TextWrapping="Wrap"/>
                     </ScrollViewer>
                     <Grid
-                        Grid.Row="2"
-                        Margin="0,0,0,-6">
+                        Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>

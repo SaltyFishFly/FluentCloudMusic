@@ -1,7 +1,5 @@
 ﻿using FluentNetease.Classes;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -25,7 +23,7 @@ namespace FluentNetease.Pages
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            
+
         }
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)

@@ -1,10 +1,6 @@
-﻿using FluentNetease.Dialogs;
-using Newtonsoft.Json.Linq;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.UI.Xaml.Controls;
 
 namespace FluentNetease.Classes
 {
