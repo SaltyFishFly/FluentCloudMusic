@@ -9,8 +9,8 @@
     xmlns:classes="using:FluentNetease.Classes"
     xmlns:pages="using:FluentNetease.Pages"
     mc:Ignorable="d"
-    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
-    
+    Background="{ThemeResource BackgroundAcrylicBrush}">
+
     <muxc:NavigationView
         x:Name="MainNav"
         x:Uid="MainNav"
@@ -104,7 +104,8 @@
                 x:Name="NavItemAccount"
                 x:Uid="NavItemAccount"
                 Tag="Account"
-                Icon="Contact"/>
+                Icon="Contact"
+                Content="{x:Bind Path=classes:Account.Profile.Nickname}"/>
         </muxc:NavigationView.FooterMenuItems>
         <muxc:NavigationView.Content>
             <Grid

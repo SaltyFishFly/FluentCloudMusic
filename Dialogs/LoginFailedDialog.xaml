@@ -13,9 +13,5 @@
     CornerRadius="8">
     <StackPanel>
         <TextBlock x:Uid="LoginErrorText" Width="300" Text="登录时发生了错误，可能是由于账号/密码不正确或网络连接问题等。请检查后再试一次。" TextWrapping="Wrap"/>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock x:Uid="ErrorCodeText" Text="错误代码："/>
-            <TextBlock x:Name="Code" Text="Unknown"/>
-        </StackPanel>
     </StackPanel>
 </ContentDialog>

@@ -64,6 +64,12 @@ namespace FluentNetease.Controls
             VolumeSlider.Value = LocalVolume == null ? 100 : (double)LocalVolume;
         }
 
+        public void Dispose()
+        {
+            Timer.Stop();
+            Player.Dispose();
+        }
+
         /// <summary>
         /// 更新数据绑定
         /// Sync timeline with position.

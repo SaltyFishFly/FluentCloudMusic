@@ -29,18 +29,50 @@ namespace FluentNetease.Pages
             this.InitializeComponent();
         }
 
+        private void AccountInputBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CheckInputBoxes();
+        }
+
+        private void PasswordInputBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            CheckInputBoxes();
+        }
+
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            int Code = await Account.LoginAsync(CountryCodeInputBox.Text, AccountInputBox.Text, PasswordInputBox.Password);
-            if (Code != 200)
+            try
             {
-                _ = new LoginFailedDialog().SetErrorCode(Code).ShowAsync();
+                int Code = await Account.LoginAsync("86", AccountInputBox.Text, PasswordInputBox.Password);
+            }
+            catch
+            {
+                _ = new LoginFailedDialog().ShowAsync();
             }
         }
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void CheckInputBoxes()
+        {
+            bool AccountIsEmpty = AccountInputBox.Text == string.Empty;
+            bool PasswordIsEmpty = PasswordInputBox.Password == string.Empty;
+            if (!AccountIsEmpty && !PasswordIsEmpty)
+            {
+                LoginButton.IsEnabled = true;
+            }
+            else
+            {
+                LoginButton.IsEnabled = false;
+                PasswordInputBox.IsEnabled = !AccountIsEmpty;
+                if (AccountIsEmpty)
+                {
+                    PasswordInputBox.Password = string.Empty;
+                }
+            }
         }
     }
 }

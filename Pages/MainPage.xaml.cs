@@ -48,22 +48,17 @@ namespace FluentNetease
         public MainPage()
         {
             InitializeComponent();
+            PlaylistsCreated = new ObservableCollection<muxc.NavigationViewItem>();
+            PlaylistsBookmarked = new ObservableCollection<muxc.NavigationViewItem>();
             MainNav.SelectedItem = NavItemDiscover;
             PLAYER = MusicPlayer;
             FRAME = ContentFrame;
-            GetUserProfile();
-            PlaylistsCreated = new ObservableCollection<muxc.NavigationViewItem>();
-            PlaylistsBookmarked = new ObservableCollection<muxc.NavigationViewItem>();
             GetUserPlaylists();
         }
 
-        private void GetUserProfile()
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            NavItemAccount.Content = Account.Profile.Nickname;
-            NavItemAccount.Icon = new ImageIcon()
-            {
-                Source = new BitmapImage(new Uri(Account.Profile.AvatarUrl))
-            };
+            PLAYER.Dispose();
         }
 
         /// <summary>
@@ -159,7 +154,7 @@ namespace FluentNetease
                 }
                 if (NavPageType != null)
                 {
-                    //对三个特殊值做处理
+                    //因为Account按钮在FooterItems里，所以在MenuItems里找不到，需要提前判断好
                     if (NavPageType == typeof(AccountPage)) { SelectedItem = NavItemAccount; }
                     else if (NavPageType == typeof(SettingsPage)) { SelectedItem = (muxc.NavigationViewItem)MainNav.SettingsItem; }
                     //在Pages中查找相关页面

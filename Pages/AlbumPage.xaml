@@ -11,9 +11,6 @@
 
     <Page.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///Themes/Generic.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
             <DataTemplate
                 x:DataType="classes:Song"
                 x:Key="SongList">
@@ -47,7 +44,7 @@
         ItemTemplate="{StaticResource SongList}">
         <ListView.Header>
             <Grid
-                Margin="0,0,24,10">
+                Margin="12,5,24,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="230"/>
                     <ColumnDefinition Width="*"/>
@@ -66,12 +63,12 @@
                 </Border>
                 <Grid
                     Height="200"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="32"/>
                     </Grid.RowDefinitions>
                     <TextBlock
                         x:Name="TitleText"

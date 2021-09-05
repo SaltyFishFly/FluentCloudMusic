@@ -10,11 +10,5 @@ namespace FluentNetease.Dialogs
         {
             this.InitializeComponent();
         }
-
-        public LoginFailedDialog SetErrorCode(int text)
-        {
-            Code.Text = text.ToString();
-            return this;
-        }
     }
 }
