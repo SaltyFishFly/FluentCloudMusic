@@ -11,14 +11,17 @@
 
     <Page.Resources>
         <ResourceDictionary>
-            <DataTemplate x:DataType="classes:Song" x:Key="SongList">
+            <DataTemplate
+                x:DataType="classes:Song"
+                x:Key="SongList">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
                         Grid.Column="0"
@@ -31,11 +34,8 @@
                                 <Run
                                     Text="{x:Bind Path=Music.Name}"/>
                                 <Run
-                                    Text="{x:Bind Path=Music.Translation}"
-                                    Foreground="{ThemeResource AliasTextBrush}"/>
-                                <Run
-                                    Text="{x:Bind Path=Music.Alias}"
-                                    Foreground="{ThemeResource AliasTextBrush}"/>
+                                    Text="{x:Bind Path=Music.Description}"
+                                    Foreground="{ThemeResource DescriptionTextBrush}"/>
                             </TextBlock>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
@@ -75,6 +75,7 @@
         <ListView.Footer>
             <Grid
                 Height="60"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="16"/>
@@ -88,14 +89,17 @@
                     Grid.Column="1"
                     Click="PreviousPageButton_Click">
                     <Button.Content>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE760;" />
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            Glyph="&#xf743;"
+                            FontSize="16"/>
                     </Button.Content>
                 </Button>
                 <TextBlock 
                     Grid.Column="2"
                     x:Name="PageText"
-                    Margin="0,0,15,5"
-                    FontSize="18"
+                    Margin="0,0,0,5"
+                    FontSize="16"
                     VerticalAlignment="Center"/>
                 <Button
                     x:Name="NextPageButton"
@@ -104,7 +108,8 @@
                     <Button.Content>
                         <FontIcon
                             FontFamily="Segoe MDL2 Assets"
-                            Glyph="&#xE761;" />
+                            Glyph="&#xf745;"
+                            FontSize="16"/>
                     </Button.Content>
                 </Button>
             </Grid>

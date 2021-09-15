@@ -34,9 +34,11 @@
             VerticalAlignment="Center"
             Background="Transparent"
             BorderThickness="0"
-            Tapped="MusicButton_Tapped"
-            ToolTipService.ToolTip="歌曲页面">
-            <SymbolIcon x:Name="MusicButton_Icon" Symbol="MusicInfo"/>
+            CornerRadius="8"
+            Tapped="MusicButton_Tapped">
+            <SymbolIcon
+                x:Name="MusicButton_Icon"
+                Symbol="MusicInfo"/>
         </Button>
         <Button
             x:Name="PlayButton"
@@ -47,8 +49,11 @@
             VerticalAlignment="Center"
             Background="Transparent"
             BorderThickness="0"
+            CornerRadius="8"
             Tapped="PlayButton_Tapped">
-            <SymbolIcon x:Name="PlayButton_Icon" Symbol="Play"/>
+            <SymbolIcon
+                x:Name="PlayButton_Icon"
+                Symbol="Play"/>
         </Button>
         <Slider
             x:Name="Timeline"
@@ -78,8 +83,11 @@
             Background="Transparent"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            BorderThickness="0">
-            <SymbolIcon x:Name="VolumeButton_Icon" Symbol="Volume"/>
+            BorderThickness="0"
+            CornerRadius="8">
+            <SymbolIcon
+                x:Name="VolumeButton_Icon"
+                Symbol="Volume"/>
             <Button.Flyout>
                 <Flyout>
                     <StackPanel Orientation="Horizontal">

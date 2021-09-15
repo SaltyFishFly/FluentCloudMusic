@@ -16,7 +16,7 @@ namespace FluentNetease.Controls
     public sealed partial class MusicPlayer : UserControl
     {
         public MediaPlayer Player { get; set; }
-        public List<Music> PlayItemList { get; set; }
+        public List<AbstractMusic> PlayItemList { get; set; }
         public int CurrentPlayIndex { get; set; }
         public int CurrentPosition { get; set; }
         public PlayModeEnum PlayMode { get; set; }
@@ -38,9 +38,9 @@ namespace FluentNetease.Controls
         private void InitalizePlayer()
         {
             //初始化播放器
-            PlayItemList = new List<Music>();
+            PlayItemList = new List<AbstractMusic>();
 
-            PlayMode = PlayModeEnum.Sequence;
+            PlayMode = PlayModeEnum.Loop;
             Player = new MediaPlayer
             {
                 AudioCategory = MediaPlayerAudioCategory.Media,
@@ -140,7 +140,7 @@ namespace FluentNetease.Controls
                     PlayNext();
                     break;
                 case PlayModeEnum.Loop:
-                    Play(CurrentPlayIndex);
+                    RePlay();
                     break;
             }
         }
@@ -167,13 +167,13 @@ namespace FluentNetease.Controls
             }
         }
 
-        public void Play(Music music)
+        public void Play(AbstractMusic music)
         {
-            PlayItemList = new List<Music> { music };
+            PlayItemList = new List<AbstractMusic> { music };
             Play(0);
         }
 
-        public void Play(List<Music> musicList)
+        public void Play(List<AbstractMusic> musicList)
         {
             PlayItemList = musicList;
             Play(0);
@@ -193,6 +193,11 @@ namespace FluentNetease.Controls
             {
                 Play(++CurrentPlayIndex);
             }
+        }
+
+        private void RePlay()
+        {
+            Play(CurrentPlayIndex);
         }
     }
 }

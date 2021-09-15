@@ -14,24 +14,23 @@
             <DataTemplate
                 x:DataType="classes:Song"
                 x:Key="SongList">
-                <HyperlinkButton
-                    DataContext="{x:Bind Path=Music.ID}"
-                    Grid.Column="0"
-                    Click="MusicNameButton_Click"
-                    Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
-                    <HyperlinkButton.Content>
-                        <TextBlock>
+                <Grid>
+                    <HyperlinkButton
+                        DataContext="{x:Bind Path=Music.ID}"
+                        Grid.Column="0"
+                        Click="MusicNameButton_Click"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        <HyperlinkButton.Content>
+                            <TextBlock>
                             <Run
                                 Text="{x:Bind Music.Name}"/>
                             <Run
-                                Text="{x:Bind Music.Translation}"
-                                Foreground="{ThemeResource AliasTextBrush}"/>
-                            <Run
-                                Text="{x:Bind Music.Alias}"
-                                Foreground="{ThemeResource AliasTextBrush}"/>
-                        </TextBlock>
-                    </HyperlinkButton.Content>
-                </HyperlinkButton>
+                                Text="{x:Bind Music.Description}"
+                                Foreground="{ThemeResource DescriptionTextBrush}"/>
+                            </TextBlock>
+                        </HyperlinkButton.Content>
+                    </HyperlinkButton>
+                </Grid>
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>
@@ -62,8 +61,8 @@
                     </Border.Background>
                 </Border>
                 <Grid
-                    Height="200"
-                    Margin="10,0,0,0"
+                    Height="210"
+                    Margin="10,-10,0,0"
                     Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -84,7 +83,8 @@
                             x:Name="DescriptionText"
                             Grid.Row="1"
                             Margin="0,2,10,0"
-                            TextWrapping="Wrap"/>
+                            TextWrapping="Wrap"
+                            Foreground="{ThemeResource DescriptionTextBrush}"/>
                     </ScrollViewer>
                     <Grid
                         Grid.Row="2">
@@ -93,8 +93,11 @@
                         </Grid.ColumnDefinitions>
                         <Button
                             x:Name="PlayButton"
+                            Height="30"
+                            VerticalAlignment="Bottom"
                             Click="PlayButton_Click">
-                            <SymbolIcon Symbol="Play"/>
+                            <SymbolIcon
+                                Symbol="Play"/>
                         </Button>
                     </Grid>
                 </Grid>

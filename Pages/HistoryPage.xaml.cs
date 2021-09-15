@@ -28,7 +28,7 @@ namespace FluentNetease.Pages
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER.Play(new Music { ID = (string)((FrameworkElement)sender).DataContext });
+            MainPage.PLAYER.Play(new NeteaseMusic { ID = (string)((FrameworkElement)sender).DataContext });
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)

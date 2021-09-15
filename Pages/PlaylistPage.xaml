@@ -11,7 +11,9 @@
 
     <Page.Resources>
         <ResourceDictionary>
-            <DataTemplate x:DataType="classes:Song" x:Key="SongList">
+            <DataTemplate
+                x:DataType="classes:Song"
+                x:Key="SongList">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"/>
@@ -19,6 +21,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
                         Grid.Column="0"
@@ -31,11 +34,8 @@
                                 <Run
                                     Text="{x:Bind Path=Music.Name}"/>
                                 <Run
-                                    Text="{x:Bind Path=Music.Translation}"
-                                    Foreground="{ThemeResource AliasTextBrush}"/>
-                                <Run
-                                    Text="{x:Bind Path=Music.Alias}"
-                                    Foreground="{ThemeResource AliasTextBrush}"/>
+                                    Text="{x:Bind Path=Music.Description}"
+                                    Foreground="{ThemeResource DescriptionTextBrush}"/>
                             </TextBlock>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
@@ -92,13 +92,13 @@
                     </Border.Background>
                 </Border>
                 <Grid
-                    Height="200"
-                    Margin="10,0,0,0"
+                    Height="210"
+                    Margin="10,-10,0,0"
                     Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="35"/>
                     </Grid.RowDefinitions>
                     <TextBlock
                         x:Name="TitleText"
@@ -114,7 +114,8 @@
                             x:Name="DescriptionText"
                             Grid.Row="1"
                             Margin="0,2,10,0"
-                            TextWrapping="Wrap"/>
+                            TextWrapping="Wrap"
+                            Foreground="{ThemeResource DescriptionTextBrush}"/>
                     </ScrollViewer>
                     <Grid
                         Grid.Row="2">
@@ -123,8 +124,11 @@
                         </Grid.ColumnDefinitions>
                         <Button
                             x:Name="PlayButton"
+                            Height="30"
+                            VerticalAlignment="Bottom"
                             Click="PlayButton_Click">
-                            <SymbolIcon Symbol="Play"/>
+                            <SymbolIcon
+                                Symbol="Play"/>
                         </Button>
                     </Grid>
                 </Grid>

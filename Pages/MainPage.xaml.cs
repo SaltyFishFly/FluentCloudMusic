@@ -169,12 +169,7 @@ namespace FluentNetease
                     }
                 }
                 MainNav.SelectedItem = SelectedItem;
-                MainNav.Header = new TextBlock
-                {
-                    Margin = new Thickness { Left = -20 },
-                    Text = ResourceLoader.GetForCurrentView().GetString(e.SourcePageType.Name + "Header"),
-                    FontWeight = FontWeights.Normal
-                };
+                HeaderText.Text = ResourceLoader.GetForCurrentView().GetString(e.SourcePageType.Name + "Header");
             }
         }
 

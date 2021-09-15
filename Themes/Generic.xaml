@@ -2,10 +2,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:FluentNetease">
-    
+
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
-            <SolidColorBrush x:Key="AliasTextBrush" Color="Gray"/>
+            <SolidColorBrush x:Key="DescriptionTextBrush" Color="Gray"/>
             <AcrylicBrush
                 x:Key="BackgroundAcrylicBrush"
                 BackgroundSource="HostBackdrop"
@@ -13,20 +13,22 @@
                 TintOpacity="0.7"
                 FallbackColor="#CCF1F1F1"/>
         </ResourceDictionary>
-            
+
         <ResourceDictionary x:Key="Dark">
-            <SolidColorBrush x:Key="AliasTextBrush" Color="LightGray"/>
+            <SolidColorBrush x:Key="DescriptionTextBrush" Color="LightGray"/>
             <AcrylicBrush
                 x:Key="BackgroundAcrylicBrush"
                 BackgroundSource="HostBackdrop"
                 TintColor="#FF1C1C1C"
-                TintOpacity="0.7"
+                TintOpacity="0.8"
+                TintLuminosityOpacity="0.9"
                 FallbackColor="#CC303030"/>
         </ResourceDictionary>
-            
+
         <ResourceDictionary x:Key="HighContrast">
-            <SolidColorBrush x:Key="AliasTextBrush" Color="Yellow"/>
+            <SolidColorBrush x:Key="DescriptionTextBrush" Color="Yellow"/>
             <SolidColorBrush x:Key="BackgroundAcrylicBrush" Color="{StaticResource SystemColorWindowColor}" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
+    
 </ResourceDictionary>

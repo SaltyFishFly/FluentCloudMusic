@@ -6,38 +6,33 @@ namespace FluentNetease.Classes
     {
         public string Keywords { get; }
         public SearchType Type { get; }
-        public int Limit { get; }
-        public int Offset { get; }
-        public int Page { get; }
+        public SearchSection Section { get; }
 
-        public SearchRequest(string keywords, SearchType type = SearchType.Music, int limit = 30, int offset = 0)
+        public SearchRequest(string keywords, SearchType type = SearchType.Music, int limit = 50, int offset = 0)
         {
             Keywords = keywords;
             Type = type;
-            Limit = limit;
-            Offset = offset;
-            Page = (Offset / Limit) + 1;
+            Section = new SearchSection(limit, offset);
         }
 
         public Dictionary<string, object> ToDictionary()
         {
-            return new Dictionary<string, object>
-            {
-                { "keywords", Keywords },
-                { "type", Type },
-                { "limit", Limit },
-                { "offset", Offset }
-            };
+            var Dic = Section.ToDictionary();
+            Dic.Add("keywords", Keywords);
+            Dic.Add("type", Type);
+            return Dic;
         }
 
         public SearchRequest PrevPage()
         {
-            return new SearchRequest(Keywords, Type, Limit, Offset - Limit);
+            Section.PrevPage();
+            return this;
         }
 
         public SearchRequest NextPage()
         {
-            return new SearchRequest(Keywords, Type, Limit, Offset + Limit);
+            Section.NextPage();
+            return this;
         }
 
         public enum SearchType

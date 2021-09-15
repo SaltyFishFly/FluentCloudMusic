@@ -4,37 +4,70 @@ namespace FluentNetease.Classes
 {
     public class Song
     {
-        public Music Music { get; set; }
+        public AbstractMusic Music { get; set; }
         public Album Album { get; set; }
         public Artists Artists { get; set; }
 
-        public Song(JToken jsonSongObject)
+        private Song() { }
+
+        public static Song ParseOfficialMusic(JToken json)
         {
-            Music = new Music()
+            Song result = new Song();
+
+            result.Music = new NeteaseMusic()
             {
-                ID = jsonSongObject["id"].ToString(),
-                Name = jsonSongObject["name"].ToString(),
+                ID = json["id"].ToString(),
+                Name = json["name"].ToString(),
             };
-            if (jsonSongObject["tns"] != null && jsonSongObject["tns"].HasValues)
+            result.Album = new Album()
             {
-                Music.Translation = "( " + jsonSongObject["tns"].First.ToString() + " )";
-            }
-            if (jsonSongObject["alia"] != null && jsonSongObject["alia"].HasValues)
+                ID = json["al"]["id"].ToString(),
+                Name = json["al"]["name"].ToString()
+            };
+            result.Artists = new Artists();
+            foreach (var Item in json["ar"])
             {
-                Music.Alias = "( " + jsonSongObject["alia"].First.ToString() + " )";
+                result.Artists.AddArtist(Item["id"].ToString(), Item["name"].ToString());
             }
 
-            Album = new Album()
+            bool hasTrans = json["tns"] != null && json["tns"].HasValues;
+            bool hasAlias = json["alia"] != null && json["alia"].HasValues;
+            if (hasTrans && hasAlias)
             {
-                ID = jsonSongObject["al"]["id"].ToString(),
-                Name = jsonSongObject["al"]["name"].ToString()
+                result.Music.Description = "( " + json["tns"].First.ToString() + " | " + json["alia"].First.ToString() + " )";
+            }
+            else if (hasTrans)
+            {
+                result.Music.Description = "( " + json["tns"].First.ToString() + " )";
+            }
+            else if (hasAlias)
+            {
+                result.Music.Description = "( " + json["alia"].First.ToString() + " )";
+            }
+
+            return result;
+        }
+
+        public static Song ParseUserMusic(JToken json)
+        {
+            Song result = new Song();
+
+            result.Music = new NeteaseMusic()
+            {
+                ID = json["songId"].ToString(),
+                Name = json["songName"].ToString(),
+                Description = "( " + json["fileName"].ToString() + " )"
+            };
+            result.Album = new Album()
+            {
+                Name = json["album"].ToString()
+            };
+            result.Artists = new Artists()
+            {
+                MainArtistName = json["artist"].ToString()
             };
 
-            Artists = new Artists();
-            foreach (var Item in jsonSongObject["ar"])
-            {
-                Artists.AddArtist(Item["id"].ToString(), Item["name"].ToString());
-            }
+            return result;
         }
     }
 }

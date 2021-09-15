@@ -144,10 +144,12 @@
     <Compile Include="Classes\Account.cs" />
     <Compile Include="Classes\Album.cs" />
     <Compile Include="Classes\Artists.cs" />
-    <Compile Include="Classes\Music.cs" />
+    <Compile Include="Classes\AbstractMusic.cs" />
+    <Compile Include="Classes\NeteaseMusic.cs" />
     <Compile Include="Classes\Network.cs" />
     <Compile Include="Classes\Playlist.cs" />
     <Compile Include="Classes\SearchRequest.cs" />
+    <Compile Include="Classes\SearchSection.cs" />
     <Compile Include="Classes\Song.cs" />
     <Compile Include="Controls\DoubleToStringConverter.cs" />
     <Compile Include="Controls\TimeSpanToStringConverter.cs" />

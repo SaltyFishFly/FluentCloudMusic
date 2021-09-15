@@ -5,10 +5,104 @@
     xmlns:local="using:FluentNetease.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:classes="using:FluentNetease.Classes"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <Grid>
+    <Page.Resources>
+        <ResourceDictionary>
+            <DataTemplate
+                x:DataType="classes:Song"
+                x:Key="SongList">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <HyperlinkButton
+                        Grid.Column="0"
+                        Click="MusicNameButton_Click"
+                        DataContext="{x:Bind Path=Music.ID}"
+                        ToolTipService.ToolTip="{x:Bind Path=Music.Name}"
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        <HyperlinkButton.Content>
+                            <TextBlock>
+                                <Run
+                                    Text="{x:Bind Path=Music.Name}"/>
+                                <Run
+                                    Text="{x:Bind Path=Music.Description}"
+                                    Foreground="{ThemeResource DescriptionTextBrush}"/>
+                            </TextBlock>
+                        </HyperlinkButton.Content>
+                    </HyperlinkButton>
+                    <TextBlock
+                        Grid.Column="2"
+                        Text="{x:Bind Path=Artists.MainArtistName}"
+                        ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtistName}"
+                        VerticalAlignment="Center">
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Column="4"
+                        Text="{x:Bind Path=Album.Name}"
+                        ToolTipService.ToolTip="{x:Bind Path=Album.Name}"
+                        VerticalAlignment="Center">
+                    </TextBlock>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Page.Resources>
 
-    </Grid>
+    <ListView
+        x:Name="ContentListView"
+        SelectionMode="None"
+        IsItemClickEnabled="True"
+        ItemsSource="{x:Bind Path=ContentCollection}"
+        ItemTemplate="{StaticResource SongList}">
+        <ListView.Footer>
+            <Grid
+                Height="60"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button
+                    x:Name="PreviousPageButton"
+                    Grid.Column="1"
+                    Click="PreviousPageButton_Click">
+                    <Button.Content>
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            Glyph="&#xf743;"
+                            FontSize="16"/>
+                    </Button.Content>
+                </Button>
+                <TextBlock 
+                    Grid.Column="2"
+                    x:Name="PageText"
+                    Margin="0,0,0,5"
+                    FontSize="16"
+                    VerticalAlignment="Center"/>
+                <Button
+                    x:Name="NextPageButton"
+                    Grid.Column="3"
+                    Click="NextPageButton_Click">
+                    <Button.Content>
+                        <FontIcon
+                            FontFamily="Segoe MDL2 Assets"
+                            Glyph="&#xf745;"
+                            FontSize="16"/>
+                    </Button.Content>
+                </Button>
+            </Grid>
+        </ListView.Footer>
+    </ListView>
 </Page>

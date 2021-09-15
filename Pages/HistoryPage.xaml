@@ -34,11 +34,8 @@
                                 <Run
                                     Text="{x:Bind Music.Name}"/>
                                 <Run
-                                    Text="{x:Bind Music.Translation}"
-                                    Foreground="{ThemeResource AliasTextBrush}"/>
-                                <Run
-                                    Text="{x:Bind Music.Alias}"
-                                    Foreground="{ThemeResource AliasTextBrush}"/>
+                                    Text="{x:Bind Music.Description}"
+                                    Foreground="{ThemeResource DescriptionTextBrush}"/>
                             </TextBlock>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
