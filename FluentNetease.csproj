@@ -128,16 +128,17 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="API\CloudMusicApi.cs" />
-    <Compile Include="API\CloudMusicApiProvider.cs" />
-    <Compile Include="API\CloudMusicApiProviders.cs" />
-    <Compile Include="API\Extensions.cs" />
-    <Compile Include="API\System\Extensions\ExceptionExtensions.cs" />
-    <Compile Include="API\Utils\Crypto.cs" />
-    <Compile Include="API\Utils\Extensions.cs" />
-    <Compile Include="API\Utils\Options.cs" />
-    <Compile Include="API\Utils\QuickHttp.cs" />
-    <Compile Include="API\Utils\Request.cs" />
+    <Compile Include="Converters\InverseBoolConverter.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\CloudMusicApi.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\CloudMusicApiProvider.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\CloudMusicApiProviders.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Extensions.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\System\Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\Crypto.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\Extensions.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\Options.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\QuickHttp.cs" />
+    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\Request.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -151,9 +152,9 @@
     <Compile Include="Classes\SearchRequest.cs" />
     <Compile Include="Classes\SearchSection.cs" />
     <Compile Include="Classes\Song.cs" />
-    <Compile Include="Controls\DoubleToStringConverter.cs" />
-    <Compile Include="Controls\TimeSpanToStringConverter.cs" />
-    <Compile Include="Controls\TimeSpanToDoubleConverter.cs" />
+    <Compile Include="Converters\DoubleToStringConverter.cs" />
+    <Compile Include="Converters\TimeSpanToStringConverter.cs" />
+    <Compile Include="Converters\TimeSpanToDoubleConverter.cs" />
     <Compile Include="Controls\MusicPlayer.xaml.cs">
       <DependentUpon>MusicPlayer.xaml</DependentUpon>
     </Compile>
@@ -353,6 +354,7 @@
     <None Include="FluentNetease_TemporaryKey.pfx" />
     <None Include="Todolist.md" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -62,27 +62,29 @@ namespace FluentNetease.Classes
         public class UserProfile
         {
             public delegate void LoginEventHandler();
-            public event LoginEventHandler LoginEvent;
-
             public delegate void LogoutEventHandler();
+
+            public event LoginEventHandler LoginEvent;
             public event LogoutEventHandler LogoutEvent;
 
-            public bool LoginFlag { get; set; }
-            public string UserID { get; set; }
-            public string Nickname { get; set; }
-            public string AvatarUrl { get; set; }
+            public bool LoginFlag { get; private set; }
+            public string UserID { get; private set; }
+            public string Nickname { get; private set; }
+            public string AvatarUrl { get; private set; }
+            public bool HasVip { get; private set; }
 
             public UserProfile()
             {
                 LoginFlag = false;
             }
 
-            public async void SetLoginData(JObject RequestResult)
+            public void SetLoginData(JObject RequestResult)
             {
                 LoginFlag = true;
                 UserID = RequestResult["profile"]["userId"].ToString();
                 Nickname = RequestResult["profile"]["nickname"].ToString();
                 AvatarUrl = RequestResult["profile"]["avatarUrl"].ToString();
+                HasVip = RequestResult["profile"]["vipType"].Value<int>() != 0;
                 LoginEvent();
             }
 

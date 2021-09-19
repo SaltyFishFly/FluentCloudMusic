@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 
-namespace FluentNetease.Controls
+namespace FluentNetease.Converters
 {
     public class DoubleToStringConverter : IValueConverter
     {

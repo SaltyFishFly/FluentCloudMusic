@@ -1,19 +1,18 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 
-namespace FluentNetease.Controls
+namespace FluentNetease.Converters
 {
-    public class TimeSpanToStringConverter : IValueConverter
+    public class TimeSpanToDoubleConverter : IValueConverter
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
         {
-            int Seconds = (int)((TimeSpan)value).TotalSeconds;
-            return (Seconds / 60) + " : " + (Seconds % 60);
+            return ((TimeSpan)value).TotalSeconds;
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            throw new NotImplementedException();
+            return TimeSpan.FromSeconds((double)value);
         }
     }
 }

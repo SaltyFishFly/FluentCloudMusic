@@ -4,9 +4,10 @@ namespace FluentNetease.Classes
 {
     public class Song
     {
-        public AbstractMusic Music { get; set; }
-        public Album Album { get; set; }
-        public Artists Artists { get; set; }
+        public AbstractMusic Music { get; private set; }
+        public Album Album { get; private set; }
+        public Artists Artists { get; private set; }
+        public bool HasCopyright { get; private set; }
 
         private Song() { }
 
@@ -29,6 +30,7 @@ namespace FluentNetease.Classes
             {
                 result.Artists.AddArtist(Item["id"].ToString(), Item["name"].ToString());
             }
+            result.HasCopyright = !json["noCopyrightRcmd"].HasValues;
 
             bool hasTrans = json["tns"] != null && json["tns"].HasValues;
             bool hasAlias = json["alia"] != null && json["alia"].HasValues;

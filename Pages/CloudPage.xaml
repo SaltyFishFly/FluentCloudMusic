@@ -14,14 +14,15 @@
             <DataTemplate
                 x:DataType="classes:Song"
                 x:Key="SongList">
-                <Grid>
+                <Grid
+                    x:DefaultBindMode="OneTime">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
                         Grid.Column="0"
@@ -58,8 +59,7 @@
 
     <ListView
         x:Name="ContentListView"
-        SelectionMode="None"
-        IsItemClickEnabled="True"
+        SelectionMode="Single"
         ItemsSource="{x:Bind Path=ContentCollection}"
         ItemTemplate="{StaticResource SongList}">
         <ListView.Footer>

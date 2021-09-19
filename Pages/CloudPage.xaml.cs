@@ -29,7 +29,7 @@ namespace FluentNetease.Pages
             if (Result.IsSuccess)
             {
                 ContentCollection.Clear();
-                foreach(var Item in Result.SongList)
+                foreach (var Item in Result.SongList)
                 {
                     ContentCollection.Add(Item);
                 }

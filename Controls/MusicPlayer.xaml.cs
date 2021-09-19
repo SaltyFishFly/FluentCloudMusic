@@ -81,7 +81,7 @@ namespace FluentNetease.Controls
             Bindings.Update();
         }
 
-        private async void MusicButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private void MusicButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
 
         }

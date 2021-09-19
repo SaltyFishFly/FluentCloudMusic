@@ -18,7 +18,7 @@
         IsBackEnabled="{x:Bind Path=ContentFrame.CanGoBack, Mode=OneWay}"
         PaneTitle="FluentNetease"
         PaneDisplayMode="Auto"
-        OpenPaneLength="250"
+        OpenPaneLength="280"
         ExpandedModeThresholdWidth="1000"
         SelectionChanged="MainNav_SelectionChanged"
         BackRequested="MainNav_BackRequested">

@@ -14,21 +14,23 @@
             <DataTemplate
                 x:DataType="classes:Song"
                 x:Key="SongList">
-                <Grid>
+                <Grid
+                    x:DefaultBindMode="OneTime">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
                         Grid.Column="0"
                         Click="MusicNameButton_Click"
                         DataContext="{x:Bind Path=Music.ID}"
                         ToolTipService.ToolTip="{x:Bind Path=Music.Name}"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
+                        IsEnabled="{x:Bind Path=HasCopyright}">
                         <HyperlinkButton.Content>
                             <TextBlock>
                                 <Run
@@ -68,8 +70,7 @@
 
     <ListView
         x:Name="ContentListView"
-        SelectionMode="None"
-        IsItemClickEnabled="True"
+        SelectionMode="Single"
         ItemsSource="{x:Bind Path=ContentCollection}"
         ItemTemplate="{StaticResource SongList}">
         <ListView.Footer>

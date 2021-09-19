@@ -6,8 +6,6 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Text;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;

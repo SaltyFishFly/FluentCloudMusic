@@ -14,12 +14,18 @@
             <DataTemplate
                 x:DataType="classes:Song"
                 x:Key="SongList">
-                <Grid>
+                <Grid
+                    x:DefaultBindMode="OneTime">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
                     <HyperlinkButton
                         DataContext="{x:Bind Path=Music.ID}"
                         Grid.Column="0"
                         Click="MusicNameButton_Click"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
+                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
+                        IsEnabled="{x:Bind Path=HasCopyright}">
                         <HyperlinkButton.Content>
                             <TextBlock>
                             <Run
@@ -37,7 +43,7 @@
 
     <ListView
         x:Name="ContentListView"
-        SelectionMode="None"
+        SelectionMode="Single"
         IsItemClickEnabled="True"
         ItemsSource="{x:Bind Path=ContentCollection}"
         ItemTemplate="{StaticResource SongList}">
