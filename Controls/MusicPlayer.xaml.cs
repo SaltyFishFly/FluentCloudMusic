@@ -23,7 +23,7 @@ namespace FluentNetease.Controls
         public DispatcherTimer Timer { get; set; }
         public enum PlayModeEnum
         {
-            Sequence, Loop, Random
+            RepeatAll, RepeatOne, Shuffle
         }
         public MusicPlayer()
         {
@@ -40,7 +40,7 @@ namespace FluentNetease.Controls
             //初始化播放器
             PlayItemList = new List<AbstractMusic>();
 
-            PlayMode = PlayModeEnum.Loop;
+            PlayMode = PlayModeEnum.RepeatOne;
             Player = new MediaPlayer
             {
                 AudioCategory = MediaPlayerAudioCategory.Media,
@@ -54,7 +54,7 @@ namespace FluentNetease.Controls
             //初始化计时器
             Timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(1),
+                Interval = TimeSpan.FromSeconds(0.1),
             };
             Timer.Tick += Timer_Tick;
             Timer.Start();
@@ -62,12 +62,6 @@ namespace FluentNetease.Controls
             //从设置中读取音量
             object LocalVolume = ApplicationData.Current.LocalSettings.Values["Volume"];
             VolumeSlider.Value = LocalVolume == null ? 100 : (double)LocalVolume;
-        }
-
-        public void Dispose()
-        {
-            Timer.Stop();
-            Player.Dispose();
         }
 
         /// <summary>
@@ -106,43 +100,34 @@ namespace FluentNetease.Controls
 
         private void Player_PlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
         {
-            switch (sender.PlaybackState)
+            bool EnableFlag = sender.PlaybackState switch
             {
-                case MediaPlaybackState.Playing:
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                      {
-                          PlayButton.IsEnabled = true;
-                          PlayButton_Icon.Symbol = Symbol.Pause;
-                      });
-                    break;
-                case MediaPlaybackState.Paused:
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                      {
-                          PlayButton.IsEnabled = true;
-                          PlayButton_Icon.Symbol = Symbol.Play;
-                      });
-                    break;
-                default:
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                    {
-                        PlayButton.IsEnabled = false;
-                        PlayButton_Icon.Symbol = Symbol.Download;
-                    });
-                    break;
-            }
+                MediaPlaybackState.Playing => true,
+                MediaPlaybackState.Paused => true,
+                _ => false
+            };
+            Symbol IconSymbol = sender.PlaybackState switch
+            {
+                MediaPlaybackState.Playing => Symbol.Pause,
+                MediaPlaybackState.Paused => Symbol.Play,
+                _ => Symbol.Download
+            };
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                PlayButton.IsEnabled = EnableFlag;
+                PlayButton_Icon.Symbol = IconSymbol;
+            });
         }
 
-        private void Player_MediaEnded(MediaPlayer sender, object args)
+        private void PlayModeButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            switch (PlayMode)
+            PlayMode = PlayMode switch
             {
-                case PlayModeEnum.Sequence:
-                    PlayNext();
-                    break;
-                case PlayModeEnum.Loop:
-                    RePlay();
-                    break;
-            }
+                PlayModeEnum.RepeatAll => PlayModeEnum.RepeatOne,
+                PlayModeEnum.RepeatOne => PlayModeEnum.Shuffle,
+                PlayModeEnum.Shuffle => PlayModeEnum.RepeatAll,
+                _ => throw new NotImplementedException()
+            };
         }
 
         /// <summary>
@@ -155,6 +140,19 @@ namespace FluentNetease.Controls
         {
             Player.Volume = e.NewValue / 100;
             ApplicationData.Current.LocalSettings.Values["Volume"] = e.NewValue;
+        }
+
+        private void Player_MediaEnded(MediaPlayer sender, object args)
+        {
+            switch (PlayMode)
+            {
+                case PlayModeEnum.RepeatAll:
+                    PlayNext();
+                    break;
+                case PlayModeEnum.RepeatOne:
+                    RePlay();
+                    break;
+            }
         }
 
         private async void Play(int index)
@@ -198,6 +196,12 @@ namespace FluentNetease.Controls
         private void RePlay()
         {
             Play(CurrentPlayIndex);
+        }
+
+        public void Dispose()
+        {
+            Timer.Stop();
+            Player.Dispose();
         }
     }
 }
