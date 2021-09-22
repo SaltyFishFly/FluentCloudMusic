@@ -1,4 +1,5 @@
 ﻿using FluentNetease.Classes;
+using FluentNetease.Converters;
 using System;
 using System.Collections.Generic;
 using Windows.Media.Playback;
@@ -16,14 +17,16 @@ namespace FluentNetease.Controls
     public sealed partial class MusicPlayer : UserControl
     {
         public MediaPlayer Player { get; set; }
-        public List<AbstractMusic> PlayItemList { get; set; }
+        public List<AbstractMusic> PlaybackItemList { get; set; } = new List<AbstractMusic>();
+        public List<AbstractMusic> ShuffledPlaybackItemList { get; set; } = new List<AbstractMusic>();
         public int CurrentPlayIndex { get; set; }
         public int CurrentPosition { get; set; }
         public PlayModeEnum PlayMode { get; set; }
-        public DispatcherTimer Timer { get; set; }
+        private PlayModeToSymbolConverter PlayModeToSymbolConverter { get; set; } = new PlayModeToSymbolConverter();
+        private DispatcherTimer Timer { get; set; }
         public enum PlayModeEnum
         {
-            Sequence, Loop, Random
+            RepeatAll, RepeatOne, Shuffle
         }
         public MusicPlayer()
         {
@@ -31,16 +34,9 @@ namespace FluentNetease.Controls
             InitalizePlayer();
         }
 
-        /// <summary>
-        /// 初始化内容
-        /// Initalize Player.
-        /// </summary>
         private void InitalizePlayer()
         {
-            //初始化播放器
-            PlayItemList = new List<AbstractMusic>();
-
-            PlayMode = PlayModeEnum.Loop;
+            PlayMode = PlayModeEnum.RepeatOne;
             Player = new MediaPlayer
             {
                 AudioCategory = MediaPlayerAudioCategory.Media,
@@ -54,28 +50,19 @@ namespace FluentNetease.Controls
             //初始化计时器
             Timer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(1),
+                Interval = TimeSpan.FromSeconds(1)
             };
             Timer.Tick += Timer_Tick;
             Timer.Start();
 
-            //从设置中读取音量
+            //读取设置
             object LocalVolume = ApplicationData.Current.LocalSettings.Values["Volume"];
             VolumeSlider.Value = LocalVolume == null ? 100 : (double)LocalVolume;
+            object LocalPlayMode = ApplicationData.Current.LocalSettings.Values["PlayMode"];
+            PlayMode = LocalPlayMode == null ? PlayModeEnum.RepeatAll : (PlayModeEnum)(int)LocalPlayMode;
+            PlayModeButton_Icon.Symbol = (Symbol)PlayModeToSymbolConverter.Convert(PlayMode, null, null, null);
         }
 
-        public void Dispose()
-        {
-            Timer.Stop();
-            Player.Dispose();
-        }
-
-        /// <summary>
-        /// 更新数据绑定
-        /// Sync timeline with position.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Timer_Tick(object sender, object e)
         {
             Bindings.Update();
@@ -106,76 +93,83 @@ namespace FluentNetease.Controls
 
         private void Player_PlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
         {
-            switch (sender.PlaybackState)
+            bool EnableFlag = sender.PlaybackState switch
             {
-                case MediaPlaybackState.Playing:
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                      {
-                          PlayButton.IsEnabled = true;
-                          PlayButton_Icon.Symbol = Symbol.Pause;
-                      });
-                    break;
-                case MediaPlaybackState.Paused:
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                      {
-                          PlayButton.IsEnabled = true;
-                          PlayButton_Icon.Symbol = Symbol.Play;
-                      });
-                    break;
-                default:
-                    _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                    {
-                        PlayButton.IsEnabled = false;
-                        PlayButton_Icon.Symbol = Symbol.Download;
-                    });
-                    break;
-            }
+                MediaPlaybackState.Playing => true,
+                MediaPlaybackState.Paused => true,
+                _ => false
+            };
+            Symbol IconSymbol = sender.PlaybackState switch
+            {
+                MediaPlaybackState.Playing => Symbol.Pause,
+                MediaPlaybackState.Paused => Symbol.Play,
+                _ => Symbol.Download
+            };
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                PlayButton.IsEnabled = EnableFlag;
+                PlayButton_Icon.Symbol = IconSymbol;
+            });
         }
 
-        private void Player_MediaEnded(MediaPlayer sender, object args)
+        private void PlayModeButton_Click(object sender, RoutedEventArgs e)
         {
-            switch (PlayMode)
+            PlayMode = PlayMode switch
             {
-                case PlayModeEnum.Sequence:
-                    PlayNext();
-                    break;
-                case PlayModeEnum.Loop:
-                    RePlay();
-                    break;
-            }
+                PlayModeEnum.RepeatAll => PlayModeEnum.RepeatOne,
+                PlayModeEnum.RepeatOne => PlayModeEnum.Shuffle,
+                PlayModeEnum.Shuffle => PlayModeEnum.RepeatAll,
+                _ => throw new NotImplementedException()
+            };
+            PlayModeButton_Icon.Symbol = (Symbol)PlayModeToSymbolConverter.Convert(PlayMode, null, null, null);
+            ApplicationData.Current.LocalSettings.Values["PlayMode"] = (int)PlayMode;
         }
 
-        /// <summary>
-        /// 同步音量滑块与播放器音量
-        /// Sync volume between volume slider and player.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void VolumeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             Player.Volume = e.NewValue / 100;
             ApplicationData.Current.LocalSettings.Values["Volume"] = e.NewValue;
         }
 
+        private void Player_MediaEnded(MediaPlayer sender, object args)
+        {
+            if (PlayMode == PlayModeEnum.RepeatOne)
+            {
+                RePlay();
+            }
+            else
+            {
+                PlayNext();
+            }
+        }
+
         private async void Play(int index)
         {
-            if (PlayItemList.Count > index)
+            if (PlaybackItemList.Count > index)
             {
                 CurrentPlayIndex = index;
-                Player.Source = await PlayItemList[index].ToMediaPlaybackItem();
+                if (PlayMode != PlayModeEnum.Shuffle)
+                {
+                    Player.Source = await PlaybackItemList[index].ToMediaPlaybackItem();
+                }
+                else
+                {
+                    Player.Source = await ShuffledPlaybackItemList[index].ToMediaPlaybackItem();
+                }
                 Player.Play();
             }
         }
 
         public void Play(AbstractMusic music)
         {
-            PlayItemList = new List<AbstractMusic> { music };
+            PlaybackItemList = new List<AbstractMusic> { music };
             Play(0);
         }
 
         public void Play(List<AbstractMusic> musicList)
         {
-            PlayItemList = musicList;
+            PlaybackItemList = musicList;
+            ShuffledPlaybackItemList = new List<AbstractMusic>(PlaybackItemList).Shuffle();
             Play(0);
         }
 
@@ -189,7 +183,7 @@ namespace FluentNetease.Controls
 
         private void PlayNext()
         {
-            if (CurrentPlayIndex <= PlayItemList.Count)
+            if (CurrentPlayIndex <= PlaybackItemList.Count)
             {
                 Play(++CurrentPlayIndex);
             }
@@ -198,6 +192,12 @@ namespace FluentNetease.Controls
         private void RePlay()
         {
             Play(CurrentPlayIndex);
+        }
+
+        public void Dispose()
+        {
+            Timer.Stop();
+            Player.Dispose();
         }
     }
 }

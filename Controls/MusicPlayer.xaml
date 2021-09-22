@@ -11,9 +11,10 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:TimeSpanToDoubleConverter x:Key="TimeToDoubleConverter"/>
-            <converters:TimeSpanToStringConverter x:Key="TimeToStringConverter"/>
+            <converters:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter"/>
+            <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter"/>
             <converters:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
+            <converters:PlayModeToSymbolConverter x:Key="PlayModeToSymbolConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
     
@@ -23,6 +24,7 @@
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="50" />
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="50" />
         </Grid.ColumnDefinitions>
@@ -62,8 +64,8 @@
             Margin="10,0,2,0"
             Grid.Column="2"
             Minimum="0"
-            Maximum="{x:Bind Path=Player.PlaybackSession.NaturalDuration, Converter={StaticResource TimeToDoubleConverter}}"
-            Value="{x:Bind Path=Player.PlaybackSession.Position, Converter={StaticResource TimeToDoubleConverter}}"
+            Maximum="{x:Bind Path=Player.PlaybackSession.NaturalDuration, Converter={StaticResource TimeSpanToDoubleConverter}}"
+            Value="{x:Bind Path=Player.PlaybackSession.Position, Converter={StaticResource TimeSpanToDoubleConverter}}"
             VerticalAlignment="Center"
             ThumbToolTipValueConverter="{StaticResource DoubleToStringConverter}"
             PointerCaptureLost="Timeline_PointerCaptureLost">
@@ -77,10 +79,24 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"/>
         <Button
-            x:Name="VolumeButton"
+            x:Name="PlayModeButton"
             Width="42"
             Height="42"
             Grid.Column="4"
+            Background="Transparent"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            BorderThickness="0"
+            CornerRadius="8"
+            Click="PlayModeButton_Click">
+            <SymbolIcon
+                x:Name="PlayModeButton_Icon"/>
+        </Button>
+        <Button
+            x:Name="VolumeButton"
+            Width="42"
+            Height="42"
+            Grid.Column="5"
             Background="Transparent"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"

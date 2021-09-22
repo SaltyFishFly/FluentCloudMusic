@@ -128,7 +128,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classes\Extension.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
+    <Compile Include="Converters\PlayModeToSymbolConverter.cs" />
     <Compile Include="Thirdparty\NeteaseCloudMusicApi\CloudMusicApi.cs" />
     <Compile Include="Thirdparty\NeteaseCloudMusicApi\CloudMusicApiProvider.cs" />
     <Compile Include="Thirdparty\NeteaseCloudMusicApi\CloudMusicApiProviders.cs" />
