@@ -12,14 +12,14 @@
 需要以下组件:
 - .NET桌面开发
 - 通用Windows平台开发
-- Windows 10 1903(Build 18362)及以上 (测试环境为Windows11,Windows10上可能会出现某些界面排版问题，不影响使用，后续修复)
+- Windows 11 (Windows10上会出现界面排版问题)
 
 完成后安装输出的.msix或.msixbundle文件
 
-## 关于开源:
+## 关于:
 此软件使用[MIT License](https://mit-license.org/)开源
 
-使用了
+使用了以下开源项目:
 - [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
 
 - [wwh1004/NeteaseCloudMusicApi](https://github.com/wwh1004/NeteaseCloudMusicApi)
