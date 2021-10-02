@@ -131,7 +131,7 @@ namespace FluentNetease.Controls
             ApplicationData.Current.LocalSettings.Values["Volume"] = e.NewValue;
         }
 
-        private void Player_MediaEnded(MediaPlayer sender, object args)
+        private void PlayModeButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (PlayMode == PlayModeEnum.RepeatOne)
             {
@@ -140,6 +140,19 @@ namespace FluentNetease.Controls
             else
             {
                 PlayNext();
+            }
+        }
+
+        private void Player_MediaEnded(MediaPlayer sender, object args)
+        {
+            switch (PlayMode)
+            {
+                case PlayModeEnum.RepeatAll:
+                    PlayNext();
+                    break;
+                case PlayModeEnum.RepeatOne:
+                    RePlay();
+                    break;
             }
         }
 
