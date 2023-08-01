@@ -44,8 +44,7 @@
                 <TextBox
                     x:Name="AccountInputBox"
                     x:Uid="AccountInputBox"
-                    Grid.Column="2"
-                    TextChanged="AccountInputBox_TextChanged"/>
+                    Grid.Column="2"/>
             </Grid>
             <PasswordBox
                 x:Name="PasswordInputBox"
@@ -54,8 +53,7 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="1"
                 Width="250"
-                IsEnabled="False"
-                PasswordChanged="PasswordInputBox_PasswordChanged"/>
+                IsEnabled="False"/>
             <Grid
                 Grid.Row="6">
                 <Grid.ColumnDefinitions>

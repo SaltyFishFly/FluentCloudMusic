@@ -12,15 +12,15 @@
     <AssemblyName>FluentNetease</AssemblyName>
     <DefaultLanguage>zh-cn</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.22000.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>8346F3801899F08CF2E5A06FD279D9D78AC1E7CA</PackageCertificateThumbprint>
-    <PackageCertificateKeyFile />
+    <PackageCertificateThumbprint>9E603AC096A6B4AD682A62AB037240D347355320</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>FluentNetease_TemporaryKey.pfx</PackageCertificateKeyFile>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
@@ -131,16 +131,6 @@
     <Compile Include="Classes\Extension.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\PlayModeToSymbolConverter.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\CloudMusicApi.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\CloudMusicApiProvider.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\CloudMusicApiProviders.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Extensions.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\System\Extensions\ExceptionExtensions.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\Crypto.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\Extensions.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\Options.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\QuickHttp.cs" />
-    <Compile Include="Thirdparty\NeteaseCloudMusicApi\Utils\Request.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -251,6 +241,7 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
+    <None Include="FluentNetease_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
@@ -336,16 +327,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.12</Version>
+      <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.6.2</Version>
+      <Version>2.8.5</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Drawing.Common">
-      <Version>5.0.2</Version>
+      <Version>7.0.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -353,10 +344,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
-    <None Include="FluentNetease_TemporaryKey.pfx" />
     <None Include="Todolist.md" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\NeteaseCloudMusicApi\NeteaseCloudMusicApi\NeteaseCloudMusicApi.csproj">
+      <Project>{ee472092-fddc-4d75-bccd-ef47ae092604}</Project>
+      <Name>NeteaseCloudMusicApi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Thirdparty\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
