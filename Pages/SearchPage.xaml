@@ -70,7 +70,10 @@
 
     <ListView
         x:Name="ContentListView"
-        SelectionMode="Single"
+        Background="{ThemeResource LayerFillColorDefaultBrush}"
+        CornerRadius="4"
+        SelectionMode="None"
+        IsItemClickEnabled="True"
         ItemsSource="{x:Bind Path=ContentCollection}"
         ItemTemplate="{StaticResource SongList}">
         <ListView.Footer>
@@ -99,7 +102,7 @@
                 <TextBlock 
                     Grid.Column="2"
                     x:Name="PageText"
-                    Margin="0,0,0,5"
+                    Margin="0,0,0,4"
                     FontSize="16"
                     VerticalAlignment="Center"/>
                 <Button

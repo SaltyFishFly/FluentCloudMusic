@@ -1,73 +1,68 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
-using Windows.Storage;
 
 namespace FluentNetease.Classes
 {
-    public class Account
+    public static class Account
     {
-        public static UserProfile Profile { get; set; } = new UserProfile();
+        public static UserProfile User { get; set; } = new UserProfile();
 
-        public static async Task<int> LoginWithLocalSettings()
-        {
-            ApplicationDataContainer AppSettings = ApplicationData.Current.LocalSettings;
-            if (AppSettings.Values.ContainsKey("Account") && AppSettings.Values.ContainsKey("Password"))
-            {
-                string CountryCode = (string)AppSettings.Values["CountryCode"];
-                string Account = (string)AppSettings.Values["Account"];
-                string Password = (string)AppSettings.Values["Password"];
-                return await LoginAsync(CountryCode, Account, Password);
-            }
-            return 0;
-        }
+        public delegate void LoginEventHandler(JObject loginResult);
+        public delegate void LogoutEventHandler();
+
+        public static event LoginEventHandler LoginEvent;
+        public static event LogoutEventHandler LogoutEvent;
 
         /// <summary>
-        /// 传入账号密码进行登录,登录失败弹出错误对话框
+        /// 传入账号密码进行登录
         /// </summary>
         /// <param name="account"></param>
         /// <param name="password"></param>
         public static async Task<int> LoginAsync(string countryCode, string account, string password)
         {
-            ApplicationDataContainer AppSettings = ApplicationData.Current.LocalSettings;
-            var (Code, RequestResult) = await Network.LoginAsync(countryCode, account, password);
-            if (Code == 200)
+            var (code, jsonResult) = await Network.LoginAsync(countryCode, account, password);
+            if (code != 200)
             {
-                AppSettings.Values["CountryCode"] = countryCode;
-                AppSettings.Values["Account"] = account;
-                AppSettings.Values["Password"] = password;
-                Profile.SetLoginData(RequestResult);
+                Storage.RemoveSetting("LoginCookie");
+                return code;
             }
-            else
+            Storage.SetSetting("LoginCookie", App.API.Cookies.GetString());
+
+            LoginEvent(jsonResult);
+            return code;
+        }
+
+        public static async Task<int> CheckLoginStatus()
+        {
+            if (!Storage.HasSetting("LoginCookie")) return -1;
+
+            string loginCookie = Storage.GetSetting<string>("LoginCookie");
+            App.API.Cookies.LoadFromString(loginCookie);
+
+            var (code, jsonResult) = await Network.CheckLoginStatus();
+            if (code != 200)
             {
-                AppSettings.Values["CountryCode"] = null;
-                AppSettings.Values["Account"] = null;
-                AppSettings.Values["Password"] = null;
+                Storage.RemoveSetting("LoginCookie");
+                return code;
             }
-            return Code;
+
+            LoginEvent(jsonResult);
+            return code;
         }
 
         public static async void LogoutAsync()
         {
-            bool IsSuccess = await Network.LogoutAsync();
-            if (IsSuccess)
+            bool success = await Network.LogoutAsync();
+            if (success)
             {
-                ApplicationDataContainer AppSettings = ApplicationData.Current.LocalSettings;
-                AppSettings.Values["CountryCode"] = null;
-                AppSettings.Values["Account"] = null;
-                AppSettings.Values["Password"] = null;
-                Profile.Logout();
+                Storage.RemoveSetting("LoginCookie");
+                LogoutEvent();
             }
         }
 
         public class UserProfile
         {
-            public delegate void LoginEventHandler();
-            public delegate void LogoutEventHandler();
-
-            public event LoginEventHandler LoginEvent;
-            public event LogoutEventHandler LogoutEvent;
-
-            public bool LoginFlag { get; private set; }
+            public bool LoginStatus { get; private set; }
             public string UserID { get; private set; }
             public string Nickname { get; private set; }
             public string AvatarUrl { get; private set; }
@@ -75,23 +70,23 @@ namespace FluentNetease.Classes
 
             public UserProfile()
             {
-                LoginFlag = false;
+                LoginStatus = false;
+                LoginEvent += OnLogin;
+                LogoutEvent += OnLogout;
             }
 
-            public void SetLoginData(JObject RequestResult)
+            private void OnLogin(JObject loginResult)
             {
-                LoginFlag = true;
-                UserID = RequestResult["profile"]["userId"].ToString();
-                Nickname = RequestResult["profile"]["nickname"].ToString();
-                AvatarUrl = RequestResult["profile"]["avatarUrl"].ToString();
-                HasVip = RequestResult["profile"]["vipType"].Value<int>() != 0;
-                LoginEvent();
+                LoginStatus = true;
+                UserID = loginResult["profile"]["userId"].ToString();
+                Nickname = loginResult["profile"]["nickname"].ToString();
+                AvatarUrl = loginResult["profile"]["avatarUrl"].ToString();
+                HasVip = loginResult["profile"]["vipType"].Value<int>() != 0;
             }
 
-            public void Logout()
+            public void OnLogout()
             {
-                LoginFlag = false;
-                LogoutEvent();
+                LoginStatus = false;
             }
         }
     }

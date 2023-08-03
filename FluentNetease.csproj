@@ -128,7 +128,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classes\CookieExtension.cs" />
     <Compile Include="Classes\Extension.cs" />
+    <Compile Include="Classes\Storage.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\PlayModeToSymbolConverter.cs" />
     <Compile Include="App.xaml.cs">
@@ -150,8 +152,8 @@
     <Compile Include="Controls\MusicPlayer.xaml.cs">
       <DependentUpon>MusicPlayer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\LoginFailedDialog.xaml.cs">
-      <DependentUpon>LoginFailedDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\CommonDialog.xaml.cs">
+      <DependentUpon>CommonDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\AccountPage.xaml.cs">
       <DependentUpon>AccountPage.xaml</DependentUpon>
@@ -264,7 +266,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\LoginFailedDialog.xaml">
+    <Page Include="Dialogs\CommonDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -352,9 +354,7 @@
       <Name>NeteaseCloudMusicApi</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Thirdparty\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

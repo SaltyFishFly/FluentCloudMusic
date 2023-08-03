@@ -1,6 +1,7 @@
 ﻿using FluentNetease.Classes;
 using FluentNetease.Pages;
 using NeteaseCloudMusicApi;
+using Newtonsoft.Json.Linq;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -9,7 +10,6 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace FluentNetease
 {
@@ -37,99 +37,69 @@ namespace FluentNetease
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Window.Current.Content as Frame;
+            Account.LoginEvent += OnLogin;
+            Account.LogoutEvent += OnLogout;
 
-            // 不要在窗口已包含内容时重复应用程序初始化，
-            // 只需确保窗口处于活动状态
+            CoreApplication.EnablePrelaunch(false);
+
             if (rootFrame == null)
             {
-                // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
-
-                rootFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: 从之前挂起的应用程序加载状态
                 }
-
-                // 将框架放在当前窗口中
                 Window.Current.Content = rootFrame;
             }
 
-            Account.Profile.LoginEvent += OnLogin;
-            Account.Profile.LogoutEvent += OnLogout;
+            SetWindowMinSize(500, 500);
+            TransparentTitleBar();
 
-            //尝试使用本地设置登录
-            await Account.LoginWithLocalSettings();
-
-            if (e.PrelaunchActivated == false)
+            await Account.CheckLoginStatus();
+            if (rootFrame.Content == null)
             {
-                if (rootFrame.Content == null)
-                {
-                    // 当导航堆栈尚未还原时，导航到第一页，
-                    // 并通过将所需信息作为导航参数传入来配置
-                    // 参数
-                    if (Account.Profile.LoginFlag)
-                    {
-                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
-
-                    }
-                    else
-                    {
-                        rootFrame.Navigate(typeof(LoginPage), e.Arguments);
-
-                    }
-                }
-                // 确保当前窗口处于活动状态
-                Window.Current.Activate();
+                if (Account.User.LoginStatus)
+                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                else
+                    rootFrame.Navigate(typeof(LoginPage), e.Arguments);
             }
 
-            //设置最小尺寸
-            ApplicationView.GetForCurrentView().SetPreferredMinSize(
-                new Windows.Foundation.Size
-                {
-                    Height = 500,
-                    Width = 500
-                }
-            );
-
-            //任务栏透明
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.ButtonBackgroundColor = Colors.Transparent;
-            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+            Window.Current.Activate();
         }
 
-        private void OnLogin()
+        private void OnLogin(JObject loginResult)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(MainPage), null);
         }
 
         private void OnLogout()
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Window.Current.Content as Frame;
             rootFrame.Navigate(typeof(LoginPage), null);
         }
 
-        /// <summary>
-        /// 导航到特定页失败时调用
-        /// </summary>
-        ///<param name="sender">导航失败的框架</param>
-        ///<param name="e">有关导航失败的详细信息</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void TransparentTitleBar()
         {
-            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
         }
 
-        /// <summary>
-        /// 在将要挂起应用程序执行时调用。  在不知道应用程序
-        /// 无需知道应用程序会被终止还是会恢复，
-        /// 并让内存内容保持不变。
-        /// </summary>
-        /// <param name="sender">挂起的请求的源。</param>
-        /// <param name="e">有关挂起请求的详细信息。</param>
+        private void SetWindowMinSize(double width, double height)
+        {
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(
+                new Windows.Foundation.Size
+                {
+                    Height = width,
+                    Width = height
+                }
+            );
+        }
+
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();

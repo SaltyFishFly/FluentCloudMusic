@@ -3,25 +3,125 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:FluentNetease">
 
+    <Style
+        x:Key="PlaylistItemStyle"
+        TargetType="GridViewItem">
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+        <Setter Property="Background" Value="{ThemeResource GridViewItemBackground}" />
+        <Setter Property="Foreground" Value="{ThemeResource GridViewItemForeground}" />
+        <Setter Property="TabNavigation" Value="Local" />
+        <Setter Property="IsHoldingEnabled" Value="True" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,0,4,4" />
+        <Setter Property="MinWidth" Value="{ThemeResource GridViewItemMinWidth}" />
+        <Setter Property="MinHeight" Value="{ThemeResource GridViewItemMinHeight}" />
+        <Setter Property="AllowDrop" Value="False" />
+        <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
+        <Setter Property="FocusVisualMargin" Value="-2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GridViewItem">
+                    <ListViewItemPresenter ContentTransitions="{TemplateBinding ContentTransitions}"
+                        x:Name="Root"
+                        Control.IsTemplateFocusTarget="True"
+                        FocusVisualMargin="{TemplateBinding FocusVisualMargin}"
+                        SelectionCheckMarkVisualEnabled="{ThemeResource GridViewItemSelectionCheckMarkVisualEnabled}"
+                        CheckBrush="{ThemeResource GridViewItemCheckBrush}"
+                        CheckBoxBrush="{ThemeResource GridViewItemCheckBoxBrush}"
+                        DragBackground="{ThemeResource GridViewItemDragBackground}"
+                        DragForeground="{ThemeResource GridViewItemDragForeground}"
+                        FocusBorderBrush="{ThemeResource GridViewItemFocusBorderBrush}"
+                        FocusSecondaryBorderBrush="{ThemeResource GridViewItemFocusSecondaryBorderBrush}"
+                        PlaceholderBackground="{ThemeResource GridViewItemPlaceholderBackground}"
+                        PointerOverBackground="{ThemeResource GridViewItemBackgroundPointerOver}"
+                        PointerOverForeground="{ThemeResource GridViewItemForegroundPointerOver}"
+                        SelectedBackground="{ThemeResource GridViewItemBackgroundSelected}"
+                        SelectedForeground="{ThemeResource GridViewItemForegroundSelected}"
+                        SelectedPointerOverBackground="{ThemeResource GridViewItemBackgroundSelectedPointerOver}"
+                        PressedBackground="{ThemeResource GridViewItemBackgroundPressed}"
+                        SelectedPressedBackground="{ThemeResource GridViewItemBackgroundSelectedPressed}"
+                        DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+                        DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+                        ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        ContentMargin="{TemplateBinding Padding}"
+                        CheckMode="{ThemeResource GridViewItemCheckMode}"
+                        RevealBackground="{ThemeResource GridViewItemRevealBackground}"
+                        RevealBorderThickness="0"
+                        RevealBorderBrush="{ThemeResource GridViewItemRevealBorderBrush}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Selected" />
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.(RevealBrush.State)" Value="PointerOver" />
+                                        <Setter Target="Root.CornerRadius" Value="10" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="PointerOverSelected">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.(RevealBrush.State)" Value="PointerOver" />
+                                        <Setter Target="Root.CornerRadius" Value="10" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="PointerOverPressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.(RevealBrush.State)" Value="Pressed" />
+                                        <Setter Target="Root.CornerRadius" Value="10" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.(RevealBrush.State)" Value="Pressed" />
+                                        <Setter Target="Root.CornerRadius" Value="10" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="PressedSelected">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.(RevealBrush.State)" Value="Pressed" />
+                                        <Setter Target="Root.CornerRadius" Value="10" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="DisabledStates">
+                                <VisualState x:Name="Enabled" />
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.RevealBorderThickness" Value="0" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ListViewItemPresenter>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
-            <SolidColorBrush x:Key="DescriptionTextBrush" Color="Gray"/>
+            <SolidColorBrush x:Key="DescriptionTextBrush" Color="#FF505050"/>
             <AcrylicBrush
                 x:Key="BackgroundAcrylicBrush"
                 BackgroundSource="HostBackdrop"
                 TintColor="#FFFFFFFF"
-                TintOpacity="0.7"
+                TintOpacity="0.9"
+                TintLuminosityOpacity="0.9"
                 FallbackColor="#CCF1F1F1"/>
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
-            <SolidColorBrush x:Key="DescriptionTextBrush" Color="LightGray"/>
+            <SolidColorBrush x:Key="DescriptionTextBrush" Color="#FFB0B0B0"/>
             <AcrylicBrush
                 x:Key="BackgroundAcrylicBrush"
                 BackgroundSource="HostBackdrop"
                 TintColor="#FF1C1C1C"
                 TintOpacity="0.8"
-                TintLuminosityOpacity="0.9"
+                TintLuminosityOpacity="0.8"
                 FallbackColor="#CC303030"/>
         </ResourceDictionary>
 

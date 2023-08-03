@@ -11,7 +11,9 @@
 
     <Page.Resources>
         <ResourceDictionary>
-            <DataTemplate x:DataType="classes:Playlist" x:Key="PlayListTemplate">
+            <DataTemplate
+                x:DataType="classes:Playlist"
+                x:Key="PlaylistItemTemplate">
                 <Grid
                     Width="180"
                     Height="230"
@@ -29,7 +31,9 @@
                         VerticalAlignment="Bottom"
                         CornerRadius="8">
                         <Border.Background>
-                            <ImageBrush ImageSource="{x:Bind Path=CoverPictureUrl}"/>
+                            <ImageBrush
+                                x:Name="PlaylistCover"
+                                ImageSource="{x:Bind Path=CoverPictureUrl}"/>
                         </Border.Background>
                     </Border>
                     <TextBlock
@@ -45,14 +49,31 @@
             </DataTemplate>
         </ResourceDictionary>
     </Page.Resources>
-    
-    <Grid>
-        <GridView
-            ItemsSource="{x:Bind Path=ContentCollection}"
-            ItemTemplate="{StaticResource PlayListTemplate}"
-            SelectionMode="None"
-            IsItemClickEnabled="True"
-            ItemClick="GridView_ItemClick">
-        </GridView>
-    </Grid>
+
+    <ScrollViewer>
+        <StackPanel
+            Orientation="Vertical">
+            <GridView
+                x:Name="DailyRecommendPlaylistsGridView"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                CornerRadius="10"
+                ItemsSource="{x:Bind Path=DailyRecommendPlaylists}"
+                ItemTemplate="{StaticResource PlaylistItemTemplate}"
+                ItemContainerStyle="{StaticResource PlaylistItemStyle}"
+                ScrollViewer.VerticalScrollMode="Disabled"
+                ScrollViewer.HorizontalScrollMode="Enabled"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                SelectionMode="None"
+                IsItemClickEnabled="True"
+                ItemClick="PlaylistItem_Click">
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid
+                            Orientation="Vertical"
+                            MaximumRowsOrColumns="1"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+        </StackPanel>
+    </ScrollViewer>
 </Page>

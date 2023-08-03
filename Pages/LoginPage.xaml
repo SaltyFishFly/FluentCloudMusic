@@ -53,7 +53,7 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="1"
                 Width="250"
-                IsEnabled="False"/>
+                IsEnabled="True"/>
             <Grid
                 Grid.Row="6">
                 <Grid.ColumnDefinitions>
@@ -64,8 +64,7 @@
                 <Button
                     x:Name="LoginButton"
                     Grid.Column="0"
-                    Click="LoginButton_Click"
-                    IsEnabled="False">
+                    Click="LoginButton_Click">
                     <Button.Content>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8FB;"/>
                     </Button.Content>

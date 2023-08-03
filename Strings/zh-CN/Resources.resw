@@ -147,12 +147,6 @@
   <data name="ErrorCodeText.Text" xml:space="preserve">
     <value>错误代码：</value>
   </data>
-  <data name="ErrorDialog.CloseButtonText" xml:space="preserve">
-    <value>知道了</value>
-  </data>
-  <data name="ErrorDialog.Title" xml:space="preserve">
-    <value>错误</value>
-  </data>
   <data name="FavoritesPageHeader" xml:space="preserve">
     <value>我的收藏</value>
   </data>
@@ -161,9 +155,6 @@
   </data>
   <data name="HistoryPageHeader" xml:space="preserve">
     <value>播放记录</value>
-  </data>
-  <data name="LoginErrorText.Text" xml:space="preserve">
-    <value>登录时发生了错误，可能是由于账号/密码不正确或网络连接问题等。请检查后再试一次。</value>
   </data>
   <data name="LoginText.Text" xml:space="preserve">
     <value>登录</value>

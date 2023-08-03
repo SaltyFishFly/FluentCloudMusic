@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Core;
@@ -10,7 +9,7 @@ using Windows.Media.Playback;
 
 namespace FluentNetease.Classes
 {
-    class Network
+    public static class Network
     {
         /// <summary>
         /// 登录(目前只支持手机)
@@ -20,15 +19,22 @@ namespace FluentNetease.Classes
         /// <returns>(Code, JObject) 返回代码和JSON对象</returns>
         public static async Task<(int Code, JObject Result)> LoginAsync(string countryCode, string account, string password)
         {
-            var Parameters = new Dictionary<string, object>
+            var parameters = new Dictionary<string, object>
                 {
                     { "countrycode", countryCode},
                     { "phone", account },
                     { "password", password }
                 };
-            var RequestResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginCellphone, Parameters);
-            var RequestCode = RequestResult["code"].Value<int>();
-            return (RequestCode, RequestResult);
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginCellphone, parameters);
+            var code = jsonResult["code"].Value<int>();
+            return (code, jsonResult);
+        }
+
+        public static async Task<(int Code, JObject Result)> CheckLoginStatus()
+        {
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginStatus);
+            var code = jsonResult["code"].Value<int>();
+            return (code, jsonResult);
         }
 
         /// <summary>
@@ -37,12 +43,9 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<bool> LogoutAsync()
         {
-            var RequestResult = await App.API.RequestAsync(CloudMusicApiProviders.Logout);
-            if (RequestResult["code"].Value<int>() == 200)
-            {
-                return true;
-            }
-            return false;
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Logout);
+            var code = jsonResult["code"].Value<int>();
+            return code == 200;
         }
 
         /// <summary>
@@ -51,23 +54,23 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<LinkedList<Playlist>> GetDailyRecommendPlaylistAsync()
         {
-            var RequestResult = await App.API.RequestAsync(CloudMusicApiProviders.RecommendResource);
-            if (RequestResult["code"].Value<int>() == 200)
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.RecommendResource);
+            if (jsonResult["code"].Value<int>() == 200)
             {
-                var Result = new LinkedList<Playlist>();
-                foreach (var Item in RequestResult["recommend"])
+                var result = new LinkedList<Playlist>();
+                foreach (var item in jsonResult["recommend"])
                 {
-                    var Playlist = new Playlist
+                    var playlist = new Playlist
                     {
-                        ID = Item["id"].ToString(),
-                        Name = Item["name"].ToString(),
-                        CoverPictureUrl = Item["picUrl"].ToString(),
-                        CreatorID = Item["creator"]["userId"].ToString(),
+                        ID = item["id"].ToString(),
+                        Name = item["name"].ToString(),
+                        CoverPictureUrl = item["picUrl"].ToString(),
+                        CreatorID = item["creator"]["userId"].ToString(),
                         Privacy = 0
                     };
-                    Result.AddLast(Playlist);
+                    result.AddLast(playlist);
                 }
-                return Result;
+                return result;
             }
             return null;
         }
@@ -81,19 +84,19 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<(bool IsSuccess, int CurrentPage, LinkedList<Song> SearchResults)> SearchAsync(SearchRequest Request)
         {
-            var RequestResult = await App.API.RequestAsync(CloudMusicApiProviders.Cloudsearch, Request.ToDictionary());
-            if (RequestResult["code"].Value<int>() == 200 &&
-                RequestResult["result"]["songs"] != null)
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Cloudsearch, Request.ToDictionary());
+            if (jsonResult["code"].Value<int>() == 200 &&
+                jsonResult["result"]["songs"] != null)
             {
-                var Result = new LinkedList<Song>();
-                foreach (JToken JsonSearchResult in RequestResult["result"]["songs"])
+                var result = new LinkedList<Song>();
+                foreach (JToken jsonSearchResult in jsonResult["result"]["songs"])
                 {
-                    var SearchResult = Song.ParseOfficialMusic(JsonSearchResult);
-                    Result.AddLast(SearchResult);
+                    var searchResult = Song.ParseOfficialMusic(jsonSearchResult);
+                    result.AddLast(searchResult);
                 }
                 //计算页数
-                int Page = (int)Math.Ceiling(RequestResult["result"]["songCount"].Value<double>() / Request.Section.Limit);
-                return (true, Page, Result);
+                int Page = (int)Math.Ceiling(jsonResult["result"]["songCount"].Value<double>() / Request.Section.Limit);
+                return (true, Page, result);
             }
             return (false, 0, null);
         }
@@ -105,13 +108,13 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<(bool IsSuccess, MediaPlaybackItem Result)> GetOfficialMusicUrlAsync(string musicId)
         {
-            var Parameters = new Dictionary<string, object> { { "id", musicId } };
-            var RequestResult = await App.API.RequestAsync(CloudMusicApiProviders.SongUrl, Parameters);
-            if (RequestResult["code"].Value<int>() == 200 &&
-                RequestResult["data"].First["url"].ToString() != string.Empty)
+            var parameters = new Dictionary<string, object> { { "id", musicId } };
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.SongUrl, parameters);
+            if (jsonResult["code"].Value<int>() == 200 &&
+                jsonResult["data"].First["url"].ToString() != string.Empty)
             {
-                var Result = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri(RequestResult["data"].First["url"].ToString())));
-                return (true, Result);
+                var result = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri(jsonResult["data"].First["url"].ToString())));
+                return (true, result);
             }
             return (false, null);
         }
@@ -123,27 +126,27 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<(bool IsSuccess, JToken PlaylistInfo, LinkedList<Song> SongList)> GetPlaylistDetailAsync(string playlistID)
         {
-            var Parameters = new Dictionary<string, object> { { "id", playlistID } };
-            var RequestResult = await App.API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, Parameters);
-            if (RequestResult["code"].Value<int>() == 200)
+            var parameters = new Dictionary<string, object> { { "id", playlistID } };
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, parameters);
+            if (jsonResult["code"].Value<int>() == 200)
             {
-                StringBuilder MusicIdsBuilder = new StringBuilder();
-                foreach (var Item in RequestResult["playlist"]["trackIds"])
+                StringBuilder musicIDsBuilder = new StringBuilder();
+                foreach (var Item in jsonResult["playlist"]["trackIds"])
                 {
-                    MusicIdsBuilder.Append(Item["id"].ToString()).Append(",");
+                    musicIDsBuilder.Append(Item["id"].ToString()).Append(",");
                 }
-                string MusicIds = MusicIdsBuilder.Remove(MusicIdsBuilder.Length - 1, 1).ToString();
+                string MusicIds = musicIDsBuilder.Remove(musicIDsBuilder.Length - 1, 1).ToString();
 
-                var Result = new LinkedList<Song>();
-                var Parameters2 = new Dictionary<string, object> { { "ids", MusicIds } };
-                var RequestResult2 = await App.API.RequestAsync(CloudMusicApiProviders.SongDetail, Parameters2);
-                if (RequestResult2["code"].Value<int>() == 200)
+                var result = new LinkedList<Song>();
+                var parameters2 = new Dictionary<string, object> { { "ids", MusicIds } };
+                var jsonResult2 = await App.API.RequestAsync(CloudMusicApiProviders.SongDetail, parameters2);
+                if (jsonResult2["code"].Value<int>() == 200)
                 {
-                    foreach (var Item in RequestResult2["songs"])
+                    foreach (var Item in jsonResult2["songs"])
                     {
-                        Result.AddLast(Song.ParseOfficialMusic(Item));
+                        result.AddLast(Song.ParseOfficialMusic(Item));
                     }
-                    return (true, RequestResult["playlist"], Result);
+                    return (true, jsonResult["playlist"], result);
                 }
                 return (false, null, null);
             }
@@ -152,16 +155,17 @@ namespace FluentNetease.Classes
 
         public static async Task<(bool IsSuccess, int CurrentPage, LinkedList<Song> SongList)> GetUserCloudAsync(SearchSection section)
         {
-            var RequestResult = await App.API.RequestAsync(CloudMusicApiProviders.UserCloud, section.ToDictionary());
-            if (RequestResult["code"].Value<int>() == 200)
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.UserCloud, section.ToDictionary());
+            var code = jsonResult["code"].Value<int>();
+            if (code == 200)
             {
-                var Result = new LinkedList<Song>();
-                foreach (var Item in RequestResult["data"])
+                var result = new LinkedList<Song>();
+                foreach (var Item in jsonResult["data"])
                 {
-                    Result.AddLast(Song.ParseUserMusic(Item));
+                    result.AddLast(Song.ParseUserMusic(Item));
                 }
-                int Page = (int)Math.Ceiling(RequestResult["count"].Value<double>() / section.Limit);
-                return (true, Page, Result);
+                int page = (int)Math.Ceiling(jsonResult["count"].Value<double>() / section.Limit);
+                return (true, page, result);
             }
             return (false, 0, null);
         }
@@ -173,16 +177,16 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<(bool IsSuccess, JToken AlbumInfo, LinkedList<Song> Result)> GetAlbumDetailAsync(string albumID)
         {
-            var Parameters = new Dictionary<string, object> { { "id", albumID } };
-            var RequestResult = await App.API.RequestAsync(CloudMusicApiProviders.Album, Parameters);
-            if (RequestResult["code"].Value<int>() == 200)
+            var parameters = new Dictionary<string, object> { { "id", albumID } };
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Album, parameters);
+            if (jsonResult["code"].Value<int>() == 200)
             {
-                var Result = new LinkedList<Song>();
-                foreach (var Item in RequestResult["songs"])
+                var result = new LinkedList<Song>();
+                foreach (var item in jsonResult["songs"])
                 {
-                    Result.AddLast(Song.ParseOfficialMusic(Item));
+                    result.AddLast(Song.ParseOfficialMusic(item));
                 }
-                return (true, RequestResult["album"], Result);
+                return (true, jsonResult["album"], result);
             }
             return (false, null, null);
         }
@@ -194,23 +198,23 @@ namespace FluentNetease.Classes
         /// <returns></returns>
         public static async Task<(bool IsSuccess, LinkedList<Playlist>)> GetUserPlaylist(string uid)
         {
-            var Parameters = new Dictionary<string, object> { { "uid", uid } };
-            var RequestResult = await App.API.RequestAsync(CloudMusicApiProviders.UserPlaylist, Parameters);
-            if (RequestResult["code"].Value<int>() == 200)
+            var parameters = new Dictionary<string, object> { { "uid", uid } };
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.UserPlaylist, parameters);
+            if (jsonResult["code"].Value<int>() == 200)
             {
-                var Result = new LinkedList<Playlist>();
-                foreach (var Item in RequestResult["playlist"])
+                var result = new LinkedList<Playlist>();
+                foreach (var item in jsonResult["playlist"])
                 {
-                    Result.AddLast(new Playlist
+                    result.AddLast(new Playlist
                     {
-                        ID = Item["id"].ToString(),
-                        Name = Item["name"].ToString(),
-                        CoverPictureUrl = Item["coverImgUrl"].ToString(),
-                        CreatorID = Item["creator"]["userId"].ToString(),
-                        Privacy = Item["privacy"].Value<int>()
+                        ID = item["id"].ToString(),
+                        Name = item["name"].ToString(),
+                        CoverPictureUrl = item["coverImgUrl"].ToString(),
+                        CreatorID = item["creator"]["userId"].ToString(),
+                        Privacy = item["privacy"].Value<int>()
                     });
                 }
-                return (true, Result);
+                return (true, result);
             }
             return (false, null);
         }

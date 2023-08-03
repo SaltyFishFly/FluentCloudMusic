@@ -1,6 +1,7 @@
 ﻿using FluentNetease.Classes;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -12,11 +13,13 @@ namespace FluentNetease.Pages
     /// </summary>
     public sealed partial class DiscoverPage : Page
     {
-        public ObservableCollection<Playlist> ContentCollection;
+        public ObservableCollection<Playlist> DailyRecommendPlaylists;
+        public ObservableCollection<Song> DailyRecommendSongs;
         public DiscoverPage()
         {
             this.InitializeComponent();
-            ContentCollection = new ObservableCollection<Playlist> { };
+            DailyRecommendPlaylists = new ObservableCollection<Playlist>();
+            DailyRecommendSongs = new ObservableCollection<Song>();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -24,21 +27,22 @@ namespace FluentNetease.Pages
             LoadPageContent();
         }
 
-        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        private void PlaylistItem_Click(object sender, ItemClickEventArgs e)
         {
-            MainPage.FRAME.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem);
+            /*
+            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("ForwardConnectedAnimation", (Windows.UI.Xaml.UIElement)sender);
+            MainPage.FRAME.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem, new SuppressNavigationTransitionInfo());
+            */
+            MainPage.FRAME.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem, null);
         }
 
         private async void LoadPageContent()
         {
-            ContentCollection.Clear();
+            DailyRecommendPlaylists.Clear();
             var RequestResult = await Network.GetDailyRecommendPlaylistAsync();
             if (RequestResult != null)
             {
-                foreach (var Item in RequestResult)
-                {
-                    ContentCollection.Add(Item);
-                }
+                foreach (var Item in RequestResult) DailyRecommendPlaylists.Add(Item);
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using FluentNetease.Classes;
 using FluentNetease.Dialogs;
 using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -26,7 +25,7 @@ namespace FluentNetease.Pages
             }
             catch (Exception ex)
             {
-                _ = new LoginFailedDialog().ShowAsync();
+                _ = new CommonDialog("登陆错误", ex.Message, "知道了").ShowAsync();
             }
         }
 

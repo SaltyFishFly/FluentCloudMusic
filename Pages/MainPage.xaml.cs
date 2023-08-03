@@ -31,7 +31,7 @@ namespace FluentNetease
             { "Discover", typeof(DiscoverPage) },
             { "History", typeof(HistoryPage) },
             { "Downloads", typeof(DownloadsPage) },
-            {  "Cloud", typeof(CloudPage) },
+            { "Cloud", typeof(CloudPage) },
             { "Favorites", typeof(FavoritesPage) },
             { "Podcasts", typeof(PodcastsPage) },
             { "Account", typeof(AccountPage) },
@@ -59,7 +59,7 @@ namespace FluentNetease
         /// </summary>
         private async void GetUserPlaylists()
         {
-            var (IsSuccess, RequestResult) = await Network.GetUserPlaylist(Account.Profile.UserID);
+            var (IsSuccess, RequestResult) = await Network.GetUserPlaylist(Account.User.UserID);
             if (IsSuccess)
             {
                 PlaylistsCreated.Clear();
@@ -73,14 +73,10 @@ namespace FluentNetease
                         DataContext = Item
                     };
                     PlaylistItem.Tag = "Playlist";
-                    if (Item.CreatorID == Account.Profile.UserID)
-                    {
+                    if (Item.CreatorID == Account.User.UserID)
                         PlaylistsCreated.Add(PlaylistItem);
-                    }
                     else
-                    {
                         PlaylistsBookmarked.Add(PlaylistItem);
-                    }
                 }
             }
         }
@@ -96,18 +92,12 @@ namespace FluentNetease
             {
                 //对Settings按钮作特殊处理
                 if (args.IsSettingsSelected)
-                {
                     MainNav_Navigate("Settings", args.RecommendedNavigationTransitionInfo);
-                }
                 if (args.SelectedItemContainer.Tag.ToString() == "Playlist")
-                {
                     ContentFrame.Navigate(typeof(PlaylistPage), args.SelectedItemContainer.DataContext);
-                }
                 else
-                {
                     //导航
                     MainNav_Navigate(args.SelectedItemContainer.Tag.ToString(), args.RecommendedNavigationTransitionInfo);
-                }
             }
         }
 
@@ -115,9 +105,7 @@ namespace FluentNetease
         {
             Type Page = NavPages[navItemTag] as Type;
             if (Page != null && ContentFrame.CurrentSourcePageType != Page)
-            {
                 ContentFrame.Navigate(Page, null, transitionInfo);
-            }
         }
 
         private void MainNav_BackRequested(muxc.NavigationView sender, muxc.NavigationViewBackRequestedEventArgs args)

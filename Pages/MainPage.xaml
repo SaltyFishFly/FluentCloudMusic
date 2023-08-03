@@ -9,7 +9,7 @@
     xmlns:classes="using:FluentNetease.Classes"
     xmlns:pages="using:FluentNetease.Pages"
     mc:Ignorable="d"
-    Background="{ThemeResource BackgroundAcrylicBrush}">
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <muxc:NavigationView
         x:Name="MainNav"
@@ -32,7 +32,7 @@
         <muxc:NavigationView.Header>
             <TextBlock
                 x:Name="HeaderText"
-                Margin="-20,0,0,0"
+                Margin="-35,0,0,0"
                 Text="HEADER"
                 FontWeight="Normal"/>
         </muxc:NavigationView.Header>
@@ -107,15 +107,11 @@
                 x:Uid="NavItemAccount"
                 Tag="Account"
                 Icon="Contact"
-                Content="{x:Bind Path=classes:Account.Profile.Nickname}"/>
+                Content="{x:Bind Path=classes:Account.User.Nickname}"/>
         </muxc:NavigationView.FooterMenuItems>
         <muxc:NavigationView.Content>
             <Grid
                 Width="Auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="181*"/>
-                    <ColumnDefinition Width="624*"/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="70"/>
@@ -124,15 +120,17 @@
                     x:Name="ContentFrame"
                     Width="Auto"
                     Height="Auto"
+                    Grid.RowSpan="2"
                     Grid.Row="0"
-                    Padding="24,10,0,0"
+                    Margin="0,0,0,70"
+                    Padding="16,10,16,0"
                     CacheSize="5"
-                    Navigated="ContentFrame_Navigated" Grid.ColumnSpan="2" Margin="0,0,0,70" Grid.RowSpan="2"/>
+                    Navigated="ContentFrame_Navigated"/>
                 <local:MusicPlayer
                     x:Name="MusicPlayer"
                     Width="Auto"
                     Margin="10,0,10,0"
-                    Grid.Row="1" Grid.ColumnSpan="2"/>
+                    Grid.Row="1"/>
             </Grid>
         </muxc:NavigationView.Content>
     </muxc:NavigationView>

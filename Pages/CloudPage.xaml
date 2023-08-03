@@ -59,7 +59,10 @@
 
     <ListView
         x:Name="ContentListView"
-        SelectionMode="Single"
+        Background="{ThemeResource LayerFillColorDefaultBrush}"
+        CornerRadius="4"
+        SelectionMode="None"
+        IsItemClickEnabled="True"
         ItemsSource="{x:Bind Path=ContentCollection}"
         ItemTemplate="{StaticResource SongList}">
         <ListView.Footer>
