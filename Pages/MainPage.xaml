@@ -40,24 +40,20 @@
             <muxc:NavigationViewItem
                 x:Name="NavItemDiscover"
                 x:Uid="NavItemDiscover"
-                Tag="Discover"
                 Icon="Calendar" />
             <muxc:NavigationViewItemHeader
                 x:Uid="NavHeader1"/>
             <muxc:NavigationViewItem
                 x:Name="NavItemHistory"
                 x:Uid="NavItemHistory"
-                Tag="History"
                 Icon="MusicInfo"/>
             <muxc:NavigationViewItem
                 x:Name="NavItemDownloads"
                 x:Uid="NavItemDownloads"
-                Tag="Downloads"
                 Icon="Download"/>
             <muxc:NavigationViewItem
                 x:Name="NavItemCloud"
-                x:Uid="NavItemCloud"
-                Tag="Cloud">
+                x:Uid="NavItemCloud">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
@@ -66,8 +62,7 @@
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItem
                 x:Name="NavItemFavorites"
-                x:Uid="NavItemFavorites"
-                Tag="Favorites">
+                x:Uid="NavItemFavorites">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
@@ -76,8 +71,7 @@
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItem
                 x:Name="NavItemPodcasts"
-                x:Uid="NavItemPodcasts"
-                Tag="Podcasts">
+                x:Uid="NavItemPodcasts">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
@@ -91,21 +85,20 @@
                 x:Uid="NavItemPlaylistsCreated"
                 Icon="List"
                 SelectsOnInvoked="False"
-                MenuItemsSource="{x:Bind Path=PlaylistsCreated, Mode=OneWay}">
+                MenuItemsSource="{x:Bind Path=CreatedPlaylistButtons, Mode=OneWay}">
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItem
                 x:Name="NavItemPlaylistsBookmarked"
                 x:Uid="NavItemPlaylistsBookmarked"
                 Icon="List"
                 SelectsOnInvoked="False"
-                MenuItemsSource="{x:Bind Path=PlaylistsBookmarked, Mode=OneWay}">
+                MenuItemsSource="{x:Bind Path=BookmarkedPlaylistButtons, Mode=OneWay}">
             </muxc:NavigationViewItem>
         </muxc:NavigationView.MenuItems>
         <muxc:NavigationView.FooterMenuItems>
             <muxc:NavigationViewItem
                 x:Name="NavItemAccount"
                 x:Uid="NavItemAccount"
-                Tag="Account"
                 Icon="Contact"
                 Content="{x:Bind Path=classes:Account.User.Nickname}"/>
         </muxc:NavigationView.FooterMenuItems>

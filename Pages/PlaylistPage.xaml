@@ -74,7 +74,7 @@
         CornerRadius="4"
         SelectionMode="None"
         IsItemClickEnabled="True"
-        ItemsSource="{x:Bind Path=ContentCollection}"
+        ItemsSource="{x:Bind Path=Songs}"
         ItemTemplate="{StaticResource SongList}">
         <ListView.Header>
             <Grid
@@ -83,18 +83,20 @@
                     <ColumnDefinition Width="270"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border
+                <StackPanel
                     Height="240"
                     Width="240"
                     Grid.Column="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     CornerRadius="8">
-                    <Border.Background>
-                        <ImageBrush
-                            x:Name="CoverPicture"/>
-                    </Border.Background>
-                </Border>
+                    <Image
+                        x:Name="CoverPicture"
+                        Height="240"
+                        Width="240"
+                        Stretch="Fill"
+                        Source="{x:Bind Mode=OneWay,Path=Playlist.CoverPictureUrl}"/>
+                </StackPanel>
                 <Grid
                     Height="240"
                     Margin="0,0,0,0"
@@ -110,7 +112,8 @@
                         VerticalAlignment="Center"
                         TextWrapping="Wrap"
                         FontSize="30"
-                        FontWeight="Normal"/>
+                        FontWeight="Normal"
+                        Text="{x:Bind Mode=OneWay,Path=Playlist.Name}"/>
                     <ScrollViewer
                         Grid.Row="1"
                         VerticalScrollMode="Enabled">
@@ -119,7 +122,8 @@
                             Grid.Row="1"
                             Margin="2,8,8,2"
                             TextWrapping="Wrap"
-                            Foreground="{ThemeResource DescriptionTextBrush}"/>
+                            Foreground="{ThemeResource DescriptionTextBrush}"
+                            Text="{x:Bind Mode=OneWay,Path=Playlist.Description}"/>
                     </ScrollViewer>
                     <Grid
                         Grid.Row="2">

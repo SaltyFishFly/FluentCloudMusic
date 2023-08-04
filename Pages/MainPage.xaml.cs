@@ -3,6 +3,7 @@ using FluentNetease.Controls;
 using FluentNetease.Pages;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.ApplicationModel.Resources;
@@ -23,26 +24,26 @@ namespace FluentNetease
         public static MusicPlayer PLAYER;
         public static Frame FRAME;
 
-        public ObservableCollection<muxc.NavigationViewItem> PlaylistsCreated { get; }
-        public ObservableCollection<muxc.NavigationViewItem> PlaylistsBookmarked { get; }
+        public ObservableCollection<muxc.NavigationViewItem> CreatedPlaylistButtons { get; }
+        public ObservableCollection<muxc.NavigationViewItem> BookmarkedPlaylistButtons { get; }
 
-        private readonly Hashtable NavPages = new Hashtable
+        private readonly Dictionary<string, Type> NavButtons = new Dictionary<string, Type>
         {
-            { "Discover", typeof(DiscoverPage) },
-            { "History", typeof(HistoryPage) },
-            { "Downloads", typeof(DownloadsPage) },
-            { "Cloud", typeof(CloudPage) },
-            { "Favorites", typeof(FavoritesPage) },
-            { "Podcasts", typeof(PodcastsPage) },
-            { "Account", typeof(AccountPage) },
-            { "Settings", typeof(SettingsPage) }
+            { "NavItemDiscover", typeof(DiscoverPage) },
+            { "NavItemHistory", typeof(HistoryPage) },
+            { "NavItemDownloads", typeof(DownloadsPage) },
+            { "NavItemCloud", typeof(CloudPage) },
+            { "NavItemFavorites", typeof(FavoritesPage) },
+            { "NavItemPodcasts", typeof(PodcastsPage) },
+            { "NavItemAccount", typeof(AccountPage) },
+            { "NavItemSettings", typeof(SettingsPage) }
         };
 
         public MainPage()
         {
             InitializeComponent();
-            PlaylistsCreated = new ObservableCollection<muxc.NavigationViewItem>();
-            PlaylistsBookmarked = new ObservableCollection<muxc.NavigationViewItem>();
+            CreatedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
+            BookmarkedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
             MainNav.SelectedItem = NavItemDiscover;
             PLAYER = MusicPlayer;
             FRAME = ContentFrame;
@@ -59,24 +60,25 @@ namespace FluentNetease
         /// </summary>
         private async void GetUserPlaylists()
         {
-            var (IsSuccess, RequestResult) = await Network.GetUserPlaylist(Account.User.UserID);
-            if (IsSuccess)
+            var (isSuccess, playlists) = await Network.GetUserPlaylist(Account.User.UserID);
+            if (isSuccess)
             {
-                PlaylistsCreated.Clear();
-                PlaylistsBookmarked.Clear();
-                foreach (var Item in RequestResult)
+                CreatedPlaylistButtons.Clear();
+                BookmarkedPlaylistButtons.Clear();
+
+                foreach (var playlist in playlists)
                 {
-                    var PlaylistItem = new muxc.NavigationViewItem
+                    var item = new muxc.NavigationViewItem
                     {
-                        Tag = "Playlist",
-                        Content = Item.Name,
-                        DataContext = Item
+                        Name = "NavItemPlaylist",
+                        Tag = playlist,
+                        Content = playlist.Name
                     };
-                    PlaylistItem.Tag = "Playlist";
-                    if (Item.CreatorID == Account.User.UserID)
-                        PlaylistsCreated.Add(PlaylistItem);
+
+                    if (playlist.CreatorID == Account.User.UserID)
+                        CreatedPlaylistButtons.Add(item);
                     else
-                        PlaylistsBookmarked.Add(PlaylistItem);
+                        BookmarkedPlaylistButtons.Add(item);
                 }
             }
         }
@@ -88,26 +90,16 @@ namespace FluentNetease
         /// <param name="args"></param>
         private void MainNav_SelectionChanged(muxc.NavigationView sender, muxc.NavigationViewSelectionChangedEventArgs args)
         {
-            if (args.SelectedItemContainer != null)
-            {
-                //对Settings按钮作特殊处理
-                if (args.IsSettingsSelected)
-                    MainNav_Navigate("Settings", args.RecommendedNavigationTransitionInfo);
-                if (args.SelectedItemContainer.Tag.ToString() == "Playlist")
-                    ContentFrame.Navigate(typeof(PlaylistPage), args.SelectedItemContainer.DataContext);
-                else
-                    //导航
-                    MainNav_Navigate(args.SelectedItemContainer.Tag.ToString(), args.RecommendedNavigationTransitionInfo);
-            }
-        }
+            if (args.SelectedItemContainer == null) return;
 
-        private void MainNav_Navigate(string navItemTag, NavigationTransitionInfo transitionInfo)
-        {
-            Type Page = NavPages[navItemTag] as Type;
-            if (Page != null && ContentFrame.CurrentSourcePageType != Page)
-                ContentFrame.Navigate(Page, null, transitionInfo);
+            if (args.IsSettingsSelected)
+                ContentFrame.Navigate(typeof(SettingsPage), args.SelectedItemContainer.Tag, args.RecommendedNavigationTransitionInfo);
+            if (args.SelectedItemContainer.Name == "NavItemPlaylist")
+                ContentFrame.Navigate(typeof(PlaylistPage), args.SelectedItemContainer.Tag, args.RecommendedNavigationTransitionInfo);
+            else
+                ContentFrame.Navigate(NavButtons[args.SelectedItemContainer.Name], args.SelectedItemContainer.Tag, args.RecommendedNavigationTransitionInfo);
         }
-
+        
         private void MainNav_BackRequested(muxc.NavigationView sender, muxc.NavigationViewBackRequestedEventArgs args)
         {
             ContentFrame.GoBack();
@@ -120,43 +112,10 @@ namespace FluentNetease
         /// <param name="e"></param>
         private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            //先过滤掉源为null
-            if (e.SourcePageType != null)
-            {
-                Type NavPageType = null;
-                muxc.NavigationViewItem SelectedItem = null;
-                //先在预先设置好的按钮中找
-                foreach (DictionaryEntry Entry in NavPages)
-                {
-                    if ((Type)Entry.Value == e.SourcePageType)
-                    {
-                        NavPageType = e.SourcePageType;
-                        break;
-                    }
-                }
-                if (NavPageType != null)
-                {
-                    //因为Account按钮在FooterItems里，所以在MenuItems里找不到，需要提前判断好
-                    if (NavPageType == typeof(AccountPage)) { SelectedItem = NavItemAccount; }
-                    else if (NavPageType == typeof(SettingsPage)) { SelectedItem = (muxc.NavigationViewItem)MainNav.SettingsItem; }
-                    //在Pages中查找相关页面
-                    else { SelectedItem = MainNav.MenuItems.OfType<muxc.NavigationViewItem>().First(n => (Type)NavPages[n.Tag.ToString()] == e.SourcePageType); }
-                }
-                //如果前面没找到就在动态生成的按钮里找
-                else
-                {
-                    foreach (var Item in PlaylistsCreated)
-                    {
-                        if (Item.DataContext == e.Parameter)
-                        {
-                            SelectedItem = Item;
-                            break;
-                        }
-                    }
-                }
-                MainNav.SelectedItem = SelectedItem;
-                HeaderText.Text = ResourceLoader.GetForCurrentView().GetString(e.SourcePageType.Name + "Header");
-            }
+            // SourcePageType should not be null
+            if (e.SourcePageType == null) return;
+            MainNav.SelectedItem = FindNavigationItem(e.SourcePageType, e.Parameter);
+            HeaderText.Text = ResourceLoader.GetForCurrentView().GetString(e.SourcePageType.Name + "Header");
         }
 
         private void NavSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -172,6 +131,37 @@ namespace FluentNetease
                 {
                     ContentFrame.Navigate(typeof(SearchPage), Request);
                 }
+            }
+        }
+
+        private object FindNavigationItem(Type pageType, object navigationParameter)
+        {
+            if (NavButtons.ContainsValue(pageType))
+            {
+                // Account and settings button is stored in FooterItems
+                // So can't be find regularly
+                if (pageType == typeof(AccountPage)) return NavItemAccount;
+                if (pageType == typeof(SettingsPage)) return MainNav.SettingsItem;
+
+                return MainNav.MenuItems.OfType<muxc.NavigationViewItem>().First(n => NavButtons[n.Name] == pageType);
+            }
+            else
+            {
+                // Find from dynamic generated buttons
+                if (pageType == typeof(PlaylistPage))
+                {
+                    object result = null;
+                    foreach (var item in CreatedPlaylistButtons.Concat(BookmarkedPlaylistButtons))
+                    {
+                        if (((Playlist)item.Tag).ID == ((Playlist)navigationParameter).ID)
+                        {
+                            result = item;
+                            break;
+                        }
+                    }
+                    return result;
+                }
+                return null;
             }
         }
     }

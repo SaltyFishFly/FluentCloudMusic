@@ -128,8 +128,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classes\CookieExtension.cs" />
-    <Compile Include="Classes\Extension.cs" />
+    <Compile Include="Classes\Extensions.cs" />
     <Compile Include="Classes\Storage.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\PlayModeToSymbolConverter.cs" />

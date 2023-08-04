@@ -1,8 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
 namespace FluentNetease.Classes
 {
+    public static class ListExtension
+    {
+        public static List<T> Shuffle<T>(this List<T> list)
+        {
+            Random random = new Random();
+
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = random.Next(0, i);
+                (list[i], list[j]) = (list[j], list[i]);
+            }
+            return list;
+        }
+    }
+
     public static class CookieCollectionExtension
     {
         public static string GetString(this CookieCollection collection)
