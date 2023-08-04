@@ -17,12 +17,12 @@
                 <Grid
                     x:DefaultBindMode="OneTime">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="8"/>
                         <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="8"/>
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
                         Grid.Column="0"
@@ -59,8 +59,10 @@
 
     <ListView
         x:Name="ContentListView"
+        Padding="0,14,0,8"
+        VerticalAlignment="Top"
         Background="{ThemeResource LayerFillColorDefaultBrush}"
-        CornerRadius="4"
+        CornerRadius="8"
         SelectionMode="None"
         IsItemClickEnabled="True"
         ItemsSource="{x:Bind Path=ContentCollection}"

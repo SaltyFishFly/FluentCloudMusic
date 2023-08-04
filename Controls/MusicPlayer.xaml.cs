@@ -56,10 +56,11 @@ namespace FluentNetease.Controls
             Timer.Start();
 
             //读取设置
-            object LocalVolume = ApplicationData.Current.LocalSettings.Values["Volume"];
-            VolumeSlider.Value = LocalVolume == null ? 100 : (double)LocalVolume;
-            object LocalPlayMode = ApplicationData.Current.LocalSettings.Values["PlayMode"];
-            PlayMode = LocalPlayMode == null ? PlayModeEnum.RepeatAll : (PlayModeEnum)(int)LocalPlayMode;
+            VolumeSlider.Value =
+                Storage.HasSetting("Volume") ? Storage.GetSetting<double>("Volume") : 50;
+            PlayMode =
+                Storage.HasSetting("PlayMode") ? Storage.GetSetting<PlayModeEnum>("PlayMode") : PlayModeEnum.RepeatAll;
+
             PlayModeButton_Icon.Symbol = (Symbol)PlayModeToSymbolConverter.Convert(PlayMode, null, null, null);
         }
 
@@ -128,32 +129,19 @@ namespace FluentNetease.Controls
         private void VolumeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             Player.Volume = e.NewValue / 100;
-            ApplicationData.Current.LocalSettings.Values["Volume"] = e.NewValue;
+            Storage.SetSetting("Volume", e.NewValue);
         }
 
         private void PlayModeButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            if (PlayMode == PlayModeEnum.RepeatOne)
-            {
-                RePlay();
-            }
-            else
-            {
-                PlayNext();
-            }
+            if (PlayMode == PlayModeEnum.RepeatOne) RePlay();
+            else PlayNext();
         }
 
         private void Player_MediaEnded(MediaPlayer sender, object args)
         {
-            switch (PlayMode)
-            {
-                case PlayModeEnum.RepeatAll:
-                    PlayNext();
-                    break;
-                case PlayModeEnum.RepeatOne:
-                    RePlay();
-                    break;
-            }
+            if (PlayMode == PlayModeEnum.RepeatOne) RePlay();
+            else PlayNext();
         }
 
         private async void Play(int index)
@@ -161,14 +149,10 @@ namespace FluentNetease.Controls
             if (PlaybackItemList.Count > index)
             {
                 CurrentPlayIndex = index;
-                if (PlayMode != PlayModeEnum.Shuffle)
-                {
-                    Player.Source = await PlaybackItemList[index].ToMediaPlaybackItem();
-                }
-                else
-                {
+                if (PlayMode == PlayModeEnum.Shuffle)
                     Player.Source = await ShuffledPlaybackItemList[index].ToMediaPlaybackItem();
-                }
+                else
+                    Player.Source = await PlaybackItemList[index].ToMediaPlaybackItem();
                 Player.Play();
             }
         }
@@ -188,18 +172,12 @@ namespace FluentNetease.Controls
 
         private void PlayPrevious()
         {
-            if (CurrentPlayIndex > 0)
-            {
-                Play(--CurrentPlayIndex);
-            }
+            if (CurrentPlayIndex > 0) Play(--CurrentPlayIndex);
         }
 
         private void PlayNext()
         {
-            if (CurrentPlayIndex <= PlaybackItemList.Count)
-            {
-                Play(++CurrentPlayIndex);
-            }
+            if (CurrentPlayIndex <= PlaybackItemList.Count) Play(++CurrentPlayIndex);
         }
 
         private void RePlay()

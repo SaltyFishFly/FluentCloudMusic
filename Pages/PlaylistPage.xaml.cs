@@ -16,29 +16,25 @@ namespace FluentNetease.Pages
     /// </summary>
     public sealed partial class PlaylistPage : Page
     {
-        private ObservableCollection<Song> ContentCollection;
+        private readonly ObservableCollection<Song> Songs;
+        public Playlist Playlist { get; set; }
         public PlaylistPage()
         {
             this.InitializeComponent();
-            ContentCollection = new ObservableCollection<Song>();
+            Songs = new ObservableCollection<Song>();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            Playlist PlayList = (Playlist)e.Parameter;
-            var (IsSuccess, PlaylistInfo, Result) = await Network.GetPlaylistDetailAsync(PlayList.ID);
-            if (IsSuccess)
+            Playlist = (Playlist)e.Parameter;
+            var (isSuccess, jsonPlaylist, result) = await Network.GetPlaylistDetailAsync(Playlist.ID);
+            if (isSuccess)
             {
-                CoverPicture.ImageSource = new BitmapImage()
-                {
-                    UriSource = new Uri(PlaylistInfo["coverImgUrl"].ToString())
-                };
-                TitleText.Text = PlaylistInfo["name"].ToString();
-                DescriptionText.Text += PlaylistInfo["description"].ToString();
-                foreach (var Item in Result)
-                {
-                    ContentCollection.Add(Item);
-                }
+                Playlist.CoverPictureUrl = jsonPlaylist["coverImgUrl"].ToString();
+                Playlist.Name = jsonPlaylist["name"].ToString();
+                Playlist.Description = jsonPlaylist["description"].ToString();
+
+                foreach (var Item in result) Songs.Add(Item);
             }
         }
 
@@ -60,7 +56,7 @@ namespace FluentNetease.Pages
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             var PlayList = new List<AbstractMusic>();
-            foreach (var Item in ContentCollection)
+            foreach (var Item in Songs)
             {
                 PlayList.Add(Item.Music);
             }
