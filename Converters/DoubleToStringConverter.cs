@@ -7,8 +7,10 @@ namespace FluentNetease.Converters
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
         {
-            int Seconds = Convert.ToInt32((double)value);
-            return (Seconds / 60) + " : " + (Seconds % 60);
+            int totalSeconds = Convert.ToInt32((double)value);
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+            return $"{minutes} : {seconds}";
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language)

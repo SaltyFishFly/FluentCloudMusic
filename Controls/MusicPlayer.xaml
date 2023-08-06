@@ -17,114 +17,119 @@
             <converters:PlayModeToSymbolConverter x:Key="PlayModeToSymbolConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    
-    <Grid
-        Width="Auto">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50" />
-            <ColumnDefinition Width="50" />
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="50" />
-            <ColumnDefinition Width="50" />
-            <ColumnDefinition Width="50" />
-        </Grid.ColumnDefinitions>
-        <Button
-            x:Name="MusicButton"
-            Width="42"
-            Height="42"
-            Grid.Column="0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="Transparent"
-            BorderThickness="0"
-            CornerRadius="8"
-            Tapped="MusicButton_Tapped">
-            <SymbolIcon
-                x:Name="MusicButton_Icon"
-                Symbol="MusicInfo"/>
-        </Button>
-        <Button
-            x:Name="PlayButton"
-            Width="42"
-            Height="42"
-            Grid.Column="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="Transparent"
-            BorderThickness="0"
-            CornerRadius="8"
-            Tapped="PlayButton_Tapped">
-            <SymbolIcon
-                x:Name="PlayButton_Icon"
-                Symbol="Play"/>
-        </Button>
-        <Slider
-            x:Name="Timeline"
-            Width="Auto"
-            Margin="10,0,2,0"
-            Grid.Column="2"
-            Minimum="0"
-            Maximum="{x:Bind Path=Player.PlaybackSession.NaturalDuration, Converter={StaticResource TimeSpanToDoubleConverter}}"
-            Value="{x:Bind Path=Player.PlaybackSession.Position, Converter={StaticResource TimeSpanToDoubleConverter}}"
-            VerticalAlignment="Center"
-            ThumbToolTipValueConverter="{StaticResource DoubleToStringConverter}"
-            PointerCaptureLost="Timeline_PointerCaptureLost">
-        </Slider>
-        <TextBlock 
-            x:Name="PlayPosition"
-            Margin="0,0,-5,3"
-            Grid.Column="3"
-            Text="{x:Bind Path=Timeline.Maximum, Converter={StaticResource DoubleToStringConverter}}"
-            FontSize="16"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"/>
-        <Button
-            x:Name="PlayModeButton"
-            Width="42"
-            Height="42"
-            Grid.Column="4"
-            Background="Transparent"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            BorderThickness="0"
-            CornerRadius="8"
-            Click="PlayModeButton_Click">
-            <SymbolIcon
-                x:Name="PlayModeButton_Icon"/>
-        </Button>
-        <Button
-            x:Name="VolumeButton"
-            Width="42"
-            Height="42"
-            Grid.Column="5"
-            Background="Transparent"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            BorderThickness="0"
-            CornerRadius="8">
-            <SymbolIcon
-                x:Name="VolumeButton_Icon"
-                Symbol="Volume"/>
-            <Button.Flyout>
-                <Flyout>
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon
-                            Width="42"
-                            Height="42"
-                            Symbol="Volume"/>
-                        <Slider
-                            x:Name="VolumeSlider"
-                            Width="200"
-                            Margin="10,0,10,0"
-                            Minimum="0"
-                            Maximum="100"
-                            Value="0"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            ValueChanged="VolumeSlider_ValueChanged"/>
-                    </StackPanel>
-                </Flyout>
-            </Button.Flyout>
-        </Button>
-    </Grid>
+
+    <Border
+        Height="50"
+        Width="Auto"
+        Margin="8"
+        MaxWidth="800"
+        CornerRadius="8"
+        Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}">
+        <Grid
+            Width="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="50" />
+            </Grid.ColumnDefinitions>
+            <Button
+                x:Name="MusicButton"
+                Width="42"
+                Height="42"
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="Transparent"
+                BorderThickness="0"
+                CornerRadius="8"
+                Tapped="MusicButton_Tapped">
+                <SymbolIcon
+                    x:Name="MusicButton_Icon"
+                    Symbol="MusicInfo"/>
+            </Button>
+            <Button
+                x:Name="PlayButton"
+                Width="42"
+                Height="42"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="Transparent"
+                BorderThickness="0"
+                CornerRadius="8"
+                Tapped="PlayButton_Tapped">
+                <SymbolIcon
+                    x:Name="PlayButton_Icon"
+                    Symbol="Play"/>
+            </Button>
+            <Slider
+                x:Name="Timeline"
+                Width="Auto"
+                Margin="10,0,2,0"
+                Grid.Column="2"
+                VerticalAlignment="Center"
+                Minimum="0"
+                Maximum="{x:Bind Path=Player.PlaybackSession.NaturalDuration, Converter={StaticResource TimeSpanToDoubleConverter}}"
+                Value="{x:Bind Path=Player.PlaybackSession.Position, Converter={StaticResource TimeSpanToDoubleConverter}}"
+                ThumbToolTipValueConverter="{StaticResource DoubleToStringConverter}"
+                PointerCaptureLost="Timeline_PointerCaptureLost">
+            </Slider>
+            <TextBlock
+                x:Name="PlayPosition"
+                Margin="0,0,-5,3"
+                Grid.Column="3"
+                Text="{x:Bind Path=Timeline.Maximum, Converter={StaticResource DoubleToStringConverter}}"
+                FontSize="16"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"/>
+            <Button
+                x:Name="PlayModeButton"
+                Width="42"
+                Height="42"
+                Grid.Column="4"
+                Background="Transparent"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                BorderThickness="0"
+                CornerRadius="8"
+                Click="PlayModeButton_Click">
+                <SymbolIcon
+                    x:Name="PlayModeButton_Icon"/>
+            </Button>
+            <Button
+                x:Name="VolumeButton"
+                Width="42"
+                Height="42"
+                Grid.Column="5"
+                Background="Transparent"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                BorderThickness="0"
+                CornerRadius="8">
+                <SymbolIcon
+                    x:Name="VolumeButton_Icon"
+                    Symbol="Volume"/>
+                <Button.Flyout>
+                    <Flyout
+                        FlyoutPresenterStyle="{StaticResource VolumeButtonFlyoutPresenterStyle}">
+                        <StackPanel
+                            Orientation="Vertical">
+                            <Slider
+                                x:Name="VolumeSlider"
+                                Height="140"
+                                Minimum="0"
+                                Maximum="100"
+                                Value="0"
+                                Orientation="Vertical"
+                                HorizontalAlignment="Center"
+                                ValueChanged="VolumeSlider_ValueChanged"/>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+    </Border>
 </UserControl>

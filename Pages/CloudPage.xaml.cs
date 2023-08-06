@@ -13,40 +13,33 @@ namespace FluentNetease.Pages
     /// </summary>
     public sealed partial class CloudPage : Page
     {
-        private ObservableCollection<Song> ContentCollection;
+        private ObservableCollection<Song> Songs;
         private SearchSection CurrentSearchSection;
 
         public CloudPage()
         {
             this.InitializeComponent();
-            ContentCollection = new ObservableCollection<Song>();
+            Songs = new ObservableCollection<Song>();
         }
 
         private async void GetUserCloud(SearchSection section)
         {
             CurrentSearchSection = section;
-            var Result = await Network.GetUserCloudAsync(section);
-            if (Result.IsSuccess)
+            var (isSuccess, currentPage, songList) = await Network.GetUserCloudAsync(section);
+            if (isSuccess)
             {
-                ContentCollection.Clear();
-                foreach (var Item in Result.SongList)
-                {
-                    ContentCollection.Add(Item);
-                }
-                PageText.Text = section.Page.ToString() + " / " + Result.CurrentPage.ToString();
+                Songs.Clear();
+                foreach (var Item in songList) Songs.Add(Item);
+
+                PageText.Text = section.Page.ToString() + " / " + currentPage.ToString();
                 PreviousPageButton.IsEnabled = 1 < section.Page;
-                NextPageButton.IsEnabled = section.Page < Result.CurrentPage;
+                NextPageButton.IsEnabled = section.Page < currentPage;
             }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             GetUserCloud(new SearchSection());
-        }
-
-        private void MusicNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainPage.PLAYER.Play(new NeteaseMusic { ID = (string)((FrameworkElement)sender).DataContext });
         }
 
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)

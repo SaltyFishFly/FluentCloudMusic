@@ -9,11 +9,11 @@ namespace FluentNetease.Classes
 
         public Playlist()
         {
-            _ID = string.Empty;
-            _Name = string.Empty;
-            _Description = string.Empty;
-            _CoverPictureUrl = string.Empty;
-            _CreatorID = string.Empty;
+            _ID = null;
+            _Name = null;
+            _Description = null;
+            _CoverPictureUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
+            _CreatorID = null;
             _Privacy = 0;
         }
 

@@ -6,86 +6,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:classes="using:FluentNetease.Classes"
+    xmlns:controls="using:FluentNetease.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <Page.Resources>
-        <ResourceDictionary>
-            <DataTemplate
-                x:DataType="classes:Song"
-                x:Key="SongList">
-                <Grid
-                    x:DefaultBindMode="OneTime">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="7*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="8"/>
-                    </Grid.ColumnDefinitions>
-                    <HyperlinkButton
-                        Grid.Column="0"
-                        Click="MusicNameButton_Click"
-                        DataContext="{x:Bind Path=Music.ID}"
-                        ToolTipService.ToolTip="{x:Bind Path=Music.Name}"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
-                        IsEnabled="{x:Bind Path=HasCopyright}">
-                        <HyperlinkButton.Content>
-                            <TextBlock>
-                                <Run
-                                    Text="{x:Bind Path=Music.Name}"/>
-                                <Run
-                                    Text="{x:Bind Path=Music.Description}"
-                                    Foreground="{ThemeResource DescriptionTextBrush}"/>
-                            </TextBlock>
-                        </HyperlinkButton.Content>
-                    </HyperlinkButton>
-                    <HyperlinkButton
-                        Grid.Column="2"
-                        Click="ArtistNameButton_Click"
-                        DataContext="{x:Bind Path=Artists.MainArtistID}"
-                        ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtistName}"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
-                        <HyperlinkButton.Content>
-                            <TextBlock
-                                Text="{x:Bind Path=Artists.MainArtistName}"/>
-                        </HyperlinkButton.Content>
-                    </HyperlinkButton>
-                    <HyperlinkButton
-                        Grid.Column="4"
-                        Click="AlbumNameButton_Click"
-                        DataContext="{x:Bind Path=Album.ID}"
-                        ToolTipService.ToolTip="{x:Bind Path=Album.Name}"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
-                        <HyperlinkButton.Content>
-                            <TextBlock
-                                Text="{x:Bind Path=Album.Name}"/>
-                        </HyperlinkButton.Content>
-                    </HyperlinkButton>
-                </Grid>
-            </DataTemplate>
-        </ResourceDictionary>
-    </Page.Resources>
-
-    <ListView
-        x:Name="ContentListView"
-        Padding="0,14,0,8"
-        VerticalAlignment="Top"
-        Background="{ThemeResource LayerFillColorDefaultBrush}"
-        CornerRadius="8"
-        SelectionMode="None"
-        IsItemClickEnabled="True"
-        ItemsSource="{x:Bind Path=Songs}"
-        ItemTemplate="{StaticResource SongList}">
-        <ListView.Header>
+    <controls:MusicList
+        ItemsSource="{x:Bind Path=Songs}">
+        <controls:MusicList.Header>
             <Grid
-                Margin="0,16,16,16">
+                Margin="0,8,16,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="270"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel
+                <Border
                     Height="240"
                     Width="240"
                     Grid.Column="0"
@@ -97,11 +31,10 @@
                         Height="240"
                         Width="240"
                         Stretch="Fill"
-                        Source="{x:Bind Mode=OneWay,Path=Playlist.CoverPictureUrl}"/>
-                </StackPanel>
+                        Source="{x:Bind Path=Playlist.CoverPictureUrl,Mode=OneWay}"/>
+                </Border>
                 <Grid
                     Height="240"
-                    Margin="0,0,0,0"
                     Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -115,17 +48,17 @@
                         TextWrapping="Wrap"
                         FontSize="30"
                         FontWeight="Normal"
-                        Text="{x:Bind Mode=OneWay,Path=Playlist.Name}"/>
+                        Text="{x:Bind Path=Playlist.Name,Mode=OneWay}"/>
                     <ScrollViewer
                         Grid.Row="1"
                         VerticalScrollMode="Enabled">
                         <TextBlock
                             x:Name="DescriptionText"
                             Grid.Row="1"
-                            Margin="2,8,8,2"
+                            Margin="2,8,16,0"
                             TextWrapping="Wrap"
                             Foreground="{ThemeResource DescriptionTextBrush}"
-                            Text="{x:Bind Mode=OneWay,Path=Playlist.Description}"/>
+                            Text="{x:Bind Path=Playlist.Description,Mode=OneWay}"/>
                     </ScrollViewer>
                     <Grid
                         Grid.Row="2">
@@ -143,6 +76,6 @@
                     </Grid>
                 </Grid>
             </Grid>
-        </ListView.Header>
-    </ListView>
+        </controls:MusicList.Header>
+    </controls:MusicList>
 </Page>

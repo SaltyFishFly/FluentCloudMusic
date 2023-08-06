@@ -30,10 +30,10 @@ namespace FluentNetease.Classes
         public Dictionary<string, object> ToDictionary()
         {
             return new Dictionary<string, object>
-                {
-                    { "limit", Limit },
-                    { "offset", Offset }
-                };
+            {
+                { "limit", Limit },
+                { "offset", Offset }
+            };
         }
     }
 }

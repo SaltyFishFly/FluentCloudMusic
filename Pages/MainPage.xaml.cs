@@ -41,13 +41,13 @@ namespace FluentNetease
 
         public MainPage()
         {
-            InitializeComponent();
-            CreatedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
-            BookmarkedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
-            MainNav.SelectedItem = NavItemDiscover;
+            this.CreatedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
+            this.BookmarkedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
+            this.GeneratePlaylistButtons();
+            this.InitializeComponent();
             PLAYER = MusicPlayer;
             FRAME = ContentFrame;
-            GetUserPlaylists();
+            this.MainNav.SelectedItem = NavItemDiscover;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -58,7 +58,7 @@ namespace FluentNetease
         /// <summary>
         /// 获取用户的歌单并添加到左侧导航栏内
         /// </summary>
-        private async void GetUserPlaylists()
+        private async void GeneratePlaylistButtons()
         {
             var (isSuccess, playlists) = await Network.GetUserPlaylist(Account.User.UserID);
             if (isSuccess)
@@ -94,7 +94,7 @@ namespace FluentNetease
 
             if (args.IsSettingsSelected)
                 ContentFrame.Navigate(typeof(SettingsPage), args.SelectedItemContainer.Tag, args.RecommendedNavigationTransitionInfo);
-            if (args.SelectedItemContainer.Name == "NavItemPlaylist")
+            else if (args.SelectedItemContainer.Name == "NavItemPlaylist")
                 ContentFrame.Navigate(typeof(PlaylistPage), args.SelectedItemContainer.Tag, args.RecommendedNavigationTransitionInfo);
             else
                 ContentFrame.Navigate(NavButtons[args.SelectedItemContainer.Name], args.SelectedItemContainer.Tag, args.RecommendedNavigationTransitionInfo);
@@ -148,20 +148,9 @@ namespace FluentNetease
             else
             {
                 // Find from dynamic generated buttons
-                if (pageType == typeof(PlaylistPage))
-                {
-                    object result = null;
-                    foreach (var item in CreatedPlaylistButtons.Concat(BookmarkedPlaylistButtons))
-                    {
-                        if (((Playlist)item.Tag).ID == ((Playlist)navigationParameter).ID)
-                        {
-                            result = item;
-                            break;
-                        }
-                    }
-                    return result;
-                }
-                return null;
+                if (pageType != typeof(PlaylistPage)) return null;
+                return CreatedPlaylistButtons.Concat(BookmarkedPlaylistButtons)
+                        .FirstOrDefault(button => ((Playlist)button.Tag).ID == ((Playlist)navigationParameter).ID);
             }
         }
     }

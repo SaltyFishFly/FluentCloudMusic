@@ -160,9 +160,9 @@ namespace FluentNetease.Classes
             if (code == 200)
             {
                 var result = new LinkedList<Song>();
-                foreach (var Item in jsonResult["data"])
+                foreach (var item in jsonResult["data"])
                 {
-                    result.AddLast(Song.ParseUserMusic(Item));
+                    result.AddLast(Song.ParseUserMusic(item));
                 }
                 int page = (int)Math.Ceiling(jsonResult["count"].Value<double>() / section.Limit);
                 return (true, page, result);

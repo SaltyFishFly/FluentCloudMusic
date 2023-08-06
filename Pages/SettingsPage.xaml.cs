@@ -14,10 +14,5 @@ namespace FluentNetease.Pages
         {
             this.InitializeComponent();
         }
-
-        private void LogoutButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            Account.LogoutAsync();
-        }
     }
 }

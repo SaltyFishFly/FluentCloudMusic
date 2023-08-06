@@ -40,11 +40,10 @@
                         Width="150"
                         Height="80"
                         Grid.Row="2"
-                        Text="{x:Bind Path=Name}"
+                        MaxLines="2"
+                        TextTrimming="CharacterEllipsis"
                         TextWrapping="Wrap"
-                        FontSize="15"
-                        LineHeight="22"
-                        MaxLines="2"/>
+                        Text="{x:Bind Path=Name}"/>
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -59,7 +58,7 @@
                 CornerRadius="10"
                 ItemsSource="{x:Bind Path=DailyRecommendPlaylists}"
                 ItemTemplate="{StaticResource PlaylistItemTemplate}"
-                ItemContainerStyle="{StaticResource PlaylistItemStyle}"
+                ItemContainerStyle="{StaticResource DailyRecommendPlaylistsGridViewItemContainerStyle}"
                 ScrollViewer.VerticalScrollMode="Disabled"
                 ScrollViewer.HorizontalScrollMode="Enabled"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"

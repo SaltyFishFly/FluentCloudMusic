@@ -6,68 +6,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:classes="using:FluentNetease.Classes"
+    xmlns:controls="using:FluentNetease.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <Page.Resources>
-        <ResourceDictionary>
-            <DataTemplate
-                x:DataType="classes:Song"
-                x:Key="SongList">
-                <Grid
-                    x:DefaultBindMode="OneTime">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="7*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="8"/>
-                    </Grid.ColumnDefinitions>
-                    <HyperlinkButton
-                        Grid.Column="0"
-                        Click="MusicNameButton_Click"
-                        DataContext="{x:Bind Path=Music.ID}"
-                        ToolTipService.ToolTip="{x:Bind Path=Music.Name}"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
-                        <HyperlinkButton.Content>
-                            <TextBlock>
-                                <Run
-                                    Text="{x:Bind Path=Music.Name}"/>
-                                <Run
-                                    Text="{x:Bind Path=Music.Description}"
-                                    Foreground="{ThemeResource DescriptionTextBrush}"/>
-                            </TextBlock>
-                        </HyperlinkButton.Content>
-                    </HyperlinkButton>
-                    <TextBlock
-                        Grid.Column="2"
-                        Text="{x:Bind Path=Artists.MainArtistName}"
-                        ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtistName}"
-                        VerticalAlignment="Center">
-                    </TextBlock>
-                    <TextBlock
-                        Grid.Column="4"
-                        Text="{x:Bind Path=Album.Name}"
-                        ToolTipService.ToolTip="{x:Bind Path=Album.Name}"
-                        VerticalAlignment="Center">
-                    </TextBlock>
-                </Grid>
-            </DataTemplate>
-        </ResourceDictionary>
-    </Page.Resources>
-
-    <ListView
-        x:Name="ContentListView"
-        Padding="0,14,0,8"
-        VerticalAlignment="Top"
-        Background="{ThemeResource LayerFillColorDefaultBrush}"
-        CornerRadius="8"
-        SelectionMode="None"
-        IsItemClickEnabled="True"
-        ItemsSource="{x:Bind Path=ContentCollection}"
-        ItemTemplate="{StaticResource SongList}">
-        <ListView.Footer>
+    <controls:MusicList
+        ItemsSource="{x:Bind Path=Songs}"
+        ArtistButtonEnabled="False"
+        AlbumButtonEnabled="False">
+        <controls:MusicList.Footer>
             <Grid
                 Height="60"
                 HorizontalAlignment="Center"
@@ -108,6 +55,6 @@
                     </Button.Content>
                 </Button>
             </Grid>
-        </ListView.Footer>
-    </ListView>
+        </controls:MusicList.Footer>
+    </controls:MusicList>
 </Page>
