@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace FluentNetease.Classes
@@ -9,11 +10,11 @@ namespace FluentNetease.Classes
 
         public Playlist()
         {
-            _ID = string.Empty;
-            _Name = string.Empty;
-            _Description = string.Empty;
-            _CoverPictureUrl = string.Empty;
-            _CreatorID = string.Empty;
+            _ID = null;
+            _Name = null;
+            _Description = null;
+            _CoverPictureUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
+            _CreatorID = null;
             _Privacy = 0;
         }
 
@@ -87,6 +88,18 @@ namespace FluentNetease.Classes
                 _Privacy = value; 
                 Notify(); 
             }
+        }
+
+        public static Playlist Parse(JToken data)
+        {
+            return new Playlist
+            {
+                _ID = data["id"].ToString(),
+                _Name = data["name"].ToString(),
+                _CoverPictureUrl = data["picUrl"].ToString(),
+                _CreatorID = data["creator"]["userId"].ToString(),
+                _Privacy = 0
+            };
         }
 
         private void Notify([CallerMemberName]string caller = null)

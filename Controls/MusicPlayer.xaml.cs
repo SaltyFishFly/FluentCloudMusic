@@ -1,7 +1,7 @@
 ﻿using FluentNetease.Classes;
-using FluentNetease.Converters;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.UI.Core;
@@ -20,48 +20,32 @@ namespace FluentNetease.Controls
         public List<AbstractMusic> PlaybackItemList { get; set; } = new List<AbstractMusic>();
         public List<AbstractMusic> ShuffledPlaybackItemList { get; set; } = new List<AbstractMusic>();
         public int CurrentPlayIndex { get; set; }
-        public int CurrentPosition { get; set; }
-        public PlayModeEnum PlayMode { get; set; }
-        private PlayModeToSymbolConverter PlayModeToSymbolConverter { get; set; } = new PlayModeToSymbolConverter();
+        public ObservablePlayMode PlayMode { get; set; }
         private DispatcherTimer Timer { get; set; }
-        public enum PlayModeEnum
-        {
-            RepeatAll, RepeatOne, Shuffle
-        }
+        
         public MusicPlayer()
         {
-            this.InitializeComponent();
-            InitalizePlayer();
-        }
-
-        private void InitalizePlayer()
-        {
-            PlayMode = PlayModeEnum.RepeatOne;
             Player = new MediaPlayer
             {
                 AudioCategory = MediaPlayerAudioCategory.Media,
                 AutoPlay = true,
                 IsLoopingEnabled = false,
-                Volume = VolumeSlider.Value
             };
             Player.PlaybackSession.PlaybackStateChanged += Player_PlaybackSession_PlaybackStateChanged;
             Player.MediaEnded += Player_MediaEnded;
 
-            //初始化计时器
-            Timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(1)
-            };
+            var playmode =
+                Storage.HasSetting("PlayMode") ? Storage.GetSetting<PlayModeEnum>("PlayMode") : PlayModeEnum.RepeatList;
+            PlayMode = new ObservablePlayMode(playmode);
+
+            Timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             Timer.Tick += Timer_Tick;
             Timer.Start();
 
-            //读取设置
-            VolumeSlider.Value =
-                Storage.HasSetting("Volume") ? Storage.GetSetting<double>("Volume") : 50;
-            PlayMode =
-                Storage.HasSetting("PlayMode") ? Storage.GetSetting<PlayModeEnum>("PlayMode") : PlayModeEnum.RepeatAll;
+            this.InitializeComponent();
 
-            PlayModeButton_Icon.Symbol = (Symbol)PlayModeToSymbolConverter.Convert(PlayMode, null, null, null);
+            VolumeSlider.Value =
+                Storage.HasSetting("Volume") ? Storage.GetSetting<double>("Volume") : 50;       
         }
 
         private void Timer_Tick(object sender, object e)
@@ -69,12 +53,12 @@ namespace FluentNetease.Controls
             Bindings.Update();
         }
 
-        private void MusicButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private void MusicButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void PlayButton_Tapped(object sender, TappedRoutedEventArgs e)
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             switch (Player.PlaybackSession.PlaybackState)
             {
@@ -94,7 +78,7 @@ namespace FluentNetease.Controls
 
         private void Player_PlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
         {
-            bool EnableFlag = sender.PlaybackState switch
+            bool isEnabled = sender.PlaybackState switch
             {
                 MediaPlaybackState.Playing => true,
                 MediaPlaybackState.Paused => true,
@@ -108,22 +92,15 @@ namespace FluentNetease.Controls
             };
             _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                PlayButton.IsEnabled = EnableFlag;
+                PlayButton.IsEnabled = isEnabled;
                 PlayButton_Icon.Symbol = IconSymbol;
             });
         }
 
         private void PlayModeButton_Click(object sender, RoutedEventArgs e)
         {
-            PlayMode = PlayMode switch
-            {
-                PlayModeEnum.RepeatAll => PlayModeEnum.RepeatOne,
-                PlayModeEnum.RepeatOne => PlayModeEnum.Shuffle,
-                PlayModeEnum.Shuffle => PlayModeEnum.RepeatAll,
-                _ => throw new NotImplementedException()
-            };
-            PlayModeButton_Icon.Symbol = (Symbol)PlayModeToSymbolConverter.Convert(PlayMode, null, null, null);
-            ApplicationData.Current.LocalSettings.Values["PlayMode"] = (int)PlayMode;
+            PlayMode.Next();
+            Storage.SetSetting("PlayMode", (int)PlayMode);
         }
 
         private void VolumeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -132,15 +109,9 @@ namespace FluentNetease.Controls
             Storage.SetSetting("Volume", e.NewValue);
         }
 
-        private void PlayModeButton_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (PlayMode == PlayModeEnum.RepeatOne) RePlay();
-            else PlayNext();
-        }
-
         private void Player_MediaEnded(MediaPlayer sender, object args)
         {
-            if (PlayMode == PlayModeEnum.RepeatOne) RePlay();
+            if (PlayMode.Mode == PlayModeEnum.RepeatOne) RePlay();
             else PlayNext();
         }
 
@@ -149,7 +120,7 @@ namespace FluentNetease.Controls
             if (PlaybackItemList.Count > index)
             {
                 CurrentPlayIndex = index;
-                if (PlayMode == PlayModeEnum.Shuffle)
+                if (PlayMode.Mode == PlayModeEnum.Shuffle)
                     Player.Source = await ShuffledPlaybackItemList[index].ToMediaPlaybackItem();
                 else
                     Player.Source = await PlaybackItemList[index].ToMediaPlaybackItem();
@@ -190,5 +161,41 @@ namespace FluentNetease.Controls
             Timer.Stop();
             Player.Dispose();
         }
+    }
+
+    public class ObservablePlayMode : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private PlayModeEnum _Mode;
+
+        public PlayModeEnum Mode { get { return _Mode; } }
+
+        public ObservablePlayMode(PlayModeEnum mode = PlayModeEnum.RepeatList)
+        {
+            _Mode = mode;
+        }
+
+        public void Next()
+        {
+            _Mode = _Mode switch
+            {
+                PlayModeEnum.RepeatList => PlayModeEnum.RepeatOne,
+                PlayModeEnum.RepeatOne => PlayModeEnum.Shuffle,
+                PlayModeEnum.Shuffle => PlayModeEnum.RepeatList,
+                _ => throw new NotImplementedException(),
+            };
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Mode)));
+        }
+
+        public static explicit operator int(ObservablePlayMode mode)
+        {
+            return (int)mode._Mode;
+        }
+    }
+
+    public enum PlayModeEnum
+    {
+        RepeatList, RepeatOne, Shuffle,
     }
 }

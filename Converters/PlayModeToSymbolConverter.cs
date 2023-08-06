@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using static FluentNetease.Controls.MusicPlayer;
+using FluentNetease.Controls;
 
 namespace FluentNetease.Converters
 {
@@ -11,7 +11,7 @@ namespace FluentNetease.Converters
         {
             return (PlayModeEnum)value switch
             {
-                PlayModeEnum.RepeatAll => Symbol.RepeatAll,
+                PlayModeEnum.RepeatList => Symbol.RepeatAll,
                 PlayModeEnum.RepeatOne => Symbol.RepeatOne,
                 PlayModeEnum.Shuffle => Symbol.Shuffle,
                 _ => throw new NotImplementedException(),

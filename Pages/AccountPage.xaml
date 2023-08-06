@@ -5,10 +5,39 @@
     xmlns:local="using:FluentNetease.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:classes="using:FluentNetease.Classes"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <Grid>
-
-    </Grid>
+    <StackPanel
+        Orientation="Vertical">
+        <Grid
+            Height="240">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="240"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Border
+                Height="240"
+                Width="240"
+                Grid.Column="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                CornerRadius="8">
+                <Image
+                    x:Name="CoverPicture"
+                    Height="240"
+                    Width="240"
+                    Stretch="Fill"
+                    Source="{x:Bind Path=classes:Account.User.AvatarUrl,Mode=OneWay}"/>
+            </Border>
+            <Button
+                x:Name="LogoutButton"
+                x:Uid="LogoutButton"
+                Content="退出登录"
+                Grid.Column="2"
+                Click="LogoutButton_Click"/>
+        </Grid>
+    </StackPanel>
 </Page>

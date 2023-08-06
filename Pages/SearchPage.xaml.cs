@@ -28,38 +28,23 @@ namespace FluentNetease.Pages
         public async void Search(SearchRequest request)
         {
             CurrentSearchRequest = request;
-            var Result = await Network.SearchAsync(request);
-            if (Result.IsSuccess)
+            var (isSuccess, currentPage, searchResults) = await Network.SearchAsync(request);
+            if (isSuccess)
             {
                 ContentCollection.Clear();
-                foreach (var Item in Result.SearchResults)
+                foreach (var item in searchResults)
                 {
-                    ContentCollection.Add(Item);
+                    ContentCollection.Add(item);
                 }
-                PageText.Text = request.Section.Page.ToString() + " / " + Result.CurrentPage.ToString();
+                PageText.Text = request.Section.Page.ToString() + " / " + currentPage.ToString();
                 PreviousPageButton.IsEnabled = 1 < request.Section.Page;
-                NextPageButton.IsEnabled = request.Section.Page < Result.CurrentPage;
+                NextPageButton.IsEnabled = request.Section.Page < currentPage;
             }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Search((SearchRequest)e.Parameter);
-        }
-
-        private void MusicNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainPage.PLAYER.Play(new NeteaseMusic { ID = (string)((FrameworkElement)sender).DataContext });
-        }
-
-        private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainPage.FRAME.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).DataContext);
         }
 
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)

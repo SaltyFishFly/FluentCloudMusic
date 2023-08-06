@@ -130,6 +130,9 @@
   <ItemGroup>
     <Compile Include="Classes\Extensions.cs" />
     <Compile Include="Classes\Storage.cs" />
+    <Compile Include="Controls\MusicList.xaml.cs">
+      <DependentUpon>MusicList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\PlayModeToSymbolConverter.cs" />
     <Compile Include="App.xaml.cs">
@@ -159,6 +162,9 @@
     </Compile>
     <Compile Include="Pages\AlbumPage.xaml.cs">
       <DependentUpon>AlbumPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ArtistPage.xaml.cs">
+      <DependentUpon>ArtistPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\CloudPage.xaml.cs">
       <DependentUpon>CloudPage.xaml</DependentUpon>
@@ -261,6 +267,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\MusicList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\MusicPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -274,6 +284,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\AlbumPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ArtistPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -345,6 +359,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <PRIResource Include="Strings\en-US\Resources.resw" />
     <None Include="Todolist.md" />
   </ItemGroup>
   <ItemGroup>

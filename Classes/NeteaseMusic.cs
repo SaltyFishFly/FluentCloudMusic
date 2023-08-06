@@ -7,8 +7,8 @@ namespace FluentNetease.Classes
     {
         public override async Task<MediaPlaybackItem> ToMediaPlaybackItem()
         {
-            var (IsSuccess, Result) = await Network.GetOfficialMusicUrlAsync(ID);
-            return IsSuccess ? Result : null;
+            var (isSuccess, result) = await Network.GetOfficialMusicUrlAsync(ID);
+            return isSuccess ? result : null;
         }
     }
 }

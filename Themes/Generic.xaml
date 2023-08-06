@@ -4,7 +4,7 @@
     xmlns:local="using:FluentNetease">
 
     <Style
-        x:Key="PlaylistItemStyle"
+        x:Key="DailyRecommendPlaylistsGridViewItemContainerStyle"
         TargetType="GridViewItem">
         <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
         <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
@@ -101,7 +101,56 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+    <Style
+        x:Key="VolumeButtonFlyoutPresenterStyle"
+        TargetType="FlyoutPresenter">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Background" Value="{ThemeResource SystemControlAcrylicElementBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource FlyoutBorderThemeBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="{ThemeResource FlyoutContentThemePadding}" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MaxWidth" Value="{ThemeResource FlyoutThemeMaxWidth}" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="MaxHeight" Value="{ThemeResource FlyoutThemeMaxHeight}" />
+        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Auto" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.ZoomMode" Value="Disabled" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="FlyoutPresenter">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BackgroundSizing="OuterBorderEdge"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{ThemeResource FlyoutBorderThemePadding}">
+                        <ScrollViewer x:Name="ScrollViewer"
+                            ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}"
+                            HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                            VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                            AutomationProperties.AccessibilityView="Raw">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                ContentTransitions="{TemplateBinding ContentTransitions}"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
             <SolidColorBrush x:Key="DescriptionTextBrush" Color="#FF505050"/>
@@ -112,8 +161,15 @@
                 TintOpacity="0.9"
                 TintLuminosityOpacity="0.9"
                 FallbackColor="#CCF1F1F1"/>
+            <AcrylicBrush
+                x:Key="ForegroundElementAcrylicBrush"
+                BackgroundSource="HostBackdrop"
+                TintColor="#FFFFFFFF"
+                TintOpacity="0.9"
+                TintLuminosityOpacity="0.9"
+                FallbackColor="#CCF1F1F1"/>
         </ResourceDictionary>
-
+        
         <ResourceDictionary x:Key="Dark">
             <SolidColorBrush x:Key="DescriptionTextBrush" Color="#FFB0B0B0"/>
             <AcrylicBrush
@@ -123,11 +179,19 @@
                 TintOpacity="0.8"
                 TintLuminosityOpacity="0.8"
                 FallbackColor="#CC303030"/>
+            <AcrylicBrush
+                x:Key="ForegroundElementAcrylicBrush"
+                BackgroundSource="Backdrop"
+                TintColor="#FF1C1C1C"
+                TintOpacity="0.2"
+                TintLuminosityOpacity="0.2"
+                FallbackColor="#CC303030"/>
         </ResourceDictionary>
-
+        
         <ResourceDictionary x:Key="HighContrast">
             <SolidColorBrush x:Key="DescriptionTextBrush" Color="Yellow"/>
             <SolidColorBrush x:Key="BackgroundAcrylicBrush" Color="{StaticResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="ForegroundElementAcrylicBrush" Color="{StaticResource SystemColorWindowColor}" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
     

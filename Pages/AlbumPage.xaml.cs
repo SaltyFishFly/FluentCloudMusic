@@ -1,10 +1,8 @@
 ﻿using FluentNetease.Classes;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -16,45 +14,41 @@ namespace FluentNetease.Pages
     /// </summary>
     public sealed partial class AlbumPage : Page
     {
-        public ObservableCollection<Song> ContentCollection;
+        private readonly ObservableCollection<Song> Songs;
+        private readonly Album Album;
 
         public AlbumPage()
         {
+            Songs = new ObservableCollection<Song>();
+            Album = new Album();
             this.InitializeComponent();
-            ContentCollection = new ObservableCollection<Song>();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var (IsSuccess, AlbumInfo, SongList) = await Network.GetAlbumDetailAsync((string)e.Parameter);
-            if (IsSuccess)
+            var album = e.Parameter as Album;
+            var (isSuccess, albumInfo, songs) = await Network.GetAlbumDetailAsync(album.ID);
+            if (isSuccess)
             {
-                CoverPicture.ImageSource = new BitmapImage()
-                {
-                    UriSource = new Uri(AlbumInfo["blurPicUrl"].ToString())
-                };
-                TitleText.Text = AlbumInfo["name"].ToString();
-                DescriptionText.Text = AlbumInfo["description"].ToString();
-                foreach (var Item in SongList)
-                {
-                    ContentCollection.Add(Item);
-                }
+                Album.ID = album.ID;
+                Album.Name = albumInfo["name"].ToString();
+                Album.Description = albumInfo["description"].ToString();
+                Album.CoverPictureUrl = albumInfo["blurPicUrl"].ToString();
+
+                foreach (var song in songs) Songs.Add(song);
             }
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            var PlayList = new List<AbstractMusic>();
-            foreach (var Item in ContentCollection)
-            {
-                PlayList.Add(Item.Music);
-            }
-            MainPage.PLAYER.Play(PlayList);
+            var playlist = new List<AbstractMusic>();
+            foreach (var song in Songs) playlist.Add(song.Music);
+            MainPage.PLAYER.Play(playlist);
         }
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER.Play(new NeteaseMusic() { ID = (string)((FrameworkElement)sender).DataContext });
+            MainPage.PLAYER.Play((AbstractMusic)((FrameworkElement)sender).Tag);
         }
     }
 }

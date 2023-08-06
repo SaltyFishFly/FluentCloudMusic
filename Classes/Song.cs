@@ -13,19 +13,20 @@ namespace FluentNetease.Classes
 
         public static Song ParseOfficialMusic(JToken json)
         {
-            Song result = new Song();
-
-            result.Music = new NeteaseMusic()
+            Song result = new Song
             {
-                ID = json["id"].ToString(),
-                Name = json["name"].ToString(),
+                Music = new NeteaseMusic()
+                {
+                    ID = json["id"].ToString(),
+                    Name = json["name"].ToString(),
+                },
+                Album = new Album()
+                {
+                    ID = json["al"]["id"].ToString(),
+                    Name = json["al"]["name"].ToString()
+                },
+                Artists = new Artists()
             };
-            result.Album = new Album()
-            {
-                ID = json["al"]["id"].ToString(),
-                Name = json["al"]["name"].ToString()
-            };
-            result.Artists = new Artists();
             foreach (var Item in json["ar"])
             {
                 result.Artists.AddArtist(Item["id"].ToString(), Item["name"].ToString());
@@ -52,21 +53,23 @@ namespace FluentNetease.Classes
 
         public static Song ParseUserMusic(JToken json)
         {
-            Song result = new Song();
-
-            result.Music = new NeteaseMusic()
+            Song result = new Song
             {
-                ID = json["songId"].ToString(),
-                Name = json["songName"].ToString(),
-                Description = "( " + json["fileName"].ToString() + " )"
-            };
-            result.Album = new Album()
-            {
-                Name = json["album"].ToString()
-            };
-            result.Artists = new Artists()
-            {
-                MainArtistName = json["artist"].ToString()
+                Music = new NeteaseMusic()
+                {
+                    ID = json["songId"].ToString(),
+                    Name = json["songName"].ToString(),
+                    Description = "( " + json["fileName"].ToString() + " )"
+                },
+                Album = new Album()
+                {
+                    Name = json["album"].ToString()
+                },
+                Artists = new Artists()
+                {
+                    MainArtistName = json["artist"].ToString()
+                },
+                HasCopyright = true
             };
 
             return result;

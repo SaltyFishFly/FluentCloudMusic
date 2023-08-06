@@ -5,7 +5,7 @@
     xmlns:local="using:FluentNetease.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:classes="using:FluentNetease.Classes"
+    xmlns:classes="using:FluentNetease.Classes" xmlns:controls="using:FluentNetease.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
@@ -40,11 +40,10 @@
                         Width="150"
                         Height="80"
                         Grid.Row="2"
-                        Text="{x:Bind Path=Name}"
+                        MaxLines="2"
+                        TextTrimming="CharacterEllipsis"
                         TextWrapping="Wrap"
-                        FontSize="15"
-                        LineHeight="22"
-                        MaxLines="2"/>
+                        Text="{x:Bind Path=Name}"/>
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -52,19 +51,20 @@
 
     <ScrollViewer>
         <StackPanel
-            Orientation="Vertical">
+            Orientation="Vertical"
+            Spacing="16">
             <GridView
                 x:Name="DailyRecommendPlaylistsGridView"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
-                CornerRadius="10"
-                ItemsSource="{x:Bind Path=DailyRecommendPlaylists}"
-                ItemTemplate="{StaticResource PlaylistItemTemplate}"
-                ItemContainerStyle="{StaticResource PlaylistItemStyle}"
+                CornerRadius="8"
+                SelectionMode="None"
+                IsItemClickEnabled="True"
                 ScrollViewer.VerticalScrollMode="Disabled"
                 ScrollViewer.HorizontalScrollMode="Enabled"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                SelectionMode="None"
-                IsItemClickEnabled="True"
+                ItemsSource="{x:Bind Path=DailyRecommendPlaylists}"
+                ItemTemplate="{StaticResource PlaylistItemTemplate}"
+                ItemContainerStyle="{StaticResource DailyRecommendPlaylistsGridViewItemContainerStyle}"
                 ItemClick="PlaylistItem_Click">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -74,6 +74,28 @@
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
+            <controls:MusicList
+                ItemsSource="{x:Bind Path=DailyRecommendSongs}">
+                <controls:MusicList.Header>
+                    <Grid
+                        Margin="24,0,8,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            x:Uid="DailyRecommendSongsTitle"
+                            Grid.Column="0"
+                            FontWeight="Bold"
+                            VerticalAlignment="Center"/>
+                        <HyperlinkButton
+                            x:Uid="DailyRecommendSongsViewAllButton"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"/>
+                    </Grid>
+                </controls:MusicList.Header>
+            </controls:MusicList>
         </StackPanel>
     </ScrollViewer>
 </Page>

@@ -118,96 +118,96 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccountInputBox.PlaceholderText" xml:space="preserve">
-    <value>手机号</value>
+    <value>Phone Number</value>
   </data>
   <data name="DailyRecommendSongsTitle.Text" xml:space="preserve">
-    <value>每日推荐歌曲</value>
+    <value>Daily Recommend Songs</value>
   </data>
   <data name="DailyRecommendSongsViewAllButton.Content" xml:space="preserve">
-    <value>查看全部</value>
+    <value>View All</value>
   </data>
   <data name="ErrorCodeText.Text" xml:space="preserve">
-    <value>错误代码：</value>
+    <value>Error Code: </value>
   </data>
   <data name="HeaderAccountPage" xml:space="preserve">
-    <value>用户</value>
+    <value>Account</value>
   </data>
   <data name="HeaderAlbumPage" xml:space="preserve">
-    <value>专辑</value>
+    <value>Album</value>
   </data>
   <data name="HeaderArtistPage" xml:space="preserve">
-    <value>艺术家</value>
+    <value>Artist</value>
   </data>
   <data name="HeaderCloudPage" xml:space="preserve">
-    <value>音乐云盘</value>
+    <value>Cloud</value>
   </data>
   <data name="HeaderDiscoverPage" xml:space="preserve">
-    <value>发现音乐</value>
+    <value>Discover</value>
   </data>
   <data name="HeaderDownloadsPage" xml:space="preserve">
-    <value>本地音乐</value>
+    <value>Local</value>
   </data>
   <data name="HeaderFavoritesPage" xml:space="preserve">
-    <value>我的收藏</value>
+    <value>Favorites</value>
   </data>
   <data name="HeaderHistoryPage" xml:space="preserve">
-    <value>播放记录</value>
+    <value>History</value>
   </data>
   <data name="HeaderPlaylistPage" xml:space="preserve">
-    <value>歌单</value>
+    <value>Playlist</value>
   </data>
   <data name="HeaderPodcastsPage" xml:space="preserve">
-    <value>我的播客</value>
+    <value>Podcasts</value>
   </data>
   <data name="HeaderSearchPage" xml:space="preserve">
-    <value>搜索</value>
+    <value>Search</value>
   </data>
   <data name="HeaderSettingsPage" xml:space="preserve">
-    <value>设置</value>
+    <value>Settings</value>
   </data>
   <data name="LoginText.Text" xml:space="preserve">
-    <value>登录</value>
+    <value>Login</value>
   </data>
   <data name="MainNav.PaneTitle" xml:space="preserve">
     <value>FluentNetease</value>
   </data>
   <data name="NavHeader1.Content" xml:space="preserve">
-    <value>我的</value>
+    <value>My</value>
   </data>
   <data name="NavHeader2.Content" xml:space="preserve">
-    <value>歌单</value>
+    <value>Playlists</value>
   </data>
   <data name="NavItemAccount.Content" xml:space="preserve">
-    <value>请先登录</value>
+    <value>Please Login</value>
   </data>
   <data name="NavItemCloud.Content" xml:space="preserve">
-    <value>音乐云盘</value>
+    <value>Cloud</value>
   </data>
   <data name="NavItemDiscover.Content" xml:space="preserve">
-    <value>发现音乐</value>
+    <value>Discover</value>
   </data>
   <data name="NavItemDownloads.Content" xml:space="preserve">
-    <value>本地音乐</value>
+    <value>Local</value>
   </data>
   <data name="NavItemFavorites.Content" xml:space="preserve">
-    <value>我的收藏</value>
+    <value>Favorites</value>
   </data>
   <data name="NavItemHistory.Content" xml:space="preserve">
-    <value>播放记录</value>
+    <value>History</value>
   </data>
   <data name="NavItemPlaylistsBookmarked.Content" xml:space="preserve">
-    <value>我收藏的歌单</value>
+    <value>Bookmarked Playlists</value>
   </data>
   <data name="NavItemPlaylistsCreated.Content" xml:space="preserve">
-    <value>我创建的歌单</value>
+    <value>Created Playlists</value>
   </data>
   <data name="NavItemPodcasts.Content" xml:space="preserve">
-    <value>我的播客</value>
+    <value>Podcasts</value>
   </data>
   <data name="NavSearchBox.PlaceholderText" xml:space="preserve">
-    <value>搜索歌曲或艺术家</value>
+    <value>Search songs or artists</value>
   </data>
   <data name="PasswordInputBox.PlaceholderText" xml:space="preserve">
-    <value>密码</value>
+    <value>Password</value>
   </data>
 </root>

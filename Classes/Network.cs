@@ -52,27 +52,28 @@ namespace FluentNetease.Classes
         /// 获取日推
         /// </summary>
         /// <returns></returns>
-        public static async Task<LinkedList<Playlist>> GetDailyRecommendPlaylistAsync()
+        public static async Task<List<Playlist>> GetDailyRecommendPlaylistsAsync()
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.RecommendResource);
+
+            var result = new List<Playlist>();
             if (jsonResult["code"].Value<int>() == 200)
-            {
-                var result = new LinkedList<Playlist>();
-                foreach (var item in jsonResult["recommend"])
-                {
-                    var playlist = new Playlist
-                    {
-                        ID = item["id"].ToString(),
-                        Name = item["name"].ToString(),
-                        CoverPictureUrl = item["picUrl"].ToString(),
-                        CreatorID = item["creator"]["userId"].ToString(),
-                        Privacy = 0
-                    };
-                    result.AddLast(playlist);
-                }
-                return result;
-            }
-            return null;
+                foreach (var item in jsonResult["recommend"]) result.Add(Playlist.Parse(item));
+            return result;
+        }
+
+        /// <summary>
+        /// 获取日推
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<List<Song>> GetDailyRecommendSongsAsync()
+        {
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.RecommendSongs);
+
+            var result = new List<Song>();
+            if (jsonResult["code"].Value<int>() == 200)
+                foreach (var item in jsonResult["data"]["dailySongs"]) result.Add(Song.ParseOfficialMusic(item));
+            return result;
         }
 
         /// <summary>
@@ -160,9 +161,9 @@ namespace FluentNetease.Classes
             if (code == 200)
             {
                 var result = new LinkedList<Song>();
-                foreach (var Item in jsonResult["data"])
+                foreach (var item in jsonResult["data"])
                 {
-                    result.AddLast(Song.ParseUserMusic(Item));
+                    result.AddLast(Song.ParseUserMusic(item));
                 }
                 int page = (int)Math.Ceiling(jsonResult["count"].Value<double>() / section.Limit);
                 return (true, page, result);

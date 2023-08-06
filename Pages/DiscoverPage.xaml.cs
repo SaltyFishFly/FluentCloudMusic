@@ -13,13 +13,14 @@ namespace FluentNetease.Pages
     /// </summary>
     public sealed partial class DiscoverPage : Page
     {
-        public ObservableCollection<Playlist> DailyRecommendPlaylists;
-        public ObservableCollection<Song> DailyRecommendSongs;
+        public readonly ObservableCollection<Playlist> DailyRecommendPlaylists;
+        public readonly ObservableCollection<Song> DailyRecommendSongs;
         public DiscoverPage()
         {
-            this.InitializeComponent();
             DailyRecommendPlaylists = new ObservableCollection<Playlist>();
             DailyRecommendSongs = new ObservableCollection<Song>();
+
+            this.InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -39,11 +40,13 @@ namespace FluentNetease.Pages
         private async void LoadPageContent()
         {
             DailyRecommendPlaylists.Clear();
-            var RequestResult = await Network.GetDailyRecommendPlaylistAsync();
-            if (RequestResult != null)
-            {
-                foreach (var Item in RequestResult) DailyRecommendPlaylists.Add(Item);
-            }
+            DailyRecommendSongs.Clear();
+
+            var playlists = await Network.GetDailyRecommendPlaylistsAsync();
+            var songs = await Network.GetDailyRecommendSongsAsync();
+
+            playlists?.ForEach(playlist => DailyRecommendPlaylists.Add(playlist));
+            songs?.GetRange(0, 5).ForEach(song => DailyRecommendSongs.Add(song));
         }
     }
 }

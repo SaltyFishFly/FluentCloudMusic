@@ -40,7 +40,7 @@
             <muxc:NavigationViewItem
                 x:Name="NavItemDiscover"
                 x:Uid="NavItemDiscover"
-                Icon="Calendar" />
+                Icon="Calendar"/>
             <muxc:NavigationViewItemHeader
                 x:Uid="NavHeader1"/>
             <muxc:NavigationViewItem
@@ -104,25 +104,20 @@
         </muxc:NavigationView.FooterMenuItems>
         <muxc:NavigationView.Content>
             <Grid
-                Width="Auto">
+                Width="Auto"
+                Margin="16">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Frame
                     x:Name="ContentFrame"
-                    Width="Auto"
-                    Height="Auto"
                     Grid.RowSpan="2"
                     Grid.Row="0"
-                    Margin="0,0,0,70"
-                    Padding="16,10,16,0"
                     CacheSize="5"
                     Navigated="ContentFrame_Navigated"/>
                 <local:MusicPlayer
                     x:Name="MusicPlayer"
-                    Width="Auto"
-                    Margin="10,0,10,0"
                     Grid.Row="1"/>
             </Grid>
         </muxc:NavigationView.Content>
