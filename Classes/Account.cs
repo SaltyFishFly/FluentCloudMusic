@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 
-namespace FluentNetease.Classes
+namespace FluentCloudMusic.Classes
 {
     public static class Account
     {

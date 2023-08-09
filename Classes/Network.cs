@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 
-namespace FluentNetease.Classes
+namespace FluentCloudMusic.Classes
 {
     public static class Network
     {

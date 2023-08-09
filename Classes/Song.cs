@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace FluentNetease.Classes
+namespace FluentCloudMusic.Classes
 {
     public class Song
     {

@@ -1,4 +1,4 @@
-﻿using FluentNetease.Classes;
+﻿using FluentCloudMusic.Classes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Input;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
-namespace FluentNetease.Controls
+namespace FluentCloudMusic.Controls
 {
     public sealed partial class MusicPlayer : UserControl
     {

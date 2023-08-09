@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Windows.Media.Playback;
 
-namespace FluentNetease.Classes
+namespace FluentCloudMusic.Classes
 {
     public abstract class AbstractMusic
     {

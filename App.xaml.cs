@@ -1,5 +1,5 @@
-﻿using FluentNetease.Classes;
-using FluentNetease.Pages;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.Pages;
 using NeteaseCloudMusicApi;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,7 +11,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace FluentNetease
+namespace FluentCloudMusic
 {
     /// <summary>
     /// 提供特定于应用程序的行为，以补充默认的应用程序类。

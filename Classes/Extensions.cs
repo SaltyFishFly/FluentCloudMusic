@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace FluentNetease.Classes
+namespace FluentCloudMusic.Classes
 {
     public static class ListExtension
     {

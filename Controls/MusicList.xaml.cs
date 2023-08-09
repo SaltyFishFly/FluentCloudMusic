@@ -1,12 +1,12 @@
-﻿using FluentNetease.Classes;
-using FluentNetease.Pages;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.Pages;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
-namespace FluentNetease.Controls
+namespace FluentCloudMusic.Controls
 {
     public sealed partial class MusicList : UserControl
     {

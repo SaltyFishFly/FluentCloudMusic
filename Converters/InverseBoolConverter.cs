@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 
-namespace FluentNetease.Converters
+namespace FluentCloudMusic.Converters
 {
     class InverseBoolConverter : IValueConverter
     {

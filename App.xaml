@@ -1,9 +1,9 @@
 ﻿<Application
-    x:Class="FluentNetease.App"
+    x:Class="FluentCloudMusic.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:classes="using:FluentNetease.Classes"
-    xmlns:local="using:FluentNetease">
+    xmlns:classes="using:FluentCloudMusic.Classes"
+    xmlns:local="using:FluentCloudMusic">
 
     <Application.Resources>
         <ResourceDictionary>

@@ -1,6 +1,6 @@
-﻿using FluentNetease.Classes;
-using FluentNetease.Controls;
-using FluentNetease.Pages;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.Controls;
+using FluentCloudMusic.Pages;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using muxc = Microsoft.UI.Xaml.Controls;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
-namespace FluentNetease
+namespace FluentCloudMusic
 {
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。

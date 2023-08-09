@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace FluentNetease.Classes
+namespace FluentCloudMusic.Classes
 {
     public class Album : INotifyPropertyChanged
     {

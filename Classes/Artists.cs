@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FluentNetease.Classes
+namespace FluentCloudMusic.Classes
 {
     public class Artists
     {

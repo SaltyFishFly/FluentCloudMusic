@@ -1,9 +1,9 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using FluentNetease.Controls;
+using FluentCloudMusic.Controls;
 
-namespace FluentNetease.Converters
+namespace FluentCloudMusic.Converters
 {
     class PlayModeToSymbolConverter : IValueConverter
     {

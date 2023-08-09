@@ -1,6 +1,6 @@
 using Windows.Storage;
 
-namespace FluentNetease.Classes
+namespace FluentCloudMusic.Classes
 {
     public static class Storage
     {

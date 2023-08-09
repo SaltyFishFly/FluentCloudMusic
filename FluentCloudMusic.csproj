@@ -8,8 +8,8 @@
     <ProjectGuid>{8669C86C-02A7-4874-811E-42C0BF62B877}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluentNetease</RootNamespace>
-    <AssemblyName>FluentNetease</AssemblyName>
+    <RootNamespace>FluentCloudMusic</RootNamespace>
+    <AssemblyName>FluentCloudMusic</AssemblyName>
     <DefaultLanguage>zh-cn</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
@@ -27,7 +27,7 @@
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
   </PropertyGroup>
@@ -254,7 +254,7 @@
     <Content Include="Assets\StoreLogo.scale-150.png" />
     <Content Include="Assets\StoreLogo.scale-200.png" />
     <Content Include="Assets\StoreLogo.scale-400.png" />
-    <None Include="FluentNetease_TemporaryKey.pfx" />
+    <None Include="FluentCloudMusic_TemporaryKey.pfx" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
