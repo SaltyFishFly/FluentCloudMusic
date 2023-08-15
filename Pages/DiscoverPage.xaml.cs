@@ -1,7 +1,8 @@
 ﻿using FluentCloudMusic.Classes;
+using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -30,15 +31,13 @@ namespace FluentCloudMusic.Pages
 
         private void PlaylistItem_Click(object sender, ItemClickEventArgs e)
         {
-            /*
-            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("ForwardConnectedAnimation", (Windows.UI.Xaml.UIElement)sender);
-            MainPage.FRAME.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem, new SuppressNavigationTransitionInfo());
-            */
-            MainPage.FRAME.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem, null);
+            MainPage.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem, null);
         }
 
         private async void LoadPageContent()
         {
+            if (!Account.User.HasLogin) return;
+
             DailyRecommendPlaylists.Clear();
             DailyRecommendSongs.Clear();
 

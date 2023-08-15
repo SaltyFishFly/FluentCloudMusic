@@ -11,6 +11,7 @@
     Background="{ThemeResource SystemControlTransparentBrush}">
 
     <controls:MusicList
+        Background="{ThemeResource LayerFillColorDefaultBrush}"
         ItemsSource="{x:Bind Path=Songs}">
         <controls:MusicList.Header>
             <Grid

@@ -5,7 +5,10 @@
     xmlns:local="using:FluentCloudMusic.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:classes="using:FluentCloudMusic.Classes" xmlns:controls="using:FluentCloudMusic.Controls"
+    xmlns:classes="using:FluentCloudMusic.Classes"
+    xmlns:controls="using:FluentCloudMusic.Controls"
+    xmlns:converters="using:FluentCloudMusic.Converters"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
@@ -46,13 +49,23 @@
                         Text="{x:Bind Path=Name}"/>
                 </Grid>
             </DataTemplate>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
     <ScrollViewer>
         <StackPanel
             Orientation="Vertical"
-            Spacing="16">
+            Spacing="8">
+            <muxc:InfoBar
+                x:Uid="NotLoginInfoBar"
+                CornerRadius="8"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                IsOpen="True"
+                IsClosable="False">
+            </muxc:InfoBar>
             <GridView
                 x:Name="DailyRecommendPlaylistsGridView"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
@@ -62,6 +75,7 @@
                 ScrollViewer.VerticalScrollMode="Disabled"
                 ScrollViewer.HorizontalScrollMode="Enabled"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
                 ItemsSource="{x:Bind Path=DailyRecommendPlaylists}"
                 ItemTemplate="{StaticResource PlaylistItemTemplate}"
                 ItemContainerStyle="{StaticResource DailyRecommendPlaylistsGridViewItemContainerStyle}"
@@ -75,7 +89,9 @@
                 </GridView.ItemsPanel>
             </GridView>
             <controls:MusicList
-                ItemsSource="{x:Bind Path=DailyRecommendSongs}">
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                ItemsSource="{x:Bind Path=DailyRecommendSongs}"
+                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}">
                 <controls:MusicList.Header>
                     <Grid
                         Margin="24,0,8,0">

@@ -11,12 +11,13 @@
     Background="{ThemeResource SystemControlTransparentBrush}">
 
     <controls:MusicList
+        Background="{ThemeResource LayerFillColorDefaultBrush}"
         ItemsSource="{x:Bind Path=Songs}"
         ArtistButtonEnabled="False"
         AlbumButtonEnabled="False">
         <controls:MusicList.Footer>
             <Grid
-                Height="60"
+                Margin="8"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>

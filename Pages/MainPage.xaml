@@ -8,14 +8,23 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:classes="using:FluentCloudMusic.Classes"
     xmlns:pages="using:FluentCloudMusic.Pages"
+    xmlns:converters="using:FluentCloudMusic.Converters"
     mc:Ignorable="d"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+        </ResourceDictionary>
+    </Page.Resources>
+    
     <muxc:NavigationView
         x:Name="MainNav"
         x:Uid="MainNav"
         IsPaneToggleButtonVisible="True"
         IsBackEnabled="{x:Bind Path=ContentFrame.CanGoBack, Mode=OneWay}"
+        IsSettingsVisible="False"
         PaneTitle="FluentNetease"
         PaneDisplayMode="Auto"
         OpenPaneLength="280"
@@ -33,7 +42,7 @@
             <TextBlock
                 x:Name="HeaderText"
                 Margin="-35,0,0,0"
-                Text="HEADER"
+                Text="Header"
                 FontWeight="Normal"/>
         </muxc:NavigationView.Header>
         <muxc:NavigationView.MenuItems>
@@ -53,7 +62,8 @@
                 Icon="Download"/>
             <muxc:NavigationViewItem
                 x:Name="NavItemCloud"
-                x:Uid="NavItemCloud">
+                x:Uid="NavItemCloud"
+                IsEnabled="{x:Bind Path=classes:Account.User.HasLogin, Mode=OneWay}">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
@@ -62,7 +72,8 @@
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItem
                 x:Name="NavItemFavorites"
-                x:Uid="NavItemFavorites">
+                x:Uid="NavItemFavorites"
+                IsEnabled="{x:Bind Path=classes:Account.User.HasLogin, Mode=OneWay}">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
@@ -71,7 +82,8 @@
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItem
                 x:Name="NavItemPodcasts"
-                x:Uid="NavItemPodcasts">
+                x:Uid="NavItemPodcasts"
+                IsEnabled="{x:Bind Path=classes:Account.User.HasLogin, Mode=OneWay}">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
@@ -79,10 +91,12 @@
                 </muxc:NavigationViewItem.Icon>
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItemHeader
-                x:Uid="NavHeader2"/>
+                x:Uid="NavHeader2"
+                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
             <muxc:NavigationViewItem
                 x:Name="NavItemPlaylistsCreated"
                 x:Uid="NavItemPlaylistsCreated"
+                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 Icon="List"
                 SelectsOnInvoked="False"
                 MenuItemsSource="{x:Bind Path=CreatedPlaylistButtons, Mode=OneWay}">
@@ -90,6 +104,7 @@
             <muxc:NavigationViewItem
                 x:Name="NavItemPlaylistsBookmarked"
                 x:Uid="NavItemPlaylistsBookmarked"
+                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 Icon="List"
                 SelectsOnInvoked="False"
                 MenuItemsSource="{x:Bind Path=BookmarkedPlaylistButtons, Mode=OneWay}">
@@ -97,10 +112,20 @@
         </muxc:NavigationView.MenuItems>
         <muxc:NavigationView.FooterMenuItems>
             <muxc:NavigationViewItem
+                x:Name="NavItemLogin"
+                x:Uid="NavItemLogin"
+                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}"
+                Icon="Contact"/>
+            <muxc:NavigationViewItem
                 x:Name="NavItemAccount"
                 x:Uid="NavItemAccount"
+                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 Icon="Contact"
-                Content="{x:Bind Path=classes:Account.User.Nickname}"/>
+                Content="{x:Bind Path=classes:Account.User.Nickname, Mode=OneWay}"/>
+            <muxc:NavigationViewItem
+                x:Name="NavItemSettings"
+                x:Uid="NavItemSettings"
+                Icon="Setting"/>
         </muxc:NavigationView.FooterMenuItems>
         <muxc:NavigationView.Content>
             <Grid
@@ -112,12 +137,14 @@
                 </Grid.RowDefinitions>
                 <Frame
                     x:Name="ContentFrame"
-                    Grid.RowSpan="2"
                     Grid.Row="0"
+                    CornerRadius="8"
                     CacheSize="5"
                     Navigated="ContentFrame_Navigated"/>
                 <local:MusicPlayer
                     x:Name="MusicPlayer"
+                    Margin="0,8,0,0"
+                    Background="{ThemeResource LayerFillColorDefaultBrush}"
                     Grid.Row="1"/>
             </Grid>
         </muxc:NavigationView.Content>

@@ -12,30 +12,38 @@
     <StackPanel
         Orientation="Vertical">
         <Grid
-            Height="240">
+            Background="{ThemeResource LayerFillColorDefaultBrush}"
+            CornerRadius="8"
+            Padding="16">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="240"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Border
-                Height="240"
-                Width="240"
+            <StackPanel
                 Grid.Column="0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                CornerRadius="8">
-                <Image
-                    x:Name="CoverPicture"
-                    Height="240"
-                    Width="240"
-                    Stretch="Fill"
-                    Source="{x:Bind Path=classes:Account.User.AvatarUrl,Mode=OneWay}"/>
-            </Border>
+                Orientation="Horizontal"
+                Spacing="16">
+                <Border
+                    Height="100"
+                    Width="100"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    CornerRadius="50">
+                    <Image
+                        x:Name="AvatarPicure"
+                        Height="100"
+                        Width="100"
+                        Stretch="Fill"
+                        Source="{x:Bind Path=classes:Account.User.AvatarUrl, Mode=OneWay}"/>
+                </Border>
+                <TextBlock
+                    Text="{x:Bind Path=classes:Account.User.Nickname, Mode=OneWay}"
+                    FontSize="32"/>
+            </StackPanel>
             <Button
                 x:Name="LogoutButton"
                 x:Uid="LogoutButton"
-                Content="退出登录"
                 Grid.Column="2"
                 Click="LogoutButton_Click"/>
         </Grid>

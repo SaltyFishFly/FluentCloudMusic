@@ -1,13 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 
 namespace FluentCloudMusic.Classes
 {
     public static class Account
     {
-        public static UserProfile User { get; set; } = new UserProfile();
+        public static readonly UserProfile User = new UserProfile();
 
-        public delegate void LoginEventHandler(JObject loginResult);
+        public delegate void LoginEventHandler(JObject loginInfo);
         public delegate void LogoutEventHandler();
 
         public static event LoginEventHandler LoginEvent;
@@ -60,9 +62,11 @@ namespace FluentCloudMusic.Classes
             }
         }
 
-        public class UserProfile
+        public class UserProfile : INotifyPropertyChanged
         {
-            public bool LoginStatus { get; private set; }
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public bool HasLogin { get; private set; }
             public string UserID { get; private set; }
             public string Nickname { get; private set; }
             public string AvatarUrl { get; private set; }
@@ -70,23 +74,55 @@ namespace FluentCloudMusic.Classes
 
             public UserProfile()
             {
-                LoginStatus = false;
+                HasLogin = false;
+                UserID = string.Empty;
+                Nickname = string.Empty;
+                AvatarUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
+                HasVip = false;
+
                 LoginEvent += OnLogin;
                 LogoutEvent += OnLogout;
             }
 
-            private void OnLogin(JObject loginResult)
+            private void OnLogin(JObject loginInfo)
             {
-                LoginStatus = true;
-                UserID = loginResult["profile"]["userId"].ToString();
-                Nickname = loginResult["profile"]["nickname"].ToString();
-                AvatarUrl = loginResult["profile"]["avatarUrl"].ToString();
-                HasVip = loginResult["profile"]["vipType"].Value<int>() != 0;
+                HasLogin = true;
+                Notify(nameof(HasLogin));
+
+                UserID = loginInfo["profile"]["userId"].ToString();
+                Notify(nameof(UserID));
+
+                Nickname = loginInfo["profile"]["nickname"].ToString();
+                Notify(nameof(Nickname));
+
+                AvatarUrl = loginInfo["profile"]["avatarUrl"].ToString();
+                Notify(nameof(AvatarUrl));
+
+                HasVip = loginInfo["profile"]["vipType"].Value<int>() != 0;
+                Notify(nameof(HasVip));
             }
 
-            public void OnLogout()
+            private void OnLogout()
             {
-                LoginStatus = false;
+                HasLogin = false;
+                Notify(nameof(HasLogin));
+
+                UserID = string.Empty;
+                Notify(nameof(UserID));
+
+                Nickname = string.Empty;
+                Notify(nameof(Nickname));
+
+                AvatarUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
+                Notify(nameof(AvatarUrl));
+
+                HasVip = false;
+                Notify(nameof(HasVip));
+            }
+
+            private void Notify(string member)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(member));
             }
         }
     }

@@ -43,7 +43,7 @@ namespace FluentCloudMusic.Pages
         {
             var playlist = new List<AbstractMusic>();
             foreach (var song in Songs) playlist.Add(song.Music);
-            MainPage.PLAYER.Play(playlist);
+            MainPage.Player.Play(playlist);
         }
     }
 }

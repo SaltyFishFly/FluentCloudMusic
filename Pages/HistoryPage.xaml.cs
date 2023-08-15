@@ -28,7 +28,7 @@ namespace FluentCloudMusic.Pages
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER.Play(new NeteaseMusic { ID = (string)((FrameworkElement)sender).DataContext });
+            MainPage.Player.Play(new NeteaseMusic { ID = (string)((FrameworkElement)sender).DataContext });
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -38,7 +38,7 @@ namespace FluentCloudMusic.Pages
 
         private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.FRAME.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).DataContext);
+            MainPage.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).DataContext);
         }
     }
 }

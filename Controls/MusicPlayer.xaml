@@ -21,10 +21,9 @@
     <Border
         Height="50"
         Width="Auto"
-        Margin="8"
-        MaxWidth="800"
+        MaxWidth="700"
         CornerRadius="8"
-        Background="{ThemeResource SystemControlAcrylicElementMediumHighBrush}">
+        Background="{x:Bind Path=Background}">
         <Grid
             Width="Auto">
             <Grid.ColumnDefinitions>

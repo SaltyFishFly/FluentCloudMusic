@@ -168,6 +168,12 @@
   <data name="LoginText.Text" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="LoginTipsButtonText.Text" xml:space="preserve">
+    <value>Only +86 phone numbers are supported till now</value>
+  </data>
+  <data name="LogoutButton.Content" xml:space="preserve">
+    <value>Logout</value>
+  </data>
   <data name="MainNav.PaneTitle" xml:space="preserve">
     <value>FluentCloudMusic</value>
   </data>
@@ -195,6 +201,9 @@
   <data name="NavItemHistory.Content" xml:space="preserve">
     <value>History</value>
   </data>
+  <data name="NavItemLogin.Content" xml:space="preserve">
+    <value>Please Login</value>
+  </data>
   <data name="NavItemPlaylistsBookmarked.Content" xml:space="preserve">
     <value>Bookmarked Playlists</value>
   </data>
@@ -204,8 +213,17 @@
   <data name="NavItemPodcasts.Content" xml:space="preserve">
     <value>Podcasts</value>
   </data>
+  <data name="NavItemSettings.Content" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="NavSearchBox.PlaceholderText" xml:space="preserve">
     <value>Search songs or artists</value>
+  </data>
+  <data name="NotLoginInfoBar.Message" xml:space="preserve">
+    <value>Feature requires logged in status such as recommending songs and playlists has been hidden. You can still search, but some songs might not play the full version. To use the full features of FluentCloudMusic, please login at the bottom left.</value>
+  </data>
+  <data name="NotLoginInfoBar.Title" xml:space="preserve">
+    <value>Login Info</value>
   </data>
   <data name="PasswordInputBox.PlaceholderText" xml:space="preserve">
     <value>Password</value>

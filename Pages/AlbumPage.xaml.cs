@@ -43,12 +43,12 @@ namespace FluentCloudMusic.Pages
         {
             var playlist = new List<AbstractMusic>();
             foreach (var song in Songs) playlist.Add(song.Music);
-            MainPage.PLAYER.Play(playlist);
+            MainPage.Player.Play(playlist);
         }
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER.Play((AbstractMusic)((FrameworkElement)sender).Tag);
+            MainPage.Player.Play((AbstractMusic)((FrameworkElement)sender).Tag);
         }
     }
 }

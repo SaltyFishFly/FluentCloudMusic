@@ -49,8 +49,9 @@ namespace FluentCloudMusic.Controls
 
         public MusicList()
         {
-            this.Header = null;
             this.ItemsSource = new ObservableCollection<Song>();
+            this.Header = null;
+            this.Footer = null;
             this.ArtistButtonEnabled = true;
             this.AlbumButtonEnabled = true;
             this.InitializeComponent();
@@ -58,17 +59,17 @@ namespace FluentCloudMusic.Controls
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.PLAYER.Play((AbstractMusic)((FrameworkElement)sender).Tag);
+            MainPage.Player.Play((AbstractMusic)((FrameworkElement)sender).Tag);
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.FRAME.Navigate(typeof(ArtistPage), ((FrameworkElement)sender).Tag);
+            MainPage.Navigate(typeof(ArtistPage), ((FrameworkElement)sender).Tag);
         }
 
         private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.FRAME.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).Tag);
+            MainPage.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).Tag);
         }
     }
 }

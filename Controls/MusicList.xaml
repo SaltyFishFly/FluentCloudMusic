@@ -74,13 +74,13 @@
         x:Name="ContentListView"
         Padding="0,8,0,8"
         VerticalAlignment="Top"
-        Background="{ThemeResource LayerFillColorDefaultBrush}"
         CornerRadius="8"
         SelectionMode="None"
         IsItemClickEnabled="True"
-        ItemsSource="{x:Bind Path=ItemsSource}"
-        ItemTemplate="{StaticResource SongDataTemplate}"
+        Background="{x:Bind Path=Background}"
         Header="{x:Bind Path=Header}"
-        Footer="{x:Bind Path=Footer}">
+        Footer="{x:Bind Path=Footer}"
+        ItemsSource="{x:Bind Path=ItemsSource}"
+        ItemTemplate="{StaticResource SongDataTemplate}">
     </ListView>
 </UserControl>

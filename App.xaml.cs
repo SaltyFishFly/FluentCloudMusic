@@ -1,4 +1,5 @@
 ﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.Dialogs;
 using FluentCloudMusic.Pages;
 using NeteaseCloudMusicApi;
 using Newtonsoft.Json.Linq;
@@ -6,6 +7,7 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -35,13 +37,14 @@ namespace FluentCloudMusic
         /// 将在启动应用程序以打开特定文件等情况下使用。
         /// </summary>
         /// <param name="e">有关启动请求和过程的详细信息。</param>
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             var rootFrame = Window.Current.Content as Frame;
-            Account.LoginEvent += OnLogin;
-            Account.LogoutEvent += OnLogout;
 
             CoreApplication.EnablePrelaunch(false);
+
+            SetWindowMinSize(500, 400);
+            TransparentTitleBar();
 
             if (rootFrame == null)
             {
@@ -54,31 +57,12 @@ namespace FluentCloudMusic
                 Window.Current.Content = rootFrame;
             }
 
-            SetWindowMinSize(500, 500);
-            TransparentTitleBar();
-
-            await Account.CheckLoginStatus();
             if (rootFrame.Content == null)
             {
-                if (Account.User.LoginStatus)
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                else
-                    rootFrame.Navigate(typeof(LoginPage), e.Arguments);
+                rootFrame.Navigate(typeof(MainPage), null);
             }
 
             Window.Current.Activate();
-        }
-
-        private void OnLogin(JObject loginResult)
-        {
-            var rootFrame = Window.Current.Content as Frame;
-            rootFrame.Navigate(typeof(MainPage), null);
-        }
-
-        private void OnLogout()
-        {
-            var rootFrame = Window.Current.Content as Frame;
-            rootFrame.Navigate(typeof(LoginPage), null);
         }
 
         private void TransparentTitleBar()
@@ -91,13 +75,7 @@ namespace FluentCloudMusic
 
         private void SetWindowMinSize(double width, double height)
         {
-            ApplicationView.GetForCurrentView().SetPreferredMinSize(
-                new Windows.Foundation.Size
-                {
-                    Height = width,
-                    Width = height
-                }
-            );
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(width, height));
         }
 
         private void OnSuspending(object sender, SuspendingEventArgs e)
