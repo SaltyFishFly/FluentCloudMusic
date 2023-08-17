@@ -10,10 +10,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <controls:MusicList
-        ItemsSource="{x:Bind Path=Songs}"
-        AlbumButtonEnabled="False">
-        <controls:MusicList.Header>
+    <controls:MusicListView
+        x:Name="MusicList"
+        Background="{ThemeResource LayerFillColorDefaultBrush}"
+        IsAlbumButtonEnabled="False"
+        ItemsSource="{x:Bind Path=Songs}">
+        <controls:MusicListView.Header>
             <Grid
                 Margin="16,8,16,8"
                 ColumnSpacing="16">
@@ -63,19 +65,8 @@
                             Foreground="{ThemeResource DescriptionTextBrush}"
                             Text="{x:Bind Path=Album.Description,Mode=OneWay}"/>
                     </ScrollViewer>
-                    <StackPanel
-                        Grid.Row="2">
-                        <Button
-                            x:Name="PlayButton"
-                            Height="30"
-                            VerticalAlignment="Bottom"
-                            Click="PlayButton_Click">
-                            <SymbolIcon
-                                Symbol="Play"/>
-                        </Button>
-                    </StackPanel>
                 </Grid>
             </Grid>
-        </controls:MusicList.Header>
-    </controls:MusicList>
+        </controls:MusicListView.Header>
+    </controls:MusicListView>
 </Page>

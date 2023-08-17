@@ -15,13 +15,13 @@ namespace FluentCloudMusic.Pages
     public sealed partial class PlaylistPage : Page
     {
         private readonly ObservableCollection<Song> Songs;
-        private readonly Playlist Playlist;
+        private readonly Playlist PlaylistInfo;
 
         public PlaylistPage()
         {
             Songs = new ObservableCollection<Song>();
-            Playlist = new Playlist();
-            this.InitializeComponent();
+            PlaylistInfo = new Playlist();
+            InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -30,20 +30,14 @@ namespace FluentCloudMusic.Pages
             var (isSuccess, playlistInfo, songs) = await Network.GetPlaylistDetailAsync(playlist.ID);
             if (isSuccess)
             {
-                Playlist.ID = playlist.ID;
-                Playlist.Name = playlistInfo["name"].ToString();
-                Playlist.Description = playlistInfo["description"].ToString();
-                Playlist.CoverPictureUrl = playlistInfo["coverImgUrl"].ToString();
+                PlaylistInfo.ID = playlist.ID;
+                PlaylistInfo.Name = playlistInfo["name"].ToString();
+                PlaylistInfo.Description = playlistInfo["description"].ToString();
+                PlaylistInfo.CoverPictureUrl = playlistInfo["coverImgUrl"].ToString();
 
                 foreach (var song in songs) Songs.Add(song);
+                MusicList.ApplyFilter(string.Empty);
             }
-        }
-
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
-        {
-            var playlist = new List<AbstractMusic>();
-            foreach (var song in Songs) playlist.Add(song.Music);
-            MainPage.Player.Play(playlist);
         }
     }
 }

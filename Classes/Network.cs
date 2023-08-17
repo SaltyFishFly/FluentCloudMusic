@@ -176,20 +176,12 @@ namespace FluentCloudMusic.Classes
         /// </summary>
         /// <param name="albumID"></param>
         /// <returns></returns>
-        public static async Task<(bool IsSuccess, JToken AlbumInfo, LinkedList<Song> Result)> GetAlbumDetailAsync(string albumID)
+        public static async Task<(bool IsSuccess, JToken AlbumInfo)> GetAlbumDetailAsync(string albumID)
         {
             var parameters = new Dictionary<string, object> { { "id", albumID } };
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Album, parameters);
-            if (jsonResult["code"].Value<int>() == 200)
-            {
-                var result = new LinkedList<Song>();
-                foreach (var item in jsonResult["songs"])
-                {
-                    result.AddLast(Song.ParseOfficialMusic(item));
-                }
-                return (true, jsonResult["album"], result);
-            }
-            return (false, null, null);
+            if (jsonResult["code"].Value<int>() != 200) return (false, null);
+            return (true, jsonResult);
         }
 
         /// <summary>

@@ -52,7 +52,6 @@ namespace FluentCloudMusic
             Frame = ContentFrame;
             Account.LoginEvent += OnLogin;
             Account.LogoutEvent += OnLogout;
-            MainNav.SelectedItem = NavItemDiscover;
 
             _ = Account.CheckLoginStatus();
         }

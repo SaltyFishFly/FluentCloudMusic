@@ -45,7 +45,7 @@ namespace FluentCloudMusic.Controls
             this.InitializeComponent();
 
             VolumeSlider.Value =
-                Storage.HasSetting("Volume") ? Storage.GetSetting<double>("Volume") : 50;       
+                Storage.HasSetting("Volume") ? Storage.GetSetting<double>("Volume") : 500.0;       
         }
 
         private void Timer_Tick(object sender, object e)
@@ -105,7 +105,7 @@ namespace FluentCloudMusic.Controls
 
         private void VolumeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            Player.Volume = e.NewValue / 100;
+            Player.Volume = e.NewValue / 1000;
             Storage.SetSetting("Volume", e.NewValue);
         }
 

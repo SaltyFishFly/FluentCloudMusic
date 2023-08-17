@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace FluentCloudMusic.Classes
 {
@@ -61,6 +63,34 @@ namespace FluentCloudMusic.Classes
                 _CoverPictureUrl = value;
                 Notify();
             }
+        }
+
+        public void CopyTo(Album dest)
+        {
+            dest.ID = _ID;
+            dest.Name = _Name;
+            dest.Description = _Description;
+            dest.CoverPictureUrl = _CoverPictureUrl;
+        }
+
+        public async Task<(bool IsSuccess, Album albumInfo, LinkedList<Song> songs)> GetDetail()
+        {
+            var (isSuccess, jsonResult) = await Network.GetAlbumDetailAsync(ID);
+
+            if (!isSuccess) return (false, null, null);
+
+            var album = new Album()
+            {
+                ID = ID,
+                Name = jsonResult["album"]["name"].ToString(),
+                Description = jsonResult["album"]["description"].ToString(),
+                CoverPictureUrl = jsonResult["album"]["blurPicUrl"].ToString(),
+            };
+
+            var songs = new LinkedList<Song>();
+            foreach (var item in jsonResult["songs"]) songs.AddLast(Song.ParseOfficialMusic(item));
+
+            return (true, album, songs);
         }
 
         private void Notify([CallerMemberName] string caller = null)

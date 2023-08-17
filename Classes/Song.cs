@@ -74,5 +74,12 @@ namespace FluentCloudMusic.Classes
 
             return result;
         }
+
+        public bool RelateTo(string str)
+        {
+            return Music.Name.Contains(str, System.StringComparison.CurrentCultureIgnoreCase) ||
+                   Artists.MainArtistName.Contains(str, System.StringComparison.CurrentCultureIgnoreCase) ||
+                   Album.Name.Contains(str, System.StringComparison.CurrentCultureIgnoreCase);
+        }
     }
 }

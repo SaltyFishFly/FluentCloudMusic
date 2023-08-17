@@ -115,14 +115,15 @@
                 <Button.Flyout>
                     <Flyout
                         FlyoutPresenterStyle="{StaticResource VolumeButtonFlyoutPresenterStyle}">
-                        <StackPanel
-                            Orientation="Vertical">
+                        <StackPanel>
                             <Slider
                                 x:Name="VolumeSlider"
-                                Height="140"
+                                Height="200"
                                 Minimum="0"
-                                Maximum="100"
+                                Maximum="1000"
                                 Value="0"
+                                SmallChange="1"
+                                LargeChange="10"
                                 Orientation="Vertical"
                                 HorizontalAlignment="Center"
                                 ValueChanged="VolumeSlider_ValueChanged"/>

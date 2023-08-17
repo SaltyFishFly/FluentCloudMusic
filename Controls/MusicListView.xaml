@@ -1,11 +1,12 @@
 ﻿<UserControl
-    x:Class="FluentCloudMusic.Controls.MusicList"
+    x:Class="FluentCloudMusic.Controls.MusicListView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:FluentCloudMusic.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:classes="using:FluentCloudMusic.Classes"
+    xmlns:converters="using:FluentCloudMusic.Converters"
     mc:Ignorable="d"
     x:Name="ControlRoot">
 
@@ -24,11 +25,11 @@
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
                         Grid.Column="0"
-                        Click="MusicNameButton_Click"
                         Tag="{x:Bind Path=Music}"
                         ToolTipService.ToolTip="{x:Bind Path=Music.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
-                        IsEnabled="{x:Bind Path=HasCopyright}">
+                        IsEnabled="{x:Bind Path=HasCopyright}"
+                        Click="MusicNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock>
                                 <Run
@@ -41,11 +42,11 @@
                     </HyperlinkButton>
                     <HyperlinkButton
                         Grid.Column="1"
-                        Click="ArtistNameButton_Click"
                         Tag="{x:Bind Path=Artists}"
                         ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtistName}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
-                        IsEnabled="{Binding Path=ArtistButtonEnabled,ElementName=ControlRoot}">
+                        IsEnabled="{Binding Path=IsArtistButtonEnabled,ElementName=ControlRoot}"
+                        Click="ArtistNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock
                                 TextTrimming="CharacterEllipsis"
@@ -53,12 +54,12 @@
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
-                        Grid.Column="2"
-                        Click="AlbumNameButton_Click"
+                        Grid.Column="2" 
                         Tag="{x:Bind Path=Album}"
                         ToolTipService.ToolTip="{x:Bind Path=Album.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
-                        IsEnabled="{Binding Path=AlbumButtonEnabled,ElementName=ControlRoot}">
+                        IsEnabled="{Binding Path=IsAlbumButtonEnabled,ElementName=ControlRoot}"
+                        Click="AlbumNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock
                                 TextTrimming="CharacterEllipsis"
@@ -67,20 +68,65 @@
                     </HyperlinkButton>
                 </Grid>
             </DataTemplate>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <ListView
-        x:Name="ContentListView"
-        Padding="0,8,0,8"
-        VerticalAlignment="Top"
-        CornerRadius="8"
-        SelectionMode="None"
-        IsItemClickEnabled="True"
-        Background="{x:Bind Path=Background}"
-        Header="{x:Bind Path=Header}"
-        Footer="{x:Bind Path=Footer}"
-        ItemsSource="{x:Bind Path=ItemsSource}"
-        ItemTemplate="{StaticResource SongDataTemplate}">
-    </ListView>
+    <ScrollViewer>
+        <StackPanel
+            Background="{x:Bind Path=Background}"
+            CornerRadius="8"
+            Padding="0,8,0,8">
+            <Border
+                Child="{x:Bind Path=Header}"/>
+            <Grid
+                Padding="16"
+                Visibility="{x:Bind Path=IsToolBarEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <Button
+                        x:Name="PlayAllButton"
+                        Click="PlayAllButton_Click">
+                        <SymbolIcon
+                            Symbol="Play"/>
+                    </Button>
+                    <Button
+                        x:Name="PlayButton">
+                        <SymbolIcon
+                            Symbol="Download"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <AutoSuggestBox
+                        x:Name="FilterInputBox"
+                        x:Uid="FilterInputBox"
+                        Width="200"
+                        QueryIcon="Find"
+                        TextChanged="FilterInputBox_TextChanged"
+                        QuerySubmitted="FilterInputBox_QuerySubmitted"/>
+                </StackPanel>
+            </Grid>
+            <ListView
+                x:Name="ContentListView"
+                SelectionMode="None"
+                IsItemClickEnabled="True"
+                ItemsSource="{x:Bind Path=FilteredSongs}"
+                ItemTemplate="{StaticResource SongDataTemplate}">
+            </ListView>
+            <Border
+                Child="{x:Bind Path=Footer}"/>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

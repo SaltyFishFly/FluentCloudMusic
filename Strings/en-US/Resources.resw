@@ -129,6 +129,9 @@
   <data name="ErrorCodeText.Text" xml:space="preserve">
     <value>Error Code: </value>
   </data>
+  <data name="FilterInputBox.PlaceholderText" xml:space="preserve">
+    <value>Search in the list</value>
+  </data>
   <data name="HeaderAccountPage" xml:space="preserve">
     <value>Account</value>
   </data>

@@ -131,8 +131,8 @@
   <ItemGroup>
     <Compile Include="Classes\Extensions.cs" />
     <Compile Include="Classes\Storage.cs" />
-    <Compile Include="Controls\MusicList.xaml.cs">
-      <DependentUpon>MusicList.xaml</DependentUpon>
+    <Compile Include="Controls\MusicListView.xaml.cs">
+      <DependentUpon>MusicListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
@@ -275,7 +275,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\MusicList.xaml">
+    <Page Include="Controls\MusicListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

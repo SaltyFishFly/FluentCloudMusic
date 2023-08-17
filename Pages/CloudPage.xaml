@@ -10,12 +10,13 @@
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <controls:MusicList
+    <controls:MusicListView
+        x:Name="MusicList"
         Background="{ThemeResource LayerFillColorDefaultBrush}"
         ItemsSource="{x:Bind Path=Songs}"
-        ArtistButtonEnabled="False"
-        AlbumButtonEnabled="False">
-        <controls:MusicList.Footer>
+        IsArtistButtonEnabled="False"
+        IsAlbumButtonEnabled="False">
+        <controls:MusicListView.Footer>
             <Grid
                 Margin="8"
                 HorizontalAlignment="Center"
@@ -56,6 +57,6 @@
                     </Button.Content>
                 </Button>
             </Grid>
-        </controls:MusicList.Footer>
-    </controls:MusicList>
+        </controls:MusicListView.Footer>
+    </controls:MusicListView>
 </Page>

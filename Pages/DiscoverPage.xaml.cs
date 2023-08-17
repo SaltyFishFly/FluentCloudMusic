@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -16,17 +17,18 @@ namespace FluentCloudMusic.Pages
     {
         public readonly ObservableCollection<Playlist> DailyRecommendPlaylists;
         public readonly ObservableCollection<Song> DailyRecommendSongs;
+
         public DiscoverPage()
         {
             DailyRecommendPlaylists = new ObservableCollection<Playlist>();
             DailyRecommendSongs = new ObservableCollection<Song>();
 
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            LoadPageContent();
+            GetRecommendations();
         }
 
         private void PlaylistItem_Click(object sender, ItemClickEventArgs e)
@@ -34,7 +36,7 @@ namespace FluentCloudMusic.Pages
             MainPage.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem, null);
         }
 
-        private async void LoadPageContent()
+        private async void GetRecommendations()
         {
             if (!Account.User.HasLogin) return;
 
@@ -46,6 +48,8 @@ namespace FluentCloudMusic.Pages
 
             playlists?.ForEach(playlist => DailyRecommendPlaylists.Add(playlist));
             songs?.GetRange(0, 5).ForEach(song => DailyRecommendSongs.Add(song));
+
+            MusicList.ApplyFilter(string.Empty);
         }
     }
 }

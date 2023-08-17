@@ -129,6 +129,9 @@
   <data name="ErrorCodeText.Text" xml:space="preserve">
     <value>错误代码：</value>
   </data>
+  <data name="FilterInputBox.PlaceholderText" xml:space="preserve">
+    <value>在列表中搜索</value>
+  </data>
   <data name="HeaderAccountPage" xml:space="preserve">
     <value>用户</value>
   </data>

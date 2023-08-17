@@ -28,12 +28,13 @@ namespace FluentCloudMusic.Pages
             var (isSuccess, currentPage, songList) = await Network.GetUserCloudAsync(section);
             if (isSuccess)
             {
-                Songs.Clear();
-                foreach (var Item in songList) Songs.Add(Item);
-
                 PageText.Text = section.Page.ToString() + " / " + currentPage.ToString();
                 PreviousPageButton.IsEnabled = 1 < section.Page;
                 NextPageButton.IsEnabled = section.Page < currentPage;
+
+                Songs.Clear();
+                foreach (var Item in songList) Songs.Add(Item);
+                MusicList.ApplyFilter(string.Empty);
             }
         }
 

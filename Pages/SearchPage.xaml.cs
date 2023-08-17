@@ -15,13 +15,13 @@ namespace FluentCloudMusic.Pages
     {
         public static SearchPage INSTANCE;
 
-        private ObservableCollection<Song> ContentCollection;
+        private ObservableCollection<Song> Songs;
         private SearchRequest CurrentSearchRequest;
 
         public SearchPage()
         {
             this.InitializeComponent();
-            ContentCollection = new ObservableCollection<Song>();
+            Songs = new ObservableCollection<Song>();
             INSTANCE = this;
         }
 
@@ -31,14 +31,13 @@ namespace FluentCloudMusic.Pages
             var (isSuccess, currentPage, searchResults) = await Network.SearchAsync(request);
             if (isSuccess)
             {
-                ContentCollection.Clear();
-                foreach (var item in searchResults)
-                {
-                    ContentCollection.Add(item);
-                }
                 PageText.Text = request.Section.Page.ToString() + " / " + currentPage.ToString();
                 PreviousPageButton.IsEnabled = 1 < request.Section.Page;
                 NextPageButton.IsEnabled = request.Section.Page < currentPage;
+
+                Songs.Clear();
+                foreach (var item in searchResults) Songs.Add(item);
+                MusicList.ApplyFilter(string.Empty);
             }
         }
 

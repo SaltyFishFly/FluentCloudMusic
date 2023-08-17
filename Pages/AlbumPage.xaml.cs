@@ -21,34 +21,17 @@ namespace FluentCloudMusic.Pages
         {
             Songs = new ObservableCollection<Song>();
             Album = new Album();
-            this.InitializeComponent();
+
+            InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var album = e.Parameter as Album;
-            var (isSuccess, albumInfo, songs) = await Network.GetAlbumDetailAsync(album.ID);
-            if (isSuccess)
-            {
-                Album.ID = album.ID;
-                Album.Name = albumInfo["name"].ToString();
-                Album.Description = albumInfo["description"].ToString();
-                Album.CoverPictureUrl = albumInfo["blurPicUrl"].ToString();
-
-                foreach (var song in songs) Songs.Add(song);
-            }
-        }
-
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
-        {
-            var playlist = new List<AbstractMusic>();
-            foreach (var song in Songs) playlist.Add(song.Music);
-            MainPage.Player.Play(playlist);
-        }
-
-        private void MusicNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainPage.Player.Play((AbstractMusic)((FrameworkElement)sender).Tag);
+            var (isSuccess, detailedAlbum, songs) = await ((Album)e.Parameter).GetDetail();
+            if (!isSuccess) return;
+            detailedAlbum.CopyTo(Album);
+            foreach (var song in songs) Songs.Add(song);
+            MusicList.ApplyFilter(string.Empty);
         }
     }
 }
