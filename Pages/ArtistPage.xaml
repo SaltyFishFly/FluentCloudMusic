@@ -5,10 +5,19 @@
     xmlns:local="using:FluentCloudMusic.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:FluentCloudMusic.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <Grid>
-
-    </Grid>
+    <controls:MusicListView
+        x:Name="MusicList"
+        Background="{ThemeResource LayerFillColorDefaultBrush}"
+        IsAlbumButtonEnabled="False">
+        <controls:MusicListView.Header>
+            <controls:ResourceDetailPresenter
+                ImageSource="{x:Bind Path=Artist.AvatarUrl,Mode=OneWay}"
+                Title="{x:Bind Path=Artist.Name,Mode=OneWay}"
+                Description="{x:Bind Path=Artist.Description,Mode=OneWay}"/>
+        </controls:MusicListView.Header>
+    </controls:MusicListView>
 </Page>

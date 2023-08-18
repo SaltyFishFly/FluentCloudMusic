@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Windows.Media.Playback;
 
-namespace FluentCloudMusic.Classes
+namespace FluentCloudMusic.DataModels
 {
     public abstract class AbstractMusic
     {

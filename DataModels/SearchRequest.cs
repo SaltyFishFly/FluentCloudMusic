@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FluentCloudMusic.Classes
+namespace FluentCloudMusic.DataModels
 {
     public class SearchRequest
     {

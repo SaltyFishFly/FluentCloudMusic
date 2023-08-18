@@ -1,27 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
-namespace FluentCloudMusic.Classes
+namespace FluentCloudMusic.DataModels
 {
-    public class Album : INotifyPropertyChanged
+    public class Playlist : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public Album()
-        {
-            _ID = null;
-            _Name = null;
-            _Description = null;
-            _CoverPictureUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
-        }
 
         private string _ID;
         public string ID
         {
             get { return _ID; }
-            set
+            set 
             {
                 if (_ID == value) return;
                 _ID = value;
@@ -65,35 +56,53 @@ namespace FluentCloudMusic.Classes
             }
         }
 
-        public void CopyTo(Album dest)
+        private string _CreatorID;
+        public string CreatorID
         {
-            dest.ID = _ID;
-            dest.Name = _Name;
-            dest.Description = _Description;
-            dest.CoverPictureUrl = _CoverPictureUrl;
-        }
-
-        public async Task<(bool IsSuccess, Album albumInfo, LinkedList<Song> songs)> GetDetail()
-        {
-            var (isSuccess, jsonResult) = await Network.GetAlbumDetailAsync(ID);
-
-            if (!isSuccess) return (false, null, null);
-
-            var album = new Album()
+            get { return _CreatorID; }
+            set
             {
-                ID = ID,
-                Name = jsonResult["album"]["name"].ToString(),
-                Description = jsonResult["album"]["description"].ToString(),
-                CoverPictureUrl = jsonResult["album"]["blurPicUrl"].ToString(),
-            };
-
-            var songs = new LinkedList<Song>();
-            foreach (var item in jsonResult["songs"]) songs.AddLast(Song.ParseOfficialMusic(item));
-
-            return (true, album, songs);
+                if (_CreatorID == value) return;
+                _CreatorID = value;
+                Notify();
+            }
         }
 
-        private void Notify([CallerMemberName] string caller = null)
+        private int _Privacy;
+        public int Privacy
+        {
+            get { return _Privacy; }
+            set
+            {
+                if (_Privacy == value) return;
+                _Privacy = value; 
+                Notify(); 
+            }
+        }
+
+        public Playlist()
+        {
+            _ID = null;
+            _Name = null;
+            _Description = null;
+            _CoverPictureUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
+            _CreatorID = null;
+            _Privacy = 0;
+        }
+
+        public static Playlist Parse(JToken data)
+        {
+            return new Playlist
+            {
+                _ID = data["id"].ToString(),
+                _Name = data["name"].ToString(),
+                _CoverPictureUrl = data["picUrl"].ToString(),
+                _CreatorID = data["creator"]["userId"].ToString(),
+                _Privacy = 0
+            };
+        }
+
+        private void Notify([CallerMemberName]string caller = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
         }

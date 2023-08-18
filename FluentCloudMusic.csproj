@@ -25,7 +25,7 @@
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
@@ -129,10 +129,13 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classes\Extensions.cs" />
-    <Compile Include="Classes\Storage.cs" />
+    <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Services\StorageService.cs" />
     <Compile Include="Controls\MusicListView.xaml.cs">
       <DependentUpon>MusicListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ResourceDetailPresenter.xaml.cs">
+      <DependentUpon>ResourceDetailPresenter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\InverseBoolConverter.cs" />
@@ -141,22 +144,23 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\Account.cs" />
-    <Compile Include="Classes\Album.cs" />
-    <Compile Include="Classes\Artists.cs" />
-    <Compile Include="Classes\AbstractMusic.cs" />
-    <Compile Include="Classes\NeteaseMusic.cs" />
-    <Compile Include="Classes\Network.cs" />
-    <Compile Include="Classes\Playlist.cs" />
-    <Compile Include="Classes\SearchRequest.cs" />
-    <Compile Include="Classes\SearchSection.cs" />
-    <Compile Include="Classes\Song.cs" />
+    <Compile Include="Services\AccountService.cs" />
+    <Compile Include="DataModels\Album.cs" />
+    <Compile Include="DataModels\Artist.cs" />
+    <Compile Include="DataModels\AbstractMusic.cs" />
+    <Compile Include="DataModels\NeteaseMusic.cs" />
+    <Compile Include="Services\NetworkService.cs" />
+    <Compile Include="DataModels\Playlist.cs" />
+    <Compile Include="DataModels\SearchRequest.cs" />
+    <Compile Include="DataModels\SearchSection.cs" />
+    <Compile Include="DataModels\Song.cs" />
     <Compile Include="Converters\DoubleToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToDoubleConverter.cs" />
     <Compile Include="Controls\MusicPlayer.xaml.cs">
       <DependentUpon>MusicPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\VolumeSliderToolTipConverter.cs" />
     <Compile Include="Dialogs\CommonDialog.xaml.cs">
       <DependentUpon>CommonDialog.xaml</DependentUpon>
     </Compile>
@@ -280,6 +284,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\MusicPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ResourceDetailPresenter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

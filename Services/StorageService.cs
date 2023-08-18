@@ -1,10 +1,10 @@
 using Windows.Storage;
 
-namespace FluentCloudMusic.Classes
+namespace FluentCloudMusic.Services
 {
-    public static class Storage
+    public static class StorageService
     {
-        private static ApplicationDataContainer Settings = ApplicationData.Current.LocalSettings;
+        private static readonly ApplicationDataContainer Settings = ApplicationData.Current.LocalSettings;
 
         public static T GetSetting<T>(string key)
         {

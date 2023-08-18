@@ -1,7 +1,6 @@
-﻿using FluentCloudMusic.Classes;
-using System.Collections.Generic;
+﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -27,7 +26,7 @@ namespace FluentCloudMusic.Pages
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var playlist = e.Parameter as Playlist;
-            var (isSuccess, playlistInfo, songs) = await Network.GetPlaylistDetailAsync(playlist.ID);
+            var (isSuccess, playlistInfo, songs) = await NetworkService.GetPlaylistDetailAsync(playlist.ID);
             if (isSuccess)
             {
                 PlaylistInfo.ID = playlist.ID;

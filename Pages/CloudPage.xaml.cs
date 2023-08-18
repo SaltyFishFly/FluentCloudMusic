@@ -1,4 +1,5 @@
-﻿using FluentCloudMusic.Classes;
+﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,7 +26,7 @@ namespace FluentCloudMusic.Pages
         private async void GetUserCloud(SearchSection section)
         {
             CurrentSearchSection = section;
-            var (isSuccess, currentPage, songList) = await Network.GetUserCloudAsync(section);
+            var (isSuccess, currentPage, songList) = await NetworkService.GetUserCloudAsync(section);
             if (isSuccess)
             {
                 PageText.Text = section.Page.ToString() + " / " + currentPage.ToString();

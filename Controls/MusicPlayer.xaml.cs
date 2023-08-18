@@ -1,9 +1,10 @@
-﻿using FluentCloudMusic.Classes;
+﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.Services;
+using FluentCloudMusic.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.Media.Playback;
-using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -35,17 +36,17 @@ namespace FluentCloudMusic.Controls
             Player.MediaEnded += Player_MediaEnded;
 
             var playmode =
-                Storage.HasSetting("PlayMode") ? Storage.GetSetting<PlayModeEnum>("PlayMode") : PlayModeEnum.RepeatList;
+                StorageService.HasSetting("PlayMode") ? StorageService.GetSetting<PlayModeEnum>("PlayMode") : PlayModeEnum.RepeatList;
             PlayMode = new ObservablePlayMode(playmode);
 
-            Timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            Timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
             Timer.Tick += Timer_Tick;
             Timer.Start();
 
             this.InitializeComponent();
 
             VolumeSlider.Value =
-                Storage.HasSetting("Volume") ? Storage.GetSetting<double>("Volume") : 500.0;       
+                StorageService.HasSetting("Volume") ? StorageService.GetSetting<double>("Volume") : 500.0;       
         }
 
         private void Timer_Tick(object sender, object e)
@@ -100,13 +101,13 @@ namespace FluentCloudMusic.Controls
         private void PlayModeButton_Click(object sender, RoutedEventArgs e)
         {
             PlayMode.Next();
-            Storage.SetSetting("PlayMode", (int)PlayMode);
+            StorageService.SetSetting("PlayMode", (int)PlayMode);
         }
 
         private void VolumeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             Player.Volume = e.NewValue / 1000;
-            Storage.SetSetting("Volume", e.NewValue);
+            StorageService.SetSetting("Volume", e.NewValue);
         }
 
         private void Player_MediaEnded(MediaPlayer sender, object args)

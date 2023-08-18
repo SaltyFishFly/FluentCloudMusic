@@ -1,8 +1,6 @@
-﻿using FluentCloudMusic.Classes;
-using System;
+﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -38,13 +36,13 @@ namespace FluentCloudMusic.Pages
 
         private async void GetRecommendations()
         {
-            if (!Account.User.HasLogin) return;
+            if (!AccountService.User.HasLogin) return;
 
             DailyRecommendPlaylists.Clear();
             DailyRecommendSongs.Clear();
 
-            var playlists = await Network.GetDailyRecommendPlaylistsAsync();
-            var songs = await Network.GetDailyRecommendSongsAsync();
+            var playlists = await NetworkService.GetDailyRecommendPlaylistsAsync();
+            var songs = await NetworkService.GetDailyRecommendSongsAsync();
 
             playlists?.ForEach(playlist => DailyRecommendPlaylists.Add(playlist));
             songs?.GetRange(0, 5).ForEach(song => DailyRecommendSongs.Add(song));

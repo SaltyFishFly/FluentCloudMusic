@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace FluentCloudMusic.Classes
+namespace FluentCloudMusic.DataModels
 {
     public class Song
     {
@@ -65,20 +65,18 @@ namespace FluentCloudMusic.Classes
                 {
                     Name = json["album"].ToString()
                 },
-                Artists = new Artists()
-                {
-                    MainArtistName = json["artist"].ToString()
-                },
                 HasCopyright = true
             };
 
+            result.Artists = new Artists();
+            result.Artists.AddArtist(null, json["artist"].ToString());
             return result;
         }
 
         public bool RelateTo(string str)
         {
             return Music.Name.Contains(str, System.StringComparison.CurrentCultureIgnoreCase) ||
-                   Artists.MainArtistName.Contains(str, System.StringComparison.CurrentCultureIgnoreCase) ||
+                   Artists.MainArtist.Name.Contains(str, System.StringComparison.CurrentCultureIgnoreCase) ||
                    Album.Name.Contains(str, System.StringComparison.CurrentCultureIgnoreCase);
         }
     }

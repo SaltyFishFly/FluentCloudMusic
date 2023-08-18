@@ -2,7 +2,7 @@
     x:Class="FluentCloudMusic.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:classes="using:FluentCloudMusic.Classes"
+    xmlns:classes="using:FluentCloudMusic.Services"
     xmlns:local="using:FluentCloudMusic">
 
     <Application.Resources>

@@ -1,4 +1,5 @@
-﻿using NeteaseCloudMusicApi;
+﻿using FluentCloudMusic.DataModels;
+using NeteaseCloudMusicApi;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 
-namespace FluentCloudMusic.Classes
+namespace FluentCloudMusic.Services
 {
-    public static class Network
+    public static class NetworkService
     {
         /// <summary>
         /// 登录(目前只支持手机)
@@ -49,7 +50,7 @@ namespace FluentCloudMusic.Classes
         }
 
         /// <summary>
-        /// 获取日推
+        /// 获取日推歌单
         /// </summary>
         /// <returns></returns>
         public static async Task<List<Playlist>> GetDailyRecommendPlaylistsAsync()
@@ -63,7 +64,7 @@ namespace FluentCloudMusic.Classes
         }
 
         /// <summary>
-        /// 获取日推
+        /// 获取日推单曲
         /// </summary>
         /// <returns></returns>
         public static async Task<List<Song>> GetDailyRecommendSongsAsync()

@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using FluentCloudMusic.Utils;
+using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
 
-namespace FluentCloudMusic.Classes
+namespace FluentCloudMusic.Services
 {
-    public static class Account
+    public static class AccountService
     {
         public static readonly UserProfile User = new UserProfile();
 
@@ -22,31 +22,32 @@ namespace FluentCloudMusic.Classes
         /// <param name="password"></param>
         public static async Task<int> LoginAsync(string countryCode, string account, string password)
         {
-            var (code, jsonResult) = await Network.LoginAsync(countryCode, account, password);
+            var (code, jsonResult) = await NetworkService.LoginAsync(countryCode, account, password);
             if (code != 200)
             {
-                Storage.RemoveSetting("LoginCookie");
+                StorageService.RemoveSetting("LoginCookie");
                 return code;
             }
-            Storage.SetSetting("LoginCookie", App.API.Cookies.GetString());
+            StorageService.SetSetting("LoginCookie", App.API.Cookies.GetString());
 
             LoginEvent(jsonResult);
             return code;
         }
 
-        public static async Task<int> CheckLoginStatus()
+        public static async Task<int> CheckLoginStatusAsync()
         {
-            if (!Storage.HasSetting("LoginCookie")) return -1;
+            if (!StorageService.HasSetting("LoginCookie")) return -1;
 
-            string loginCookie = Storage.GetSetting<string>("LoginCookie");
+            string loginCookie = StorageService.GetSetting<string>("LoginCookie");
             App.API.Cookies.LoadFromString(loginCookie);
 
-            var (code, jsonResult) = await Network.CheckLoginStatus();
+            var (code, jsonResult) = await NetworkService.CheckLoginStatus();
             if (code != 200)
             {
-                Storage.RemoveSetting("LoginCookie");
+                StorageService.RemoveSetting("LoginCookie");
                 return code;
             }
+            StorageService.SetSetting("LoginCookie", App.API.Cookies.GetString());
 
             LoginEvent(jsonResult);
             return code;
@@ -54,10 +55,10 @@ namespace FluentCloudMusic.Classes
 
         public static async void LogoutAsync()
         {
-            bool success = await Network.LogoutAsync();
+            bool success = await NetworkService.LogoutAsync();
             if (success)
             {
-                Storage.RemoveSetting("LoginCookie");
+                StorageService.RemoveSetting("LoginCookie");
                 LogoutEvent();
             }
         }

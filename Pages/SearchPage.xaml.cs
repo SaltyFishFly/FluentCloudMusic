@@ -1,4 +1,5 @@
-﻿using FluentCloudMusic.Classes;
+﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,7 +29,7 @@ namespace FluentCloudMusic.Pages
         public async void Search(SearchRequest request)
         {
             CurrentSearchRequest = request;
-            var (isSuccess, currentPage, searchResults) = await Network.SearchAsync(request);
+            var (isSuccess, currentPage, searchResults) = await NetworkService.SearchAsync(request);
             if (isSuccess)
             {
                 PageText.Text = request.Section.Page.ToString() + " / " + currentPage.ToString();

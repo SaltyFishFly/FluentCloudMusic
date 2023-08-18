@@ -5,7 +5,7 @@
     xmlns:local="using:FluentCloudMusic.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:classes="using:FluentCloudMusic.Classes"
+    xmlns:datamodels="using:FluentCloudMusic.DataModels"
     xmlns:converters="using:FluentCloudMusic.Converters"
     mc:Ignorable="d"
     x:Name="ControlRoot">
@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <DataTemplate
-                x:DataType="classes:Song"
+                x:DataType="datamodels:Song"
                 x:Key="SongDataTemplate">
                 <Grid
                     x:DefaultBindMode="OneTime"
@@ -43,14 +43,14 @@
                     <HyperlinkButton
                         Grid.Column="1"
                         Tag="{x:Bind Path=Artists}"
-                        ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtistName}"
+                        ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtist.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
                         IsEnabled="{Binding Path=IsArtistButtonEnabled,ElementName=ControlRoot}"
                         Click="ArtistNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock
                                 TextTrimming="CharacterEllipsis"
-                                Text="{x:Bind Path=Artists.MainArtistName}"/>
+                                Text="{x:Bind Path=Artists.MainArtist.Name}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton

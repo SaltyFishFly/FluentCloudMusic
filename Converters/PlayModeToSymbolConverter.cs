@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FluentCloudMusic.Controls;
+using System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using FluentCloudMusic.Controls;
 
 namespace FluentCloudMusic.Converters
 {

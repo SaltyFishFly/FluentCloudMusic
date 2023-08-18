@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:classes="using:FluentCloudMusic.Classes"
+    xmlns:services="using:FluentCloudMusic.Services"
     xmlns:pages="using:FluentCloudMusic.Pages"
     xmlns:converters="using:FluentCloudMusic.Converters"
     mc:Ignorable="d"
@@ -63,7 +63,7 @@
             <muxc:NavigationViewItem
                 x:Name="NavItemCloud"
                 x:Uid="NavItemCloud"
-                IsEnabled="{x:Bind Path=classes:Account.User.HasLogin, Mode=OneWay}">
+                IsEnabled="{x:Bind Path=services:AccountService.User.HasLogin, Mode=OneWay}">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
@@ -73,7 +73,7 @@
             <muxc:NavigationViewItem
                 x:Name="NavItemFavorites"
                 x:Uid="NavItemFavorites"
-                IsEnabled="{x:Bind Path=classes:Account.User.HasLogin, Mode=OneWay}">
+                IsEnabled="{x:Bind Path=services:AccountService.User.HasLogin, Mode=OneWay}">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
@@ -83,7 +83,7 @@
             <muxc:NavigationViewItem
                 x:Name="NavItemPodcasts"
                 x:Uid="NavItemPodcasts"
-                IsEnabled="{x:Bind Path=classes:Account.User.HasLogin, Mode=OneWay}">
+                IsEnabled="{x:Bind Path=services:AccountService.User.HasLogin, Mode=OneWay}">
                 <muxc:NavigationViewItem.Icon>
                     <FontIcon
                         FontFamily="Segoe MDL2 Assets"
@@ -92,11 +92,11 @@
             </muxc:NavigationViewItem>
             <muxc:NavigationViewItemHeader
                 x:Uid="NavHeader2"
-                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
+                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"/>
             <muxc:NavigationViewItem
                 x:Name="NavItemPlaylistsCreated"
                 x:Uid="NavItemPlaylistsCreated"
-                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 Icon="List"
                 SelectsOnInvoked="False"
                 MenuItemsSource="{x:Bind Path=CreatedPlaylistButtons, Mode=OneWay}">
@@ -104,7 +104,7 @@
             <muxc:NavigationViewItem
                 x:Name="NavItemPlaylistsBookmarked"
                 x:Uid="NavItemPlaylistsBookmarked"
-                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 Icon="List"
                 SelectsOnInvoked="False"
                 MenuItemsSource="{x:Bind Path=BookmarkedPlaylistButtons, Mode=OneWay}">
@@ -114,14 +114,14 @@
             <muxc:NavigationViewItem
                 x:Name="NavItemLogin"
                 x:Uid="NavItemLogin"
-                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}"
+                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource InverseBoolToVisibilityConverter}, Mode=OneWay}"
                 Icon="Contact"/>
             <muxc:NavigationViewItem
                 x:Name="NavItemAccount"
                 x:Uid="NavItemAccount"
-                Visibility="{x:Bind Path=classes:Account.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
+                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneWay}"
                 Icon="Contact"
-                Content="{x:Bind Path=classes:Account.User.Nickname, Mode=OneWay}"/>
+                Content="{x:Bind Path=services:AccountService.User.Nickname, Mode=OneWay}"/>
             <muxc:NavigationViewItem
                 x:Name="NavItemSettings"
                 x:Uid="NavItemSettings"

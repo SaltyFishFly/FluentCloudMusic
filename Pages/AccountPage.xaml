@@ -5,7 +5,7 @@
     xmlns:local="using:FluentCloudMusic.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:classes="using:FluentCloudMusic.Classes"
+    xmlns:services="using:FluentCloudMusic.Services"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
@@ -35,10 +35,10 @@
                         Height="100"
                         Width="100"
                         Stretch="Fill"
-                        Source="{x:Bind Path=classes:Account.User.AvatarUrl, Mode=OneWay}"/>
+                        Source="{x:Bind Path=services:AccountService.User.AvatarUrl, Mode=OneWay}"/>
                 </Border>
                 <TextBlock
-                    Text="{x:Bind Path=classes:Account.User.Nickname, Mode=OneWay}"
+                    Text="{x:Bind Path=services:AccountService.User.Nickname, Mode=OneWay}"
                     FontSize="32"/>
             </StackPanel>
             <Button

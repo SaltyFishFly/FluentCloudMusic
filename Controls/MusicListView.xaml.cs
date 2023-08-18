@@ -1,12 +1,8 @@
-﻿using FluentCloudMusic.Classes;
+﻿using FluentCloudMusic.DataModels;
 using FluentCloudMusic.Pages;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

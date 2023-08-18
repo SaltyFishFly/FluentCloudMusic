@@ -15,33 +15,31 @@
             <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter"/>
             <converters:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
             <converters:PlayModeToSymbolConverter x:Key="PlayModeToSymbolConverter" x:Name="PlayModeToSymbolConverter"/>
+            <converters:VolumeSliderToolTipConverter x:Key="VolumeSliderToolTipConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Border
-        Height="50"
-        Width="Auto"
         MaxWidth="700"
+        Padding="4"
         CornerRadius="8"
         Background="{x:Bind Path=Background}">
         <Grid
-            Width="Auto">
+            ColumnSpacing="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50" />
-                <ColumnDefinition Width="50" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="50" />
-                <ColumnDefinition Width="50" />
-                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button
                 x:Name="MusicButton"
-                Width="42"
-                Height="42"
                 Grid.Column="0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Background="Transparent"
+                Width="44"
+                Height="44"
+                Background="{StaticResource SystemControlTransparentBrush}"
                 BorderThickness="0"
                 CornerRadius="8"
                 Click="MusicButton_Click">
@@ -51,12 +49,10 @@
             </Button>
             <Button
                 x:Name="PlayButton"
-                Width="42"
-                Height="42"
                 Grid.Column="1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Background="Transparent"
+                Width="44"
+                Height="44"
+                Background="{StaticResource SystemControlTransparentBrush}"
                 BorderThickness="0"
                 CornerRadius="8"
                 Click="PlayButton_Click">
@@ -66,32 +62,27 @@
             </Button>
             <Slider
                 x:Name="Timeline"
-                Width="Auto"
-                Margin="10,0,2,0"
                 Grid.Column="2"
+                Padding="4,0,4,0"
                 VerticalAlignment="Center"
                 Minimum="0"
                 Maximum="{x:Bind Path=Player.PlaybackSession.NaturalDuration, Converter={StaticResource TimeSpanToDoubleConverter}}"
                 Value="{x:Bind Path=Player.PlaybackSession.Position, Converter={StaticResource TimeSpanToDoubleConverter}}"
                 ThumbToolTipValueConverter="{StaticResource DoubleToStringConverter}"
-                PointerCaptureLost="Timeline_PointerCaptureLost">
-            </Slider>
+                PointerReleased="Timeline_PointerCaptureLost"/>
             <TextBlock
                 x:Name="PlayPosition"
-                Margin="0,0,-5,3"
                 Grid.Column="3"
-                Text="{x:Bind Path=Timeline.Maximum, Converter={StaticResource DoubleToStringConverter}}"
-                FontSize="16"
+                Padding="4,0,4,4"
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center"/>
+                FontSize="16"
+                Text="{x:Bind Path=Timeline.Maximum, Converter={StaticResource DoubleToStringConverter}}"/>
             <Button
                 x:Name="PlayModeButton"
-                Width="42"
-                Height="42"
                 Grid.Column="4"
-                Background="Transparent"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
+                Width="44"
+                Height="44"
+                Background="{StaticResource SystemControlTransparentBrush}"
                 BorderThickness="0"
                 CornerRadius="8"
                 Click="PlayModeButton_Click">
@@ -101,12 +92,10 @@
             </Button>
             <Button
                 x:Name="VolumeButton"
-                Width="42"
-                Height="42"
                 Grid.Column="5"
-                Background="Transparent"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
+                Width="44"
+                Height="44"
+                Background="{StaticResource SystemControlTransparentBrush}"
                 BorderThickness="0"
                 CornerRadius="8">
                 <SymbolIcon
@@ -119,13 +108,14 @@
                             <Slider
                                 x:Name="VolumeSlider"
                                 Height="200"
+                                HorizontalAlignment="Center"
+                                Orientation="Vertical"
                                 Minimum="0"
                                 Maximum="1000"
                                 Value="0"
                                 SmallChange="1"
                                 LargeChange="10"
-                                Orientation="Vertical"
-                                HorizontalAlignment="Center"
+                                ThumbToolTipValueConverter="{StaticResource VolumeSliderToolTipConverter}"
                                 ValueChanged="VolumeSlider_ValueChanged"/>
                         </StackPanel>
                     </Flyout>

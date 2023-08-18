@@ -1,13 +1,13 @@
-﻿using FluentCloudMusic.Classes;
-using FluentCloudMusic.Controls;
+﻿using FluentCloudMusic.Controls;
+using FluentCloudMusic.DataModels;
 using FluentCloudMusic.Pages;
+using FluentCloudMusic.Services;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.ApplicationModel.Resources;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
@@ -50,10 +50,11 @@ namespace FluentCloudMusic
             InitializeComponent();
             Player = MusicPlayer;
             Frame = ContentFrame;
-            Account.LoginEvent += OnLogin;
-            Account.LogoutEvent += OnLogout;
+            AccountService.LoginEvent += OnLogin;
+            AccountService.LogoutEvent += OnLogout;
+            MainNav.SelectedItem = NavItemDiscover;
 
-            _ = Account.CheckLoginStatus();
+            _ = AccountService.CheckLoginStatusAsync();
         }
 
         public static bool Navigate(Type sourcePageType, object parameter, NavigationTransitionInfo infoOverride = null)
@@ -67,7 +68,7 @@ namespace FluentCloudMusic
         /// </summary>
         private async void GeneratePlaylistButtons()
         {
-            var (isSuccess, playlists) = await Network.GetUserPlaylist(Account.User.UserID);
+            var (isSuccess, playlists) = await NetworkService.GetUserPlaylist(AccountService.User.UserID);
             if (isSuccess)
             {
                 CreatedPlaylistButtons.Clear();
@@ -82,7 +83,7 @@ namespace FluentCloudMusic
                         Content = playlist.Name
                     };
 
-                    if (playlist.CreatorID == Account.User.UserID)
+                    if (playlist.CreatorID == AccountService.User.UserID)
                         CreatedPlaylistButtons.Add(item);
                     else
                         BookmarkedPlaylistButtons.Add(item);
@@ -116,8 +117,8 @@ namespace FluentCloudMusic
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            Account.LoginEvent -= OnLogin;
-            Account.LogoutEvent -= OnLogout;
+            AccountService.LoginEvent -= OnLogin;
+            AccountService.LogoutEvent -= OnLogout;
             Player.Dispose();
         }
 
@@ -125,11 +126,13 @@ namespace FluentCloudMusic
         {
             GeneratePlaylistButtons();
             ContentFrame.Navigate(typeof(DiscoverPage), null);
+            ContentFrame.BackStack.Clear();
         }
 
         private void OnLogout()
         {
             ContentFrame.Navigate(typeof(LoginPage), null);
+            ContentFrame.BackStack.Clear();
         }
 
         /// <summary>

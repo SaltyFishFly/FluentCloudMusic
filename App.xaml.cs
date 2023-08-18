@@ -1,9 +1,4 @@
-﻿using FluentCloudMusic.Classes;
-using FluentCloudMusic.Dialogs;
-using FluentCloudMusic.Pages;
-using NeteaseCloudMusicApi;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using NeteaseCloudMusicApi;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;

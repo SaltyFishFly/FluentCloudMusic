@@ -5,7 +5,7 @@
     xmlns:local="using:FluentCloudMusic.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:classes="using:FluentCloudMusic.Classes"
+    xmlns:classes="using:FluentCloudMusic.Services"
     xmlns:controls="using:FluentCloudMusic.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
@@ -16,57 +16,10 @@
         IsAlbumButtonEnabled="False"
         ItemsSource="{x:Bind Path=Songs}">
         <controls:MusicListView.Header>
-            <Grid
-                Margin="16,8,16,8"
-                ColumnSpacing="16">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Border
-                    Height="240"
-                    Width="240"
-                    Grid.Column="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    CornerRadius="8">
-                    <Image
-                        x:Name="CoverPicture"
-                        Height="240"
-                        Width="240"
-                        Stretch="Fill"
-                        Source="{x:Bind Path=Album.CoverPictureUrl,Mode=OneWay}"/>
-                </Border>
-                <Grid
-                    Height="240"
-                    Grid.Column="1"
-                    RowSpacing="8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock
-                        x:Name="TitleText"
-                        Grid.Row="0"
-                        VerticalAlignment="Center"
-                        TextWrapping="Wrap"
-                        FontSize="30"
-                        FontWeight="Normal"
-                        Text="{x:Bind Path=Album.Name,Mode=OneWay}"/>
-                    <ScrollViewer
-                        Grid.Row="1"
-                        VerticalScrollMode="Enabled">
-                        <TextBlock
-                            x:Name="DescriptionText"
-                            Grid.Row="1"
-                            Margin="2,0,16,0"
-                            TextWrapping="Wrap"
-                            Foreground="{ThemeResource DescriptionTextBrush}"
-                            Text="{x:Bind Path=Album.Description,Mode=OneWay}"/>
-                    </ScrollViewer>
-                </Grid>
-            </Grid>
+            <controls:ResourceDetailPresenter
+                ImageSource="{x:Bind Path=Album.CoverPictureUrl,Mode=OneWay}"
+                Title="{x:Bind Path=Album.Name,Mode=OneWay}"
+                Description="{x:Bind Path=Album.Description,Mode=OneWay}"/>
         </controls:MusicListView.Header>
     </controls:MusicListView>
 </Page>

@@ -5,7 +5,7 @@
     xmlns:local="using:FluentCloudMusic.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:classes="using:FluentCloudMusic.Classes"
+    xmlns:classes="using:FluentCloudMusic.Services"
     xmlns:controls="using:FluentCloudMusic.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
