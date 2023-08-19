@@ -29,7 +29,6 @@ namespace FluentCloudMusic.Pages
             if (!isSuccess) return;
             detailedAlbum.CopyTo(Album);
             foreach (var song in songs) Songs.Add(song);
-            MusicList.ApplyFilter(string.Empty);
         }
     }
 }

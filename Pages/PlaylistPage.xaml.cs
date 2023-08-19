@@ -35,7 +35,6 @@ namespace FluentCloudMusic.Pages
                 PlaylistInfo.CoverPictureUrl = playlistInfo["coverImgUrl"].ToString();
 
                 foreach (var song in songs) Songs.Add(song);
-                MusicList.ApplyFilter(string.Empty);
             }
         }
     }

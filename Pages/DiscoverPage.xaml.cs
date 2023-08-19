@@ -46,8 +46,6 @@ namespace FluentCloudMusic.Pages
 
             playlists?.ForEach(playlist => DailyRecommendPlaylists.Add(playlist));
             songs?.GetRange(0, 5).ForEach(song => DailyRecommendSongs.Add(song));
-
-            MusicList.ApplyFilter(string.Empty);
         }
     }
 }

@@ -56,19 +56,18 @@ namespace FluentCloudMusic.Controls
             set { SetValue(IsToolBarEnabledProperty, value); }
         }
 
-        private readonly ObservableCollection<Song> FilteredSongs;
+        private List<Song> OriginalSongs;
 
         public MusicListView()
         {
-            FilteredSongs = new ObservableCollection<Song>();
             InitializeComponent();
         }
 
-        public void ApplyFilter(string filter)
+        private void ApplyFilter(string filter)
         {
-            FilteredSongs.Clear();
-            if (filter == string.Empty) foreach (var song in ItemsSource) FilteredSongs.Add(song);
-            else foreach (var song in ItemsSource.Where(song => song.RelateTo(filter))) FilteredSongs.Add(song);
+            OriginalSongs ??= new List<Song>(ItemsSource);
+            ItemsSource.Clear();
+            OriginalSongs.ForEach(song => { if (song.RelateTo(filter)) ItemsSource.Add(song); });
         }
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
@@ -89,13 +88,8 @@ namespace FluentCloudMusic.Controls
         private void PlayAllButton_Click(object sender, RoutedEventArgs e)
         {
             var playlist = new List<AbstractMusic>();
-            foreach (var song in FilteredSongs) playlist.Add(song.Music);
+            foreach (var song in ItemsSource) playlist.Add(song.Music);
             MainPage.Player.Play(playlist);
-        }
-
-        private void FilterInputBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-        {
-            if (sender.Text == string.Empty) ApplyFilter(string.Empty);
         }
 
         private void FilterInputBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

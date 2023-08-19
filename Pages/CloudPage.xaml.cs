@@ -35,7 +35,6 @@ namespace FluentCloudMusic.Pages
 
                 Songs.Clear();
                 foreach (var Item in songList) Songs.Add(Item);
-                MusicList.ApplyFilter(string.Empty);
             }
         }
 

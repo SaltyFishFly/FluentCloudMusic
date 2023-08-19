@@ -72,61 +72,62 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <ScrollViewer>
-        <StackPanel
-            Background="{x:Bind Path=Background}"
-            CornerRadius="8"
-            Padding="0,8,0,8">
-            <Border
-                Child="{x:Bind Path=Header}"/>
-            <Grid
-                Padding="16"
-                Visibility="{x:Bind Path=IsToolBarEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    Orientation="Horizontal"
-                    Spacing="8">
-                    <Button
-                        x:Name="PlayAllButton"
-                        Click="PlayAllButton_Click">
-                        <SymbolIcon
-                            Symbol="Play"/>
-                    </Button>
-                    <Button
-                        x:Name="PlayButton">
-                        <SymbolIcon
-                            Symbol="Download"/>
-                    </Button>
-                </StackPanel>
-                <StackPanel
-                    Grid.Column="2"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal"
-                    Spacing="8">
-                    <AutoSuggestBox
-                        x:Name="FilterInputBox"
-                        x:Uid="FilterInputBox"
-                        Width="200"
-                        QueryIcon="Find"
-                        TextChanged="FilterInputBox_TextChanged"
-                        QuerySubmitted="FilterInputBox_QuerySubmitted"/>
-                </StackPanel>
-            </Grid>
-            <ListView
-                x:Name="ContentListView"
-                SelectionMode="None"
-                IsItemClickEnabled="True"
-                ItemsSource="{x:Bind Path=FilteredSongs}"
-                ItemTemplate="{StaticResource SongDataTemplate}">
-            </ListView>
+    <ListView
+        x:Name="ContentListView"
+        Padding="0,8,0,8"
+        Background="{x:Bind Path=Background}"
+        CornerRadius="8"
+        SelectionMode="None"
+        IsItemClickEnabled="True"
+        ItemsSource="{x:Bind Path=ItemsSource}"
+        ItemTemplate="{StaticResource SongDataTemplate}">
+        <ListView.Header>
+            <StackPanel>
+                <Border
+                    Child="{x:Bind Path=Header}"/>
+                <Grid
+                    Padding="16"
+                    Visibility="{x:Bind Path=IsToolBarEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button
+                            x:Name="PlayAllButton"
+                            Click="PlayAllButton_Click">
+                            <SymbolIcon
+                                Symbol="Play"/>
+                        </Button>
+                        <Button
+                            x:Name="PlayButton">
+                            <SymbolIcon
+                                Symbol="Download"/>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <AutoSuggestBox
+                            x:Name="FilterInputBox"
+                            x:Uid="FilterInputBox"
+                            Width="200"
+                            QueryIcon="Find"
+                            QuerySubmitted="FilterInputBox_QuerySubmitted"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ListView.Header>
+        <ListView.Footer>
             <Border
                 Child="{x:Bind Path=Footer}"/>
-        </StackPanel>
-    </ScrollViewer>
+        </ListView.Footer>
+    </ListView>
 </UserControl>
