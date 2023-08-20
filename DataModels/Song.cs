@@ -19,6 +19,10 @@ namespace FluentCloudMusic.DataModels
         private Song()
         {
             This = this;
+            ID = string.Empty;
+            Name = string.Empty;
+            Alias = string.Empty;
+            HasCopyright = true;
         }
 
         public static Song ParseOfficialMusic(JToken json)
@@ -64,7 +68,6 @@ namespace FluentCloudMusic.DataModels
                 {
                     Name = json["album"].ToString()
                 },
-                HasCopyright = true
             };
 
             result.Artists = new Artists();
@@ -80,9 +83,9 @@ namespace FluentCloudMusic.DataModels
 
         public bool RelateTo(string filter)
         {
-            Func<string, bool> predicate = (string s) => s.Contains(filter, System.StringComparison.CurrentCultureIgnoreCase);
+            bool predicate(string s) => s.Contains(filter, StringComparison.CurrentCultureIgnoreCase);
             return
-                predicate(Name) || 
+                predicate(Name) ||
                 predicate(Alias) || 
                 predicate(Artists.MainArtist.Name) || 
                 predicate(Album.Name);

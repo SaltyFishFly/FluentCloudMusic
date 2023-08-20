@@ -10,6 +10,9 @@ namespace FluentCloudMusic.Services
 {
     public static class NetworkService
     {
+        // 这个类已过期，不应该再往里添加新函数
+        // 遗留的函数应该被拆分到其它Service里
+
         /// <summary>
         /// 获取日推歌单
         /// </summary>

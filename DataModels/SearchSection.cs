@@ -4,6 +4,8 @@ namespace FluentCloudMusic.DataModels
 {
     public class SearchSection
     {
+        // 需要重构
+
         public int Limit { get; set; }
         public int Offset { get; set; }
         public int Page { get; set; }

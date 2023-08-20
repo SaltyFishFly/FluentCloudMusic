@@ -12,9 +12,9 @@ namespace FluentCloudMusic.DataModels
 
         public Album()
         {
-            _ID = null;
-            _Name = null;
-            _Description = null;
+            _ID = string.Empty;
+            _Name = string.Empty;
+            _Description = string.Empty;
             _CoverPictureUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
         }
 

@@ -40,13 +40,25 @@
                     x:Name="PlayButton"
                     Width="44"
                     Height="44"
-                    Background="{StaticResource SystemControlTransparentBrush}"
+                    Background="{StaticResource LayerFillColorAltBrush}"
                     BorderThickness="0"
                     CornerRadius="8"
                     Click="PlayButton_Click">
                     <SymbolIcon
                         x:Name="PlayButton_Icon"
                         Symbol="Play"/>
+                </Button>
+                <Button
+                    x:Name="NextButton"
+                    Width="44"
+                    Height="44"
+                    Background="{StaticResource SystemControlTransparentBrush}"
+                    BorderThickness="0"
+                    CornerRadius="8"
+                    Click="NextButton_Click">
+                    <SymbolIcon
+                        x:Name="NextButton_Icon"
+                        Symbol="Next"/>
                 </Button>
             </StackPanel>
             <Slider
@@ -58,7 +70,7 @@
                 Maximum="{x:Bind Path=Player.PlaybackSession.NaturalDuration, Converter={StaticResource TimeSpanToDoubleConverter}}"
                 Value="{x:Bind Path=Player.PlaybackSession.Position, Converter={StaticResource TimeSpanToDoubleConverter}}"
                 ThumbToolTipValueConverter="{StaticResource DoubleToStringConverter}"
-                PointerReleased="Timeline_PointerCaptureLost"/>
+                PointerCaptureLost="Timeline_PointerCaptureLost"/>
             <TextBlock
                 x:Name="PlayPosition"
                 Grid.Column="2"
@@ -80,7 +92,7 @@
                     Click="PlayModeButton_Click">
                     <SymbolIcon
                         x:Name="PlayModeButton_Icon"
-                        Symbol="{x:Bind Path=PlayMode.Mode,Mode=OneWay,Converter={StaticResource PlayModeToSymbolConverter}}"/>
+                        Symbol="{x:Bind Path=PlayMode,Mode=OneWay,Converter={StaticResource PlayModeToSymbolConverter}}"/>
                 </Button>
                 <Button
                     x:Name="VolumeButton"
@@ -103,11 +115,9 @@
                                     Orientation="Vertical"
                                     Minimum="0"
                                     Maximum="1000"
-                                    Value="0"
-                                    SmallChange="1"
-                                    LargeChange="10"
+                                    Value="{x:Bind Path=Volume, Mode=TwoWay}"
                                     ThumbToolTipValueConverter="{StaticResource VolumeSliderToolTipConverter}"
-                                    ValueChanged="VolumeSlider_ValueChanged"/>
+                                    PointerCaptureLost="VolumeSlider_PointerCaptureLost"/>
                             </StackPanel>
                         </Flyout>
                     </Button.Flyout>

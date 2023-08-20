@@ -105,7 +105,8 @@
                                 Symbol="Play"/>
                         </Button>
                         <Button
-                            x:Name="PlayButton">
+                            x:Name="DownloadButton"
+                            Visibility="Collapsed">
                             <SymbolIcon
                                 Symbol="Download"/>
                         </Button>

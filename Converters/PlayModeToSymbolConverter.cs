@@ -9,11 +9,11 @@ namespace FluentCloudMusic.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return (PlayModeEnum)value switch
+            return (PlayMode)value switch
             {
-                PlayModeEnum.RepeatList => Symbol.RepeatAll,
-                PlayModeEnum.RepeatOne => Symbol.RepeatOne,
-                PlayModeEnum.Shuffle => Symbol.Shuffle,
+                PlayMode.RepeatList => Symbol.RepeatAll,
+                PlayMode.RepeatOne => Symbol.RepeatOne,
+                PlayMode.Shuffle => Symbol.Shuffle,
                 _ => throw new NotImplementedException(),
             };
         }
