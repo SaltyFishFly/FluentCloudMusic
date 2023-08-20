@@ -25,17 +25,17 @@
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
                         Grid.Column="0"
-                        Tag="{x:Bind Path=Music}"
-                        ToolTipService.ToolTip="{x:Bind Path=Music.Name}"
+                        Tag="{x:Bind Path=This}"
+                        ToolTipService.ToolTip="{x:Bind Path=Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
                         IsEnabled="{x:Bind Path=HasCopyright}"
                         Click="MusicNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock>
                                 <Run
-                                    Text="{x:Bind Path=Music.Name}"/>
+                                    Text="{x:Bind Path=Name}"/>
                                 <Run
-                                    Text="{x:Bind Path=Music.Description}"
+                                    Text="{x:Bind Path=Alias}"
                                     Foreground="{ThemeResource DescriptionTextBrush}"/>
                             </TextBlock>
                         </HyperlinkButton.Content>

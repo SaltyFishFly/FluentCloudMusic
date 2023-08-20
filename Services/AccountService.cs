@@ -1,5 +1,7 @@
 ﻿using FluentCloudMusic.Utils;
+using NeteaseCloudMusicApi;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -15,14 +17,18 @@ namespace FluentCloudMusic.Services
         public static event LoginEventHandler LoginEvent;
         public static event LogoutEventHandler LogoutEvent;
 
-        /// <summary>
-        /// 传入账号密码进行登录
-        /// </summary>
-        /// <param name="account"></param>
-        /// <param name="password"></param>
         public static async Task<int> LoginAsync(string countryCode, string account, string password)
         {
-            var (code, jsonResult) = await NetworkService.LoginAsync(countryCode, account, password);
+            var parameters = new Dictionary<string, object>()
+            {
+                { "countrycode", countryCode},
+                { "phone", account },
+                { "password", password }
+            };
+
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginCellphone, parameters);
+            var code = jsonResult["code"].Value<int>();
+
             if (code != 200)
             {
                 StorageService.RemoveSetting("LoginCookie");
@@ -41,7 +47,9 @@ namespace FluentCloudMusic.Services
             string loginCookie = StorageService.GetSetting<string>("LoginCookie");
             App.API.Cookies.LoadFromString(loginCookie);
 
-            var (code, jsonResult) = await NetworkService.CheckLoginStatus();
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginStatus);
+            var code = jsonResult["code"].Value<int>();
+
             if (code != 200)
             {
                 StorageService.RemoveSetting("LoginCookie");
@@ -53,14 +61,16 @@ namespace FluentCloudMusic.Services
             return code;
         }
 
-        public static async void LogoutAsync()
+        public static async Task<bool> LogoutAsync()
         {
-            bool success = await NetworkService.LogoutAsync();
-            if (success)
-            {
-                StorageService.RemoveSetting("LoginCookie");
-                LogoutEvent();
-            }
+            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Logout);
+            var code = jsonResult["code"].Value<int>();
+
+            if (code != 200) return false;
+            
+            StorageService.RemoveSetting("LoginCookie");
+            LogoutEvent();
+            return true;
         }
 
         public class UserProfile : INotifyPropertyChanged

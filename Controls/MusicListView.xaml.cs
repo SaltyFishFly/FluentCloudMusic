@@ -2,7 +2,6 @@
 using FluentCloudMusic.Pages;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -72,7 +71,7 @@ namespace FluentCloudMusic.Controls
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.Player.Play((AbstractMusic)((FrameworkElement)sender).Tag);
+            MainPage.Player.Play((Song)((FrameworkElement)sender).Tag);
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -87,8 +86,7 @@ namespace FluentCloudMusic.Controls
 
         private void PlayAllButton_Click(object sender, RoutedEventArgs e)
         {
-            var playlist = new List<AbstractMusic>();
-            foreach (var song in ItemsSource) playlist.Add(song.Music);
+            var playlist = new List<Song>(ItemsSource);
             MainPage.Player.Play(playlist);
         }
 

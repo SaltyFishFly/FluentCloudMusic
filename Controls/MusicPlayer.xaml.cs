@@ -18,10 +18,10 @@ namespace FluentCloudMusic.Controls
     public sealed partial class MusicPlayer : UserControl
     {
         public MediaPlayer Player { get; set; }
-        public List<AbstractMusic> PlaybackItemList { get; set; } = new List<AbstractMusic>();
-        public List<AbstractMusic> ShuffledPlaybackItemList { get; set; } = new List<AbstractMusic>();
-        public int CurrentPlayIndex { get; set; }
-        public ObservablePlayMode PlayMode { get; set; }
+        public List<Song> PlaybackItemList { get; set; } = new List<Song>();
+        public List<Song> ShuffledPlaybackItemList { get; set; } = new List<Song>();
+        public int PlayPositionIndex { get; set; }
+        public PlayMode PlayMode { get; set; }
         private DispatcherTimer Timer { get; set; }
         
         public MusicPlayer()
@@ -37,7 +37,7 @@ namespace FluentCloudMusic.Controls
 
             var playmode =
                 StorageService.HasSetting("PlayMode") ? StorageService.GetSetting<PlayModeEnum>("PlayMode") : PlayModeEnum.RepeatList;
-            PlayMode = new ObservablePlayMode(playmode);
+            PlayMode = new PlayMode(playmode);
 
             Timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
             Timer.Tick += Timer_Tick;
@@ -52,11 +52,6 @@ namespace FluentCloudMusic.Controls
         private void Timer_Tick(object sender, object e)
         {
             Bindings.Update();
-        }
-
-        private void MusicButton_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -116,11 +111,23 @@ namespace FluentCloudMusic.Controls
             else PlayNext();
         }
 
+        public void Play(Song song)
+        {
+            Play(new List<Song>(){ song });
+        }
+
+        public void Play(List<Song> songs)
+        {
+            PlaybackItemList = songs;
+            ShuffledPlaybackItemList = PlaybackItemList.Shuffle();
+            Play(0);
+        }
+
         private async void Play(int index)
         {
             if (PlaybackItemList.Count > index)
             {
-                CurrentPlayIndex = index;
+                PlayPositionIndex = index;
                 if (PlayMode.Mode == PlayModeEnum.Shuffle)
                     Player.Source = await ShuffledPlaybackItemList[index].ToMediaPlaybackItem();
                 else
@@ -129,32 +136,19 @@ namespace FluentCloudMusic.Controls
             }
         }
 
-        public void Play(AbstractMusic music)
-        {
-            PlaybackItemList = new List<AbstractMusic> { music };
-            Play(0);
-        }
-
-        public void Play(List<AbstractMusic> musicList)
-        {
-            PlaybackItemList = musicList;
-            ShuffledPlaybackItemList = new List<AbstractMusic>(PlaybackItemList).Shuffle();
-            Play(0);
-        }
-
         private void PlayPrevious()
         {
-            if (CurrentPlayIndex > 0) Play(--CurrentPlayIndex);
+            if (PlayPositionIndex > 0) Play(--PlayPositionIndex);
         }
 
         private void PlayNext()
         {
-            if (CurrentPlayIndex <= PlaybackItemList.Count) Play(++CurrentPlayIndex);
+            if (PlayPositionIndex < PlaybackItemList.Count - 1) Play(++PlayPositionIndex);
         }
 
         private void RePlay()
         {
-            Play(CurrentPlayIndex);
+            Play(PlayPositionIndex);
         }
 
         public void Dispose()
@@ -164,15 +158,15 @@ namespace FluentCloudMusic.Controls
         }
     }
 
-    public class ObservablePlayMode : INotifyPropertyChanged
+    public class PlayMode : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private PlayModeEnum _Mode;
 
-        public PlayModeEnum Mode { get { return _Mode; } }
+        public PlayModeEnum Mode { get => _Mode; }
 
-        public ObservablePlayMode(PlayModeEnum mode = PlayModeEnum.RepeatList)
+        public PlayMode(PlayModeEnum mode = PlayModeEnum.RepeatList)
         {
             _Mode = mode;
         }
@@ -189,7 +183,7 @@ namespace FluentCloudMusic.Controls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Mode)));
         }
 
-        public static explicit operator int(ObservablePlayMode mode)
+        public static explicit operator int(PlayMode mode)
         {
             return (int)mode._Mode;
         }

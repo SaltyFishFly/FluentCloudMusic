@@ -1,25 +1,32 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using FluentCloudMusic.Services;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Threading.Tasks;
+using Windows.Media.Playback;
 
 namespace FluentCloudMusic.DataModels
 {
     public class Song
     {
-        public AbstractMusic Music { get; private set; }
+        public Song This { get; set; }
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public string Alias { get; set; }
         public Album Album { get; private set; }
         public Artists Artists { get; private set; }
         public bool HasCopyright { get; private set; }
 
-        private Song() { }
+        private Song()
+        {
+            This = this;
+        }
 
         public static Song ParseOfficialMusic(JToken json)
         {
             Song result = new Song
             {
-                Music = new NeteaseMusic()
-                {
-                    ID = json["id"].ToString(),
-                    Name = json["name"].ToString(),
-                },
+                ID = json["id"].ToString(),
+                Name = json["name"].ToString(),
                 Album = new Album()
                 {
                     ID = json["al"]["id"].ToString(),
@@ -35,18 +42,13 @@ namespace FluentCloudMusic.DataModels
 
             bool hasTrans = json["tns"] != null && json["tns"].HasValues;
             bool hasAlias = json["alia"] != null && json["alia"].HasValues;
-            if (hasTrans && hasAlias)
-            {
-                result.Music.Description = "( " + json["tns"].First.ToString() + " | " + json["alia"].First.ToString() + " )";
-            }
-            else if (hasTrans)
-            {
-                result.Music.Description = "( " + json["tns"].First.ToString() + " )";
-            }
-            else if (hasAlias)
-            {
-                result.Music.Description = "( " + json["alia"].First.ToString() + " )";
-            }
+
+            if (hasTrans && hasAlias) 
+                result.Alias = $"( {json["tns"].First} | {json["alia"].First} )";
+            else if (hasTrans) 
+                result.Alias = $"( {json["tns"].First} )";
+            else if (hasAlias) 
+                result.Alias = $"( {json["alia"].First} )";
 
             return result;
         }
@@ -55,12 +57,9 @@ namespace FluentCloudMusic.DataModels
         {
             Song result = new Song
             {
-                Music = new NeteaseMusic()
-                {
-                    ID = json["songId"].ToString(),
-                    Name = json["songName"].ToString(),
-                    Description = "( " + json["fileName"].ToString() + " )"
-                },
+                ID = json["songId"].ToString(),
+                Name = json["songName"].ToString(),
+                Alias = $"( {json["fileName"]} )",
                 Album = new Album()
                 {
                     Name = json["album"].ToString()
@@ -73,11 +72,20 @@ namespace FluentCloudMusic.DataModels
             return result;
         }
 
-        public bool RelateTo(string str)
+        public async Task<MediaPlaybackItem> ToMediaPlaybackItem()
         {
-            return Music.Name.Contains(str, System.StringComparison.CurrentCultureIgnoreCase) ||
-                   Artists.MainArtist.Name.Contains(str, System.StringComparison.CurrentCultureIgnoreCase) ||
-                   Album.Name.Contains(str, System.StringComparison.CurrentCultureIgnoreCase);
+            var (isSuccess, result) = await SongService.GetNeteaseSongUrl(this);
+            return isSuccess ? result : null;
+        }
+
+        public bool RelateTo(string filter)
+        {
+            Func<string, bool> predicate = (string s) => s.Contains(filter, System.StringComparison.CurrentCultureIgnoreCase);
+            return
+                predicate(Name) || 
+                predicate(Alias) || 
+                predicate(Artists.MainArtist.Name) || 
+                predicate(Album.Name);
         }
     }
 }

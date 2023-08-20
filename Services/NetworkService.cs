@@ -5,50 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Media.Core;
-using Windows.Media.Playback;
 
 namespace FluentCloudMusic.Services
 {
     public static class NetworkService
     {
-        /// <summary>
-        /// 登录(目前只支持手机)
-        /// </summary>
-        /// <param name="account">账号</param>
-        /// <param name="password">密码</param>
-        /// <returns>(Code, JObject) 返回代码和JSON对象</returns>
-        public static async Task<(int Code, JObject Result)> LoginAsync(string countryCode, string account, string password)
-        {
-            var parameters = new Dictionary<string, object>
-                {
-                    { "countrycode", countryCode},
-                    { "phone", account },
-                    { "password", password }
-                };
-            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginCellphone, parameters);
-            var code = jsonResult["code"].Value<int>();
-            return (code, jsonResult);
-        }
-
-        public static async Task<(int Code, JObject Result)> CheckLoginStatus()
-        {
-            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginStatus);
-            var code = jsonResult["code"].Value<int>();
-            return (code, jsonResult);
-        }
-
-        /// <summary>
-        /// 登出
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<bool> LogoutAsync()
-        {
-            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Logout);
-            var code = jsonResult["code"].Value<int>();
-            return code == 200;
-        }
-
         /// <summary>
         /// 获取日推歌单
         /// </summary>
@@ -101,24 +62,6 @@ namespace FluentCloudMusic.Services
                 return (true, Page, result);
             }
             return (false, 0, null);
-        }
-
-        /// <summary>
-        /// 获取音乐播放地址
-        /// </summary>
-        /// <param name="musicId"></param>
-        /// <returns></returns>
-        public static async Task<(bool IsSuccess, MediaPlaybackItem Result)> GetOfficialMusicUrlAsync(string musicId)
-        {
-            var parameters = new Dictionary<string, object> { { "id", musicId } };
-            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.SongUrl, parameters);
-            if (jsonResult["code"].Value<int>() == 200 &&
-                jsonResult["data"].First["url"].ToString() != string.Empty)
-            {
-                var result = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri(jsonResult["data"].First["url"].ToString())));
-                return (true, result);
-            }
-            return (false, null);
         }
 
         /// <summary>

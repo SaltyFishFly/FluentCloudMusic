@@ -129,6 +129,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Services\SongService.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Controls\MusicListView.xaml.cs">
@@ -147,8 +148,6 @@
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="DataModels\Album.cs" />
     <Compile Include="DataModels\Artist.cs" />
-    <Compile Include="DataModels\AbstractMusic.cs" />
-    <Compile Include="DataModels\NeteaseMusic.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="DataModels\Playlist.cs" />
     <Compile Include="DataModels\SearchRequest.cs" />

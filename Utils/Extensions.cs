@@ -11,12 +11,13 @@ namespace FluentCloudMusic.Utils
         {
             Random random = new Random();
 
-            for (int i = list.Count - 1; i > 0; i--)
+            var result = new List<T>(list);
+            for (int i = result.Count - 1; i > 0; i--)
             {
                 int j = random.Next(0, i);
-                (list[i], list[j]) = (list[j], list[i]);
+                (result[i], result[j]) = (result[j], result[i]);
             }
-            return list;
+            return result;
         }
     }
 
