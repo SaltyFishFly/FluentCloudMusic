@@ -34,7 +34,7 @@
                     Click="PreviousPageButton_Click">
                     <Button.Content>
                         <FontIcon
-                            FontFamily="Segoe MDL2 Assets"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
                             Glyph="&#xf743;"
                             FontSize="16"/>
                     </Button.Content>
@@ -51,7 +51,7 @@
                     Click="NextPageButton_Click">
                     <Button.Content>
                         <FontIcon
-                            FontFamily="Segoe MDL2 Assets"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
                             Glyph="&#xf745;"
                             FontSize="16"/>
                     </Button.Content>

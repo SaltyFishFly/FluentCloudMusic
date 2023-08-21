@@ -1,7 +1,11 @@
-﻿using System;
+﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.Services;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
+using Windows.Media.Playback;
 
 namespace FluentCloudMusic.Utils
 {

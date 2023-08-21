@@ -4,11 +4,14 @@ using FluentCloudMusic.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Windows.Media;
 using Windows.Media.Playback;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+
+using SMTC = Windows.Media.SystemMediaTransportControls;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
@@ -23,33 +26,47 @@ namespace FluentCloudMusic.Controls
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MediaPlayer Player { get; set; }
-        // VolumeSlider的范围为[0.0, 1000.0]，需要映射到Player.Volume的范围[0.0, 1.0]
-        public double Volume
+        public MediaPlayer Player { get; private set; }
+        public List<Song> PlaybackItemList { get; private set; } = new List<Song>();
+        public List<Song> ShuffledPlaybackItemList { get; private set; } = new List<Song>();
+        public int PlayIndex 
         {
-            get => Player.Volume * 1000;
-            set
+            get => _PlayIndex;
+            private set
             {
-                Player.Volume = value / 1000;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Volume)));
+                _PlayIndex = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasPrevious)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasNext)));
             }
         }
-        public List<Song> PlaybackItemList { get; set; } = new List<Song>();
-        public List<Song> ShuffledPlaybackItemList { get; set; } = new List<Song>();
-        public int PlayPositionIndex { get; set; }
         public PlayMode PlayMode
         {
             get => _PlayMode;
-            set
+            private set
             {
                 _PlayMode = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PlayMode)));
             }
         }
+        // VolumeSlider的范围为[0.0, 1000.0]，需要映射到Player.Volume的范围[0.0, 1.0]
+        public double Volume
+        {
+            get => Player.Volume * 1000;
+            private set
+            {
+                Player.Volume = value / 1000;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Volume)));
+            }
+        }
 
-        private SystemMediaTransportControlsController PlayerSMTCController;
-        private DispatcherTimer Timer;
+        public bool HasPrevious => PlayIndex > 0;
+        public bool HasNext => PlayIndex < PlaybackItemList.Count - 1;
+
+        private int _PlayIndex;
         private PlayMode _PlayMode;
+        private SMTCController SMTCController;
+        private readonly DispatcherTimer Timer;
+        
 
         public MusicPlayer()
         {
@@ -62,18 +79,61 @@ namespace FluentCloudMusic.Controls
             Player.PlaybackSession.PlaybackStateChanged += Player_PlaybackSession_PlaybackStateChanged;
             Player.MediaEnded += Player_MediaEnded;
 
-            PlayMode =
-                StorageService.HasSetting("PlayMode") ? StorageService.GetSetting<PlayMode>("PlayMode") : Controls.PlayMode.RepeatList;
-            Volume =
-                StorageService.HasSetting("Volume") ? StorageService.GetSetting<double>("Volume") : 500.0;
+            SMTCController = new SMTCController(this);
 
-            PlayerSMTCController = new SystemMediaTransportControlsController(Player);
+            PlayMode = StorageService.HasSetting("PlayMode") ? StorageService.GetSetting<PlayMode>("PlayMode") : PlayMode.RepeatList;
+            Volume = StorageService.HasSetting("Volume") ? StorageService.GetSetting<double>("Volume") : 500.0;
 
             this.InitializeComponent();
 
             Timer = new DispatcherTimer(){ Interval = TimeSpan.FromSeconds(1) };
             Timer.Tick += Timer_Tick;
             Timer.Start();
+        }
+
+        public void Play(Song song)
+        {
+            Play(new List<Song>() { song });
+        }
+
+        public void Play(List<Song> songs)
+        {
+            PlaybackItemList = songs;
+            ShuffledPlaybackItemList = songs.Shuffle();
+            Play(0);
+        }
+        public void Previous()
+        {
+            if (PlayIndex > 0) Play(--PlayIndex);
+        }
+
+        public void Next()
+        {
+            if (PlayIndex < PlaybackItemList.Count - 1) Play(++PlayIndex);
+        }
+
+        public void Replay()
+        {
+            Play(PlayIndex);
+        }
+
+        public void Dispose()
+        {
+            Timer.Stop();
+            Player.Dispose();
+        }
+
+        private async void Play(int index)
+        {
+            if (PlaybackItemList.Count <= index) return;
+
+            PlayIndex = index;
+            Player.Source =
+                PlayMode == PlayMode.Shuffle ?
+                await ShuffledPlaybackItemList[index].ToMediaPlaybackItem() :
+                await PlaybackItemList[index].ToMediaPlaybackItem();
+
+            Player.Play();
         }
 
         private void Timer_Tick(object sender, object e)
@@ -104,8 +164,8 @@ namespace FluentCloudMusic.Controls
 
         private void Player_MediaEnded(MediaPlayer sender, object args)
         {
-            if (PlayMode == Controls.PlayMode.RepeatOne) RePlay();
-            else PlayNext();
+            if (PlayMode == PlayMode.RepeatOne) Replay();
+            else Next();
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -121,9 +181,14 @@ namespace FluentCloudMusic.Controls
             }
         }
 
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            Previous();
+        }
+
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            PlayNext();
+            Next();
         }
 
         private void Timeline_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
@@ -135,9 +200,9 @@ namespace FluentCloudMusic.Controls
         {
             PlayMode = PlayMode switch
             {
-                Controls.PlayMode.RepeatList => Controls.PlayMode.RepeatOne,
-                Controls.PlayMode.RepeatOne => Controls.PlayMode.Shuffle,
-                Controls.PlayMode.Shuffle => Controls.PlayMode.RepeatList,
+                PlayMode.RepeatList => PlayMode.RepeatOne,
+                PlayMode.RepeatOne => PlayMode.Shuffle,
+                PlayMode.Shuffle => PlayMode.RepeatList,
                 _ => throw new InvalidEnumArgumentException()
             };
             StorageService.SetSetting("PlayMode", (int)PlayMode);
@@ -147,59 +212,29 @@ namespace FluentCloudMusic.Controls
         {
             StorageService.SetSetting("Volume", VolumeSlider.Value);
         }
-
-        public void Play(Song song)
-        {
-            Play(new List<Song>(){ song });
-        }
-
-        public void Play(List<Song> songs)
-        {
-            PlaybackItemList = songs;
-            ShuffledPlaybackItemList = songs.Shuffle();
-            Play(0);
-        }
-
-        private async void Play(int index)
-        {
-            if (PlaybackItemList.Count <= index) return;
-
-            if (PlayMode == Controls.PlayMode.Shuffle)
-                Player.Source = await ShuffledPlaybackItemList[index].ToMediaPlaybackItem();
-            else
-                Player.Source = await PlaybackItemList[index].ToMediaPlaybackItem();
-            PlayPositionIndex = index;
-
-            Player.Play();
-        }
-
-        private void PlayPrevious()
-        {
-            if (PlayPositionIndex > 0) Play(--PlayPositionIndex);
-        }
-
-        private void PlayNext()
-        {
-            if (PlayPositionIndex < PlaybackItemList.Count - 1) Play(++PlayPositionIndex);
-        }
-
-        private void RePlay()
-        {
-            Play(PlayPositionIndex);
-        }
-
-        public void Dispose()
-        {
-            Timer.Stop();
-            Player.Dispose();
-        }
     }
 
-    public class SystemMediaTransportControlsController
+    public class SMTCController
     {
-        public SystemMediaTransportControlsController(MediaPlayer player)
+        private readonly MusicPlayer MusicPlayerControl;
+        private MediaPlayer Player => MusicPlayerControl.Player;
+        private MediaPlaybackCommandManager CommandManager => Player.CommandManager;
+        private SMTC SMTC => Player.SystemMediaTransportControls;
+
+        public SMTCController(MusicPlayer musicPlayer)
         {
-                
+            MusicPlayerControl = musicPlayer;
+            Player.SourceChanged += Player_SourceChanged;
+            CommandManager.PreviousReceived += (sender, args) => MusicPlayerControl.Previous();
+            CommandManager.NextReceived += (sender, args) => MusicPlayerControl.Next();
+        }
+
+        private void Player_SourceChanged(MediaPlayer sender, object args)
+        {
+            CommandManager.PreviousBehavior.EnablingRule =
+                MusicPlayerControl.HasPrevious ? MediaCommandEnablingRule.Always : MediaCommandEnablingRule.Never;
+            CommandManager.NextBehavior.EnablingRule =
+                MusicPlayerControl.HasNext ? MediaCommandEnablingRule.Always : MediaCommandEnablingRule.Never;
         }
     }
 }

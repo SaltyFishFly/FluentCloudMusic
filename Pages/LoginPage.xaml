@@ -63,14 +63,14 @@
                 Grid.Column="0"
                 Click="LoginButton_Click">
                 <Button.Content>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8FB;"/>
+                    <SymbolIcon Symbol="Accept"/>
                 </Button.Content>
             </Button>
             <Button
                 x:Name="HelpButton"
                 Grid.Column="2">
                 <Button.Content>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE946;"/>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;"/>
                 </Button.Content>
                 <Button.Flyout>
                     <Flyout>

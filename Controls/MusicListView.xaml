@@ -16,8 +16,31 @@
                 x:DataType="datamodels:Song"
                 x:Key="SongDataTemplate">
                 <Grid
-                    x:DefaultBindMode="OneTime"
-                    ColumnSpacing="8">
+                    x:DefaultBindMode="OneTime">
+                    <Grid.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem
+                                x:Uid="SongFlyoutMenuPlayButton"
+                                Icon="Play"/>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutSubItem
+                                x:Uid="SongFlyoutMenuArtistsButton"
+                                Icon="Contact"/>
+                            <MenuFlyoutItem
+                                x:Uid="SongFlyoutMenuAlbumButton"
+                                Text="{x:Bind Path=Album.Name}">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon 
+                                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                        Glyph="&#xe93c;"/>
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem
+                                x:Uid="SongFlyoutMenuAddToPlaylistButton"
+                                Icon="Add"/>
+                        </MenuFlyout>
+                    </Grid.ContextFlyout>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="7*"/>
                         <ColumnDefinition Width="3*"/>
@@ -25,6 +48,8 @@
                     </Grid.ColumnDefinitions>
                     <HyperlinkButton
                         Grid.Column="0"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
                         Tag="{x:Bind Path=This}"
                         ToolTipService.ToolTip="{x:Bind Path=Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
@@ -42,6 +67,8 @@
                     </HyperlinkButton>
                     <HyperlinkButton
                         Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
                         Tag="{x:Bind Path=Artists}"
                         ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtist.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
@@ -54,7 +81,9 @@
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
-                        Grid.Column="2" 
+                        Grid.Column="2"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
                         Tag="{x:Bind Path=Album}"
                         ToolTipService.ToolTip="{x:Bind Path=Album.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"

@@ -74,31 +74,31 @@ namespace FluentCloudMusic.Services
         /// <returns></returns>
         public static async Task<(bool IsSuccess, JToken PlaylistInfo, LinkedList<Song> SongList)> GetPlaylistDetailAsync(string playlistID)
         {
-            var parameters = new Dictionary<string, object> { { "id", playlistID } };
-            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, parameters);
-            if (jsonResult["code"].Value<int>() == 200)
-            {
-                StringBuilder musicIDsBuilder = new StringBuilder();
-                foreach (var Item in jsonResult["playlist"]["trackIds"])
-                {
-                    musicIDsBuilder.Append(Item["id"].ToString()).Append(",");
-                }
-                string MusicIds = musicIDsBuilder.Remove(musicIDsBuilder.Length - 1, 1).ToString();
+            var playlistParams = new Dictionary<string, object> { { "id", playlistID } };
+            var jsonPlaylist = await App.API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, playlistParams);
 
-                var result = new LinkedList<Song>();
-                var parameters2 = new Dictionary<string, object> { { "ids", MusicIds } };
-                var jsonResult2 = await App.API.RequestAsync(CloudMusicApiProviders.SongDetail, parameters2);
-                if (jsonResult2["code"].Value<int>() == 200)
-                {
-                    foreach (var Item in jsonResult2["songs"])
-                    {
-                        result.AddLast(Song.ParseOfficialMusic(Item));
-                    }
-                    return (true, jsonResult["playlist"], result);
-                }
-                return (false, null, null);
+            if (jsonPlaylist["code"].Value<int>() != 200) return (false, null, null);
+            if (!jsonPlaylist["playlist"]["trackIds"].HasValues) return (true, jsonPlaylist["playlist"], new LinkedList<Song>());
+
+            StringBuilder musicIDsBuilder = new StringBuilder();
+            foreach (var item in jsonPlaylist["playlist"]["trackIds"])
+            {
+                musicIDsBuilder.Append(item["id"].ToString()).Append(",");
             }
-            return (false, null, null);
+            musicIDsBuilder.Remove(musicIDsBuilder.Length - 1, 1);
+
+            var songParams = new Dictionary<string, object> { { "ids", musicIDsBuilder.ToString() } };
+            var jsonSongs = await App.API.RequestAsync(CloudMusicApiProviders.SongDetail, songParams);
+
+            if (jsonSongs["code"].Value<int>() != 200) return (true, jsonPlaylist["playlist"], new LinkedList<Song>());
+
+            var result = new LinkedList<Song>();
+            foreach (var jsonSong in jsonSongs["songs"])
+            {
+                result.AddLast(Song.ParseOfficialMusic(jsonSong));
+            }
+
+            return (true, jsonPlaylist["playlist"], result);
         }
 
         public static async Task<(bool IsSuccess, int CurrentPage, LinkedList<Song> SongList)> GetUserCloudAsync(SearchSection section)

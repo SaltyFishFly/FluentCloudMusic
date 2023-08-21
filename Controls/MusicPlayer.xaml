@@ -37,12 +37,21 @@
                 Orientation="Horizontal"
                 Spacing="4">
                 <Button
+                    x:Name="PreviousButton"
+                    Width="44"
+                    Height="44"
+                    Style="{StaticResource MusicPlayerButtonStyle}"
+                    IsEnabled="{x:Bind Path=HasPrevious}"
+                    Click="PreviousButton_Click">
+                    <SymbolIcon
+                        x:Name="PreviousButton_Icon"
+                        Symbol="Previous"/>
+                </Button>
+                <Button
                     x:Name="PlayButton"
                     Width="44"
                     Height="44"
-                    Background="{StaticResource LayerFillColorAltBrush}"
-                    BorderThickness="0"
-                    CornerRadius="8"
+                    Style="{StaticResource MusicPlayerButtonStyle}"
                     Click="PlayButton_Click">
                     <SymbolIcon
                         x:Name="PlayButton_Icon"
@@ -52,9 +61,8 @@
                     x:Name="NextButton"
                     Width="44"
                     Height="44"
-                    Background="{StaticResource SystemControlTransparentBrush}"
-                    BorderThickness="0"
-                    CornerRadius="8"
+                    Style="{StaticResource MusicPlayerButtonStyle}"
+                    IsEnabled="{x:Bind Path=HasNext}"
                     Click="NextButton_Click">
                     <SymbolIcon
                         x:Name="NextButton_Icon"
@@ -86,9 +94,7 @@
                     x:Name="PlayModeButton"
                     Width="44"
                     Height="44"
-                    Background="{StaticResource SystemControlTransparentBrush}"
-                    BorderThickness="0"
-                    CornerRadius="8"
+                    Style="{StaticResource MusicPlayerButtonStyle}"
                     Click="PlayModeButton_Click">
                     <SymbolIcon
                         x:Name="PlayModeButton_Icon"
@@ -98,9 +104,7 @@
                     x:Name="VolumeButton"
                     Width="44"
                     Height="44"
-                    Background="{StaticResource SystemControlTransparentBrush}"
-                    BorderThickness="0"
-                    CornerRadius="8">
+                    Style="{StaticResource MusicPlayerButtonStyle}">
                     <SymbolIcon
                         x:Name="VolumeButton_Icon"
                         Symbol="Volume"/>

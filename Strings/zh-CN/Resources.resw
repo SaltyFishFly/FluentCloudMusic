@@ -231,4 +231,13 @@
   <data name="PasswordInputBox.PlaceholderText" xml:space="preserve">
     <value>密码</value>
   </data>
+  <data name="SongFlyoutMenuAddToPlaylistButton.Text" xml:space="preserve">
+    <value>添加到歌单</value>
+  </data>
+  <data name="SongFlyoutMenuArtistsButton.Text" xml:space="preserve">
+    <value>艺术家</value>
+  </data>
+  <data name="SongFlyoutMenuPlayButton.Text" xml:space="preserve">
+    <value>播放</value>
+  </data>
 </root>
