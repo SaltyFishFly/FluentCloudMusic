@@ -1,7 +1,12 @@
 ﻿using FluentCloudMusic.DataModels;
 using FluentCloudMusic.Services;
+using FluentCloudMusic.Utils;
 using System.Collections.ObjectModel;
+using System.Linq;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -31,7 +36,12 @@ namespace FluentCloudMusic.Pages
 
         private void PlaylistItem_Click(object sender, ItemClickEventArgs e)
         {
-            MainPage.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem, null);
+            var imageContainer = 
+                VisualTreeUtils.FindChildByName(DailyRecommendPlaylistsGridView.ContainerFromItem(e.ClickedItem), "CoverImageContainer");
+            ConnectedAnimationService
+                .GetForCurrentView()
+                .PrepareToAnimate("DailyRecommendPlaylistsToPlaylistPageAnimation", (UIElement)imageContainer);
+            MainPage.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem);
         }
 
         private async void GetRecommendations()

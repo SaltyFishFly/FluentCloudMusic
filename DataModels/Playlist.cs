@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using FluentCloudMusic.Utils;
+using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -50,7 +51,7 @@ namespace FluentCloudMusic.DataModels
             get { return _CoverPictureUrl; }
             set
             {
-                if (_CoverPictureUrl == value) return;
+                if (StringUtils.IsSameImageUrl(_CoverPictureUrl, value)) return;
                 _CoverPictureUrl = value;
                 Notify();
             }

@@ -30,6 +30,8 @@ namespace FluentCloudMusic.Controls
             set { SetValue(DescriptionProperty, value); }
         }
 
+        public UIElement CoverImage { get => CoverImageContainer; }
+
         public ResourceDetailPresenter()
         {
             this.InitializeComponent();

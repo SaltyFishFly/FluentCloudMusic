@@ -28,6 +28,7 @@
                         <RowDefinition Height="55"/>
                     </Grid.RowDefinitions>
                     <Border
+                        x:Name="CoverImageContainer"
                         Height="150"
                         Width="150"
                         Grid.Row="0"

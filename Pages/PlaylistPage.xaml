@@ -16,6 +16,7 @@
         ItemsSource="{x:Bind Path=Songs}">
         <controls:MusicListView.Header>
             <controls:ResourceDetailPresenter
+                x:Name="MusicListHeader"
                 ImageSource="{x:Bind Path=PlaylistInfo.CoverPictureUrl,Mode=OneWay}"
                 Title="{x:Bind Path=PlaylistInfo.Name,Mode=OneWay}"
                 Description="{x:Bind Path=PlaylistInfo.Description,Mode=OneWay}"/>

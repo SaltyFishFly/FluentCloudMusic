@@ -21,14 +21,18 @@
                         <MenuFlyout>
                             <MenuFlyoutItem
                                 x:Uid="SongFlyoutMenuPlayButton"
-                                Icon="Play"/>
+                                Tag="{x:Bind Path=This}"
+                                Icon="Play"
+                                Click="MusicNameButton_Click"/>
                             <MenuFlyoutSeparator/>
                             <MenuFlyoutSubItem
                                 x:Uid="SongFlyoutMenuArtistsButton"
                                 Icon="Contact"/>
                             <MenuFlyoutItem
                                 x:Uid="SongFlyoutMenuAlbumButton"
-                                Text="{x:Bind Path=Album.Name}">
+                                Tag="{x:Bind Path=Album}"
+                                Text="{x:Bind Path=Album.Name}"
+                                Click="AlbumNameButton_Click">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon 
                                         FontFamily="{StaticResource SymbolThemeFontFamily}"
