@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FluentCloudMusic.Utils
+﻿namespace FluentCloudMusic.Utils
 {
     public static class StringUtils
     {
         /// <summary>
         /// 比较两个图片字符串是否指向不同服务器上的相同图片，如
-        /// URL1 = https://p1.music.126.net/114514.jpg
-        /// URL2 = https://p2.music.126.net/114514.jpg
-        /// URL1 == URL2为false，但此函数返回true
+        /// URL1 = https://p1.music.126.net/114514.jpg?1919
+        /// URL2 = https://p2.music.126.net/114514.jpg?810
+        /// URL1与URL2实际指向相同的资源，此函数返回true
         /// </summary>
         /// <param name="url1WithoutQuery">URL字符串1</param>
         /// <param name="url2WithOutQuery">URL字符串2</param>

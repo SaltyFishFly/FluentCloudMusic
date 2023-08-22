@@ -2,6 +2,7 @@
 using FluentCloudMusic.Pages;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -93,6 +94,24 @@ namespace FluentCloudMusic.Controls
         private void FilterInputBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             ApplyFilter(sender.Text);
+        }
+
+        private void MenuFlyout_Opened(object sender, object e)
+        {
+            var subMenu = (sender as MenuFlyout).Items.FirstOrDefault(i => i.Name == "SongFlyoutMenuArtistsButton") as MenuFlyoutSubItem;
+            if (subMenu == null) return;
+
+            subMenu.Items.Clear();
+            foreach (var artist in (Artists)subMenu.Tag)
+            {
+                var artistButton = new MenuFlyoutItem()
+                {
+                    Tag = artist,
+                    Text = artist.Name
+                };
+                artistButton.Click += ArtistNameButton_Click;
+                subMenu.Items.Add(artistButton);
+            }
         }
     }
 }

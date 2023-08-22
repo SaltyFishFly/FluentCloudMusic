@@ -41,7 +41,7 @@
                     Width="44"
                     Height="44"
                     Style="{StaticResource MusicPlayerButtonStyle}"
-                    IsEnabled="{x:Bind Path=HasPrevious}"
+                    IsEnabled="{x:Bind Path=HasPrevious,Mode=OneWay}"
                     Click="PreviousButton_Click">
                     <SymbolIcon
                         x:Name="PreviousButton_Icon"
@@ -62,7 +62,7 @@
                     Width="44"
                     Height="44"
                     Style="{StaticResource MusicPlayerButtonStyle}"
-                    IsEnabled="{x:Bind Path=HasNext}"
+                    IsEnabled="{x:Bind Path=HasNext,Mode=OneWay}"
                     Click="NextButton_Click">
                     <SymbolIcon
                         x:Name="NextButton_Icon"

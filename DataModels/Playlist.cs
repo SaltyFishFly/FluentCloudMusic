@@ -45,14 +45,14 @@ namespace FluentCloudMusic.DataModels
             }
         }
 
-        private string _CoverPictureUrl;
+        private string _CoverImageUrl;
         public string CoverPictureUrl
         {
-            get { return _CoverPictureUrl; }
+            get { return _CoverImageUrl; }
             set
             {
-                if (StringUtils.IsSameImageUrl(_CoverPictureUrl, value)) return;
-                _CoverPictureUrl = value;
+                if (StringUtils.IsSameImageUrl(_CoverImageUrl, value)) return;
+                _CoverImageUrl = value;
                 Notify();
             }
         }
@@ -86,7 +86,7 @@ namespace FluentCloudMusic.DataModels
             _ID = null;
             _Name = null;
             _Description = null;
-            _CoverPictureUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
+            _CoverImageUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
             _CreatorID = null;
             _Privacy = 0;
         }
@@ -97,7 +97,7 @@ namespace FluentCloudMusic.DataModels
             {
                 _ID = data["id"].ToString(),
                 _Name = data["name"].ToString(),
-                _CoverPictureUrl = data["picUrl"].ToString(),
+                _CoverImageUrl = data["picUrl"].ToString(),
                 _CreatorID = data["creator"]["userId"].ToString(),
                 _Privacy = 0
             };

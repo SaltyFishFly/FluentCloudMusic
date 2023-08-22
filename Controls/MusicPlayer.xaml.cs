@@ -4,7 +4,6 @@ using FluentCloudMusic.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Windows.Media;
 using Windows.Media.Playback;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -58,7 +57,6 @@ namespace FluentCloudMusic.Controls
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Volume)));
             }
         }
-
         public bool HasPrevious => PlayIndex > 0;
         public bool HasNext => PlayIndex < PlaybackItemList.Count - 1;
 
@@ -102,14 +100,15 @@ namespace FluentCloudMusic.Controls
             ShuffledPlaybackItemList = songs.Shuffle();
             Play(0);
         }
+
         public void Previous()
         {
-            if (PlayIndex > 0) Play(--PlayIndex);
+            if (HasPrevious) Play(--PlayIndex);
         }
 
         public void Next()
         {
-            if (PlayIndex < PlaybackItemList.Count - 1) Play(++PlayIndex);
+            if (HasNext) Play(++PlayIndex);
         }
 
         public void Replay()
@@ -155,6 +154,7 @@ namespace FluentCloudMusic.Controls
                 MediaPlaybackState.Paused => Symbol.Play,
                 _ => Symbol.Download
             };
+            // MediaPlayer类拉起的事件不能直接操作UI线程，必须使用Dispatcher.RunAsync()包一层
             _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 PlayButton.IsEnabled = isEnabled;
@@ -164,8 +164,10 @@ namespace FluentCloudMusic.Controls
 
         private void Player_MediaEnded(MediaPlayer sender, object args)
         {
-            if (PlayMode == PlayMode.RepeatOne) Replay();
-            else Next();
+            if (PlayMode == PlayMode.RepeatOne)
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Replay());
+            else
+                _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Next());
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)

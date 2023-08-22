@@ -2,10 +2,8 @@
 using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 

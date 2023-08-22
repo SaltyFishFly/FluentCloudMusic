@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using FluentCloudMusic.Utils;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace FluentCloudMusic.DataModels
 {
@@ -14,7 +17,7 @@ namespace FluentCloudMusic.DataModels
             _ID = string.Empty;
             _Name = string.Empty;
             _Description = string.Empty;
-            _AvatarUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
+            _AvatarImageUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
         }
 
         private string _ID;
@@ -53,14 +56,14 @@ namespace FluentCloudMusic.DataModels
             }
         }
 
-        private string _AvatarUrl;
+        private string _AvatarImageUrl;
         public string AvatarUrl
         {
-            get { return _AvatarUrl; }
+            get { return _AvatarImageUrl; }
             set
             {
-                if (_AvatarUrl == value) return;
-                _AvatarUrl = value;
+                if (StringUtils.IsSameImageUrl(_AvatarImageUrl, value)) return;
+                _AvatarImageUrl = value;
                 Notify();
             }
         }
@@ -71,15 +74,26 @@ namespace FluentCloudMusic.DataModels
         }
     }
 
-    public class Artists
+    public class Artists : IEnumerable<Artist>
     {
-        private readonly List<Artist> _Artists;
-
         public Artist MainArtist { get => _Artists.FirstOrDefault(); }
+
+        private readonly List<Artist> _Artists;
 
         public Artists()
         {
             _Artists = new List<Artist>();
+        }
+
+        public override string ToString()
+        {
+            if (_Artists.Count == 0) return string.Empty;
+
+            var result = new StringBuilder();
+            _Artists.ForEach(artist =>  result.Append(artist.Name).Append(" / "));
+            result.Remove(result.Length - 3, 3);
+
+            return result.ToString();
         }
 
         public void AddArtist(string id, string name)
@@ -89,6 +103,16 @@ namespace FluentCloudMusic.DataModels
                 ID = id,
                 Name = name
             });
+        }
+
+        public IEnumerator<Artist> GetEnumerator()
+        {
+            return ((IEnumerable<Artist>)_Artists).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)_Artists).GetEnumerator();
         }
     }
 }

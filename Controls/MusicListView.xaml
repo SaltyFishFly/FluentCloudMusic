@@ -18,7 +18,8 @@
                 <Grid
                     x:DefaultBindMode="OneTime">
                     <Grid.ContextFlyout>
-                        <MenuFlyout>
+                        <MenuFlyout
+                            Opened="MenuFlyout_Opened">
                             <MenuFlyoutItem
                                 x:Uid="SongFlyoutMenuPlayButton"
                                 Tag="{x:Bind Path=This}"
@@ -26,7 +27,9 @@
                                 Click="MusicNameButton_Click"/>
                             <MenuFlyoutSeparator/>
                             <MenuFlyoutSubItem
+                                x:Name="SongFlyoutMenuArtistsButton"
                                 x:Uid="SongFlyoutMenuArtistsButton"
+                                Tag="{x:Bind Path=Artists}"
                                 Icon="Contact"/>
                             <MenuFlyoutItem
                                 x:Uid="SongFlyoutMenuAlbumButton"
@@ -60,7 +63,8 @@
                         IsEnabled="{x:Bind Path=HasCopyright}"
                         Click="MusicNameButton_Click">
                         <HyperlinkButton.Content>
-                            <TextBlock>
+                            <TextBlock
+                                TextTrimming="CharacterEllipsis">
                                 <Run
                                     Text="{x:Bind Path=Name}"/>
                                 <Run
@@ -73,7 +77,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Left"
-                        Tag="{x:Bind Path=Artists}"
+                        Tag="{x:Bind Path=Artists.MainArtist}"
                         ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtist.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
                         IsEnabled="{Binding Path=IsArtistButtonEnabled,ElementName=ControlRoot}"
@@ -81,7 +85,7 @@
                         <HyperlinkButton.Content>
                             <TextBlock
                                 TextTrimming="CharacterEllipsis"
-                                Text="{x:Bind Path=Artists.MainArtist.Name}"/>
+                                Text="{x:Bind Path=Artists.ToString()}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
