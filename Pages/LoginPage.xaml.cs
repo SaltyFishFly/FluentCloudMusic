@@ -1,4 +1,4 @@
-﻿using FluentCloudMusic.Dialogs;
+﻿using FluentCloudMusic.Controls;
 using FluentCloudMusic.Services;
 using System;
 using Windows.UI.Xaml;

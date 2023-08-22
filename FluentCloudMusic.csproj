@@ -129,6 +129,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classes\SMTCController.cs" />
+    <Compile Include="Converters\MediaPlaybackStateToBoolConverter.cs" />
+    <Compile Include="Converters\MediaPlaybackStateToSymbolConverter.cs" />
     <Compile Include="Services\SongService.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Services\StorageService.cs" />
@@ -156,11 +159,11 @@
     <Compile Include="Converters\DoubleToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToDoubleConverter.cs" />
-    <Compile Include="Controls\MusicPlayer.xaml.cs">
-      <DependentUpon>MusicPlayer.xaml</DependentUpon>
+    <Compile Include="Controls\MusicPlayerControl.xaml.cs">
+      <DependentUpon>MusicPlayerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\VolumeSliderToolTipConverter.cs" />
-    <Compile Include="Dialogs\CommonDialog.xaml.cs">
+    <Compile Include="Controls\CommonDialog.xaml.cs">
       <DependentUpon>CommonDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\AccountPage.xaml.cs">
@@ -284,7 +287,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\MusicPlayer.xaml">
+    <Page Include="Controls\MusicPlayerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -292,7 +295,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\CommonDialog.xaml">
+    <Page Include="Controls\CommonDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

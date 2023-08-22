@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="FluentCloudMusic.Controls.MusicPlayer"
+    x:Class="FluentCloudMusic.Controls.MusicPlayerControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:FluentCloudMusic.Controls"
@@ -14,8 +14,10 @@
             <converters:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter"/>
             <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter"/>
             <converters:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
-            <converters:PlayModeToSymbolConverter x:Key="PlayModeToSymbolConverter" x:Name="PlayModeToSymbolConverter"/>
+            <converters:PlayModeToSymbolConverter x:Key="PlayModeToSymbolConverter"/>
             <converters:VolumeSliderToolTipConverter x:Key="VolumeSliderToolTipConverter"/>
+            <converters:MediaPlaybackStateToBoolConverter x:Key="MediaPlaybackStateToBoolConverter"/>
+            <converters:MediaPlaybackStateToSymbolConverter x:Key="MediaPlaybackStateToSymbolConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -52,10 +54,11 @@
                     Width="44"
                     Height="44"
                     Style="{StaticResource MusicPlayerButtonStyle}"
+                    IsEnabled="{x:Bind Path=PlayState,Converter={StaticResource MediaPlaybackStateToBoolConverter},Mode=OneWay}"
                     Click="PlayButton_Click">
                     <SymbolIcon
                         x:Name="PlayButton_Icon"
-                        Symbol="Play"/>
+                        Symbol="{x:Bind Path=PlayState,Converter={StaticResource MediaPlaybackStateToSymbolConverter},Mode=OneWay}"/>
                 </Button>
                 <Button
                     x:Name="NextButton"
@@ -75,17 +78,18 @@
                 Padding="4,0,4,0"
                 VerticalAlignment="Center"
                 Minimum="0"
-                Maximum="{x:Bind Path=Player.PlaybackSession.NaturalDuration, Converter={StaticResource TimeSpanToDoubleConverter}}"
-                Value="{x:Bind Path=Player.PlaybackSession.Position, Converter={StaticResource TimeSpanToDoubleConverter}}"
+                Maximum="{x:Bind Path=NaturalDuration, Converter={StaticResource TimeSpanToDoubleConverter}, Mode=OneWay}"
+                Value="{x:Bind Path=Position, Converter={StaticResource TimeSpanToDoubleConverter}, Mode=OneWay}"
                 ThumbToolTipValueConverter="{StaticResource DoubleToStringConverter}"
+                Loaded="Timeline_Loaded"
                 PointerCaptureLost="Timeline_PointerCaptureLost"/>
             <TextBlock
-                x:Name="PlayPosition"
+                x:Name="PlayPositionText"
                 Grid.Column="2"
                 Padding="4,0,4,4"
                 VerticalAlignment="Center"
                 FontSize="16"
-                Text="{x:Bind Path=Timeline.Maximum, Converter={StaticResource DoubleToStringConverter}}"/>
+                Text="{x:Bind Path=Timeline.Maximum, Converter={StaticResource DoubleToStringConverter}, Mode=OneWay}"/>
             <StackPanel
                 Grid.Column="3"
                 Orientation="Horizontal"

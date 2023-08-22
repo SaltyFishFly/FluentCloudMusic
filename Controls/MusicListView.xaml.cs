@@ -72,7 +72,7 @@ namespace FluentCloudMusic.Controls
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.Player.Play((Song)((FrameworkElement)sender).Tag);
+            MainPage.Player.Play(new List<Song>() { (Song)((FrameworkElement)sender).Tag });
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)

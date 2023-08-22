@@ -1,5 +1,6 @@
 ﻿using FluentCloudMusic.Controls;
 using System;
+using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
@@ -14,7 +15,7 @@ namespace FluentCloudMusic.Converters
                 PlayMode.RepeatList => Symbol.RepeatAll,
                 PlayMode.RepeatOne => Symbol.RepeatOne,
                 PlayMode.Shuffle => Symbol.Shuffle,
-                _ => throw new NotImplementedException(),
+                _ => throw new InvalidEnumArgumentException(),
             };
         }
 

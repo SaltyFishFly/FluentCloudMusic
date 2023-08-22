@@ -145,7 +145,7 @@
                     CornerRadius="8"
                     CacheSize="5"
                     Navigated="ContentFrame_Navigated"/>
-                <local:MusicPlayer
+                <local:MusicPlayerControl
                     x:Name="MusicPlayer"
                     Margin="0,8,0,0"
                     Background="{ThemeResource LayerFillColorDefaultBrush}"

@@ -35,7 +35,7 @@ namespace FluentCloudMusic
             { "NavItemSettings" , typeof(SettingsPage)  },
         };
 
-        public static MusicPlayer Player;
+        public static MusicPlayerControl Player;
 
         private static new Frame Frame;
 
