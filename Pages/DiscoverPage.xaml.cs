@@ -18,12 +18,12 @@ namespace FluentCloudMusic.Pages
     public sealed partial class DiscoverPage : Page
     {
         public readonly ObservableCollection<Playlist> DailyRecommendPlaylists;
-        public readonly ObservableCollection<DeprecatedSong> DailyRecommendSongs;
+        public readonly ObservableCollection<Song> DailyRecommendSongs;
 
         public DiscoverPage()
         {
             DailyRecommendPlaylists = new ObservableCollection<Playlist>();
-            DailyRecommendSongs = new ObservableCollection<DeprecatedSong>();
+            DailyRecommendSongs = new ObservableCollection<Song>();
 
             InitializeComponent();
         }

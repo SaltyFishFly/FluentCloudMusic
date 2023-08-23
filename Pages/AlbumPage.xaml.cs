@@ -1,4 +1,5 @@
 ﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
@@ -14,12 +15,12 @@ namespace FluentCloudMusic.Pages
     /// </summary>
     public sealed partial class AlbumPage : Page
     {
-        private readonly ObservableCollection<DeprecatedSong> Songs;
+        private readonly ObservableCollection<Song> Songs;
         private readonly AlbumViewModel Album;
 
         public AlbumPage()
         {
-            Songs = new ObservableCollection<DeprecatedSong>();
+            Songs = new ObservableCollection<Song>();
             Album = new AlbumViewModel();
 
             InitializeComponent();
@@ -27,10 +28,11 @@ namespace FluentCloudMusic.Pages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var (isSuccess, album) = await AlbumService.GetAlbumDetailAsync(((DeprecatedAlbum)e.Parameter).ID);
+            var (isSuccess, album, songs) = await AlbumService.GetAlbumDetailAsync(((Album)e.Parameter).Id);
             if (!isSuccess) return;
 
             Album.Source = album;
+            foreach (var song in songs) { Songs.Add(song); }
         }
     }
 }

@@ -137,12 +137,14 @@
     <Compile Include="DataModels\JSONModels\Playlist.cs" />
     <Compile Include="DataModels\JSONModels\Responses\AlbumResponse.cs" />
     <Compile Include="DataModels\JSONModels\Artist.cs" />
+    <Compile Include="DataModels\JSONModels\Responses\CloudSearchResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\LoginCellphoneResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\LoginStatusResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\PlaylistDetailResponse.cs" />
     <Compile Include="DataModels\JSONModels\Profile.cs" />
     <Compile Include="DataModels\JSONModels\Responses\RecommendResourcesResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\RecommendSongsResponse.cs" />
+    <Compile Include="DataModels\JSONModels\Responses\SongDetailResponse.cs" />
     <Compile Include="DataModels\JSONModels\Song.cs" />
     <Compile Include="DataModels\ViewModels\AlbumViewModel.cs" />
     <Compile Include="DataModels\ViewModels\PlaylistViewModel.cs" />

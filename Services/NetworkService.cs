@@ -33,14 +33,11 @@ namespace FluentCloudMusic.Services
         /// 获取日推单曲
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<DeprecatedSong>> GetDailyRecommendSongsAsync()
+        public static async Task<List<Song>> GetDailyRecommendSongsAsync()
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.RecommendSongs);
-
-            var result = new List<DeprecatedSong>();
-            if (jsonResult["code"].Value<int>() == 200)
-                foreach (var item in jsonResult["data"]["dailySongs"]) result.Add(DeprecatedSong.FromJson(item, DataSource.Official));
-            return result;
+            var result = jsonResult.ToObject<RecommendSongsResponse>(JsonUtils.Serializer);
+            return result.Code == 200 ? result.Data.DailySongs.ToList() : new List<Song>();
         }
 
         /// <summary>
@@ -50,23 +47,16 @@ namespace FluentCloudMusic.Services
         /// <param name="type">搜索类型</param>
         /// <param name="offset">偏移量</param>
         /// <returns></returns>
-        public static async Task<(bool IsSuccess, int CurrentPage, LinkedList<DeprecatedSong> SearchResults)> SearchAsync(SearchRequest Request)
+        public static async Task<(bool IsSuccess, int CurrentPage, List<Song> SearchResults)> SearchAsync(SearchRequest Request)
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Cloudsearch, Request.ToDictionary());
-            if (jsonResult["code"].Value<int>() == 200 &&
-                jsonResult["result"]["songs"] != null)
-            {
-                var result = new LinkedList<DeprecatedSong>();
-                foreach (JToken jsonSearchResult in jsonResult["result"]["songs"])
-                {
-                    var searchResult = DeprecatedSong.FromJson(jsonSearchResult, DataSource.Official);
-                    result.AddLast(searchResult);
-                }
-                //计算页数
-                int Page = (int)Math.Ceiling(jsonResult["result"]["songCount"].Value<double>() / Request.Section.Limit);
-                return (true, Page, result);
-            }
-            return (false, 0, null);
+            var result = jsonResult.ToObject<CloudSearchResponse>(JsonUtils.Serializer);
+
+            if (result.Code != 200) return (false, 0, null);
+
+            //计算页数
+            int Page = (int)Math.Ceiling(jsonResult["result"]["songCount"].Value<double>() / Request.Section.Limit);
+            return (true, Page, result.Result.Songs.ToList());
         }
 
         /// <summary>
@@ -74,15 +64,15 @@ namespace FluentCloudMusic.Services
         /// </summary>
         /// <param name="playlist"></param>
         /// <returns></returns>
-        public static async Task<(bool IsSuccess, Playlist Info, LinkedList<DeprecatedSong> Songs)> GetPlaylistDetailAsync(string playlistID)
+        public static async Task<(bool IsSuccess, Playlist Info, List<Song> Songs)> GetPlaylistDetailAsync(string playlistID)
         {
             var playlistParams = new Dictionary<string, object> { { "id", playlistID } };
 
-            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, playlistParams);
-            var result1 = jsonResult.ToObject<PlaylistDetailResponse>(JsonUtils.Serializer);
+            var jsonResult1 = await App.API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, playlistParams);
+            var result1 = jsonResult1.ToObject<PlaylistDetailResponse>(JsonUtils.Serializer);
 
             if (result1.Code != 200) return (false, null, null);
-            if (result1.Playlist.TrackIds.Length == 0) return (true, result1.Playlist, new LinkedList<DeprecatedSong>());
+            if (result1.Playlist.TrackIds.Length == 0) return (true, result1.Playlist, new List<Song>());
 
 
             StringBuilder musicIDsBuilder = new StringBuilder();
@@ -90,17 +80,12 @@ namespace FluentCloudMusic.Services
             musicIDsBuilder.Remove(musicIDsBuilder.Length - 1, 1);
 
             var songParams = new Dictionary<string, object> { { "ids", musicIDsBuilder.ToString() } };
-            var jsonSongs = await App.API.RequestAsync(CloudMusicApiProviders.SongDetail, songParams);
+            var jsonResult2 = await App.API.RequestAsync(CloudMusicApiProviders.SongDetail, songParams);
+            var result2 = jsonResult2.ToObject<SongDetailResponse>(JsonUtils.Serializer);
 
-            if (jsonSongs["code"].Value<int>() != 200) return (true, result1.Playlist, new LinkedList<DeprecatedSong>());
+            if (result2.Code != 200) return (true, result1.Playlist, new List<Song>());
 
-            var result = new LinkedList<DeprecatedSong>();
-            foreach (var jsonSong in jsonSongs["songs"])
-            {
-                result.AddLast(DeprecatedSong.FromJson(jsonSong, DataSource.Official));
-            }
-
-            return (true, result1.Playlist, result);
+            return (true, result1.Playlist, result2.Songs.ToList());
         }
 
         public static async Task<(bool IsSuccess, int CurrentPage, LinkedList<DeprecatedSong> SongList)> GetUserCloudAsync(SearchSection section)

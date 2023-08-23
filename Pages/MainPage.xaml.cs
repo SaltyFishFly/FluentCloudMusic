@@ -180,7 +180,7 @@ namespace FluentCloudMusic
                 SearchRequest Request = new SearchRequest(sender.Text);
                 if (ContentFrame.CurrentSourcePageType == typeof(SearchPage))
                 {
-                    SearchPage.INSTANCE.Search(Request);
+                    SearchPage.Instance.Search(Request);
                 }
                 else
                 {

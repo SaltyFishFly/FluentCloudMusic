@@ -13,7 +13,6 @@
     <controls:MusicListView
         x:Name="MusicList"
         Background="{ThemeResource LayerFillColorDefaultBrush}"
-        ItemsSource="{x:Bind Path=Songs}"
         IsArtistButtonEnabled="False"
         IsAlbumButtonEnabled="False">
         <controls:MusicListView.Footer>

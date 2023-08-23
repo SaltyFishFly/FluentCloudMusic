@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FluentCloudMusic.Utils;
+using Newtonsoft.Json;
 
 namespace FluentCloudMusic.DataModels.JSONModels
 {
@@ -10,6 +11,7 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         public string Description { get; set; }
 
+        [MultipleJsonProperty("alias", "alia")]
         public string[] Alias { get; set; }
 
         [JsonProperty("picUrl")]

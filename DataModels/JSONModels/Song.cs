@@ -1,9 +1,15 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace FluentCloudMusic.DataModels.JSONModels
 {
     public class Song
     {
+        [JsonIgnore]
+        public Song This { get; set; }
+
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -11,10 +17,10 @@ namespace FluentCloudMusic.DataModels.JSONModels
         public string[] Alias { get; set; }
 
         [JsonProperty("ar")]
-        public Ar[] Artists { get; set; }
+        public Artist[] Artists { get; set; }
 
         [JsonProperty("al")]
-        public Al Album { get; set; }
+        public Album Album { get; set; }
 
         [JsonProperty("noCopyrightRcmd")]
         public object NoCopyrightRecommendation { get; set; }
@@ -36,31 +42,55 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         [JsonProperty("tns")]
         public string[] Translations { get; set; }
-    }
 
-    public class Ar
-    {
-        public string Id { get; set; }
 
-        public string Name { get; set; }
+        public bool HasCopyright { get => NoCopyrightRecommendation == null; }
+        public Artist MainArtist { get => Artists[0]; }
+        public string ArtistsNameString
+        {
+            get
+            {
+                if (Artists.Length == 0) return string.Empty;
 
-        [JsonProperty("tns")]
-        public string[] Translations { get; set; }
+                var result = new StringBuilder();
+                Array.ForEach(Artists, artist => result.Append(artist.Name).Append(" / "));
+                result.Remove(result.Length - 3, 3);
 
-        public string[] Alias { get; set; }
-    }
+                return result.ToString();
+            }
+        }
+        public string Description
+        {
+            get
+            {
+                bool hasAlias = Alias != null && Alias.Length > 0;
+                bool hasTrans = Translations != null && Translations.Length > 0;
 
-    public class Al
-    {
-        public string Id { get; set; }
+                if (hasTrans && hasAlias)
+                    return $"( {Translations.First()} | {Alias.First()} )";
+                else if (hasTrans)
+                    return $"( {Translations.First()} )";
+                else if (hasAlias)
+                    return $"( {Alias.First()} )";
 
-        public string Name { get; set; }
+                return string.Empty;
+            }
+        }
 
-        [JsonProperty("picUrl")]
-        public string ImageUrl { get; set; }
+        public Song()
+        {
+            This = this;
+        }
 
-        [JsonProperty("alia")]
-        public string[] Alias { get; set; }
+        public bool RelateTo(string filter)
+        {
+            bool predicate(string s) => s.Contains(filter, StringComparison.CurrentCultureIgnoreCase);
+            return
+                predicate(Name) ||
+                predicate(Description) ||
+                predicate(MainArtist.Name) ||
+                predicate(Album.Name);
+        }
     }
 
     public class QualityInfo

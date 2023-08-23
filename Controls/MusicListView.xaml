@@ -5,7 +5,7 @@
     xmlns:local="using:FluentCloudMusic.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:datamodels="using:FluentCloudMusic.DataModels"
+    xmlns:jsonmodels="using:FluentCloudMusic.DataModels.JSONModels"
     xmlns:converters="using:FluentCloudMusic.Converters"
     mc:Ignorable="d"
     x:Name="ControlRoot">
@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <DataTemplate
-                x:DataType="datamodels:DeprecatedSong"
+                x:DataType="jsonmodels:Song"
                 x:Key="SongDataTemplate">
                 <Grid
                     x:DefaultBindMode="OneTime">
@@ -68,7 +68,7 @@
                                 <Run
                                     Text="{x:Bind Path=Name}"/>
                                 <Run
-                                    Text="{x:Bind Path=Alias}"
+                                    Text="{x:Bind Path=Description}"
                                     Foreground="{ThemeResource DescriptionTextBrush}"/>
                             </TextBlock>
                         </HyperlinkButton.Content>
@@ -77,15 +77,15 @@
                         Grid.Column="1"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Left"
-                        Tag="{x:Bind Path=Artists.MainArtist}"
-                        ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtist.Name}"
+                        Tag="{x:Bind Path=MainArtist}"
+                        ToolTipService.ToolTip="{x:Bind Path=MainArtist.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
                         IsEnabled="{Binding Path=IsArtistButtonEnabled,ElementName=ControlRoot}"
                         Click="ArtistNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock
                                 TextTrimming="CharacterEllipsis"
-                                Text="{x:Bind Path=Artists.ToString()}"/>
+                                Text="{x:Bind Path=ArtistsNameString}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
