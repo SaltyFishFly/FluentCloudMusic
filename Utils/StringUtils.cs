@@ -13,6 +13,8 @@
         /// <returns>URL1和URL2是否相同</returns>
         public static bool IsSameImageUrl(string url1, string url2)
         {
+            if (url1 == null || url2 == null) return false;
+
             string url1WithoutQuery = RemoveQuery(url1);
             string url2WithoutQuery = RemoveQuery(url2);
 

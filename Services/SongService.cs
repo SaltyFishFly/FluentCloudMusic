@@ -11,7 +11,7 @@ namespace FluentCloudMusic.Services
 {
     public static class SongService
     {
-        public static async Task<(bool IsSuccess, MediaPlaybackItem Result)> GetNeteaseSongUrl(Song song)
+        public static async Task<(bool IsSuccess, MediaPlaybackItem Result)> GetNeteaseSongUrl(DeprecatedSong song)
         {
             if (song == null || !song.HasCopyright) return (false, null);
 

@@ -10,7 +10,7 @@ namespace FluentCloudMusic.Pages
     /// </summary>
     public sealed partial class ArtistPage : Page
     {
-        private Artist Artist;
+        private DrprecatedArtist Artist;
 
         public ArtistPage()
         {

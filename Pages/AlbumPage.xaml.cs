@@ -1,4 +1,6 @@
 ﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.ViewModels;
+using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -12,23 +14,23 @@ namespace FluentCloudMusic.Pages
     /// </summary>
     public sealed partial class AlbumPage : Page
     {
-        private readonly ObservableCollection<Song> Songs;
-        private readonly Album Album;
+        private readonly ObservableCollection<DeprecatedSong> Songs;
+        private readonly AlbumViewModel Album;
 
         public AlbumPage()
         {
-            Songs = new ObservableCollection<Song>();
-            Album = new Album();
+            Songs = new ObservableCollection<DeprecatedSong>();
+            Album = new AlbumViewModel();
 
             InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var (isSuccess, detailedAlbum, songs) = await ((Album)e.Parameter).GetDetail();
+            var (isSuccess, album) = await AlbumService.GetAlbumDetailAsync(((DeprecatedAlbum)e.Parameter).ID);
             if (!isSuccess) return;
-            detailedAlbum.CopyTo(Album);
-            foreach (var song in songs) Songs.Add(song);
+
+            Album.Source = album;
         }
     }
 }

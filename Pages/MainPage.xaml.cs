@@ -93,6 +93,7 @@ namespace FluentCloudMusic
 
         private object FindNavigationItem(Type destPageType, object navigationParameter)
         {
+            /*
             if (NavButtons.ContainsValue(destPageType))
             {
                 return MainNav.MenuItems
@@ -111,8 +112,10 @@ namespace FluentCloudMusic
 
                 return CreatedPlaylistButtons
                     .Concat(BookmarkedPlaylistButtons)
-                    .FirstOrDefault(button => ((Playlist)button.Tag).ID == ((Playlist)navigationParameter).ID);
+                    .FirstOrDefault(button => ((DeprecatedPlaylist)button.Tag).ID == ((DeprecatedPlaylist)navigationParameter).ID);
             }
+            */
+            return null;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -4,22 +4,18 @@ namespace FluentCloudMusic.DataModels.JSONModels
 {
     public class Profile
     {
-        [JsonProperty("userId")]
-        public string UserID { get; set; }
+        public string UserId { get; set; }
 
-        [JsonProperty("userType")]
         public int UserType { get; set; }
 
-        [JsonProperty("nickname")]
+        public int VipType { get; set; }
+
         public string Nickname { get; set; }
 
-        [JsonProperty("avatarUrl")]
         public string AvatarUrl { get; set; }
 
-        [JsonProperty("signature")]
         public string Signature { get; set; }
 
-        [JsonProperty("followed")]
         public bool Followed { get; set; }
 
         [JsonProperty("followeds")]
@@ -27,9 +23,6 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         [JsonProperty("follows")]
         public int FollowingCount { get; set; }
-
-        [JsonProperty("vipType")]
-        public int VipType { get; set; }
     }
 
 }

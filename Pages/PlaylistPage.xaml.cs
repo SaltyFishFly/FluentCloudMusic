@@ -1,4 +1,6 @@
 ﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
@@ -14,32 +16,27 @@ namespace FluentCloudMusic.Pages
     /// </summary>
     public sealed partial class PlaylistPage : Page
     {
-        private readonly ObservableCollection<Song> Songs;
-        private readonly Playlist PlaylistInfo;
+        private readonly ObservableCollection<DeprecatedSong> Songs;
+        private readonly PlaylistViewModel Playlist;
 
         public PlaylistPage()
         {
-            Songs = new ObservableCollection<Song>();
-            PlaylistInfo = new Playlist();
+            Songs = new ObservableCollection<DeprecatedSong>();
+            Playlist = new PlaylistViewModel();
             InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var playlist = e.Parameter as Playlist;
+            Playlist.Source = e.Parameter as Playlist;
 
-            PlaylistInfo.CoverPictureUrl = playlist.CoverPictureUrl;
             var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("DailyRecommendPlaylistsToPlaylistPageAnimation");
             anim?.TryStart(MusicListHeader.CoverImage);
 
-            var (isSuccess, playlistInfo, songs) = await NetworkService.GetPlaylistDetailAsync(playlist.ID);
+            var (isSuccess, playlistInfo, songs) = await NetworkService.GetPlaylistDetailAsync(Playlist.Id);
             if (isSuccess)
             {
-                PlaylistInfo.ID = playlist.ID;
-                PlaylistInfo.Name = playlistInfo["name"].ToString();
-                PlaylistInfo.Description = playlistInfo["description"].ToString();
-                PlaylistInfo.CoverPictureUrl = playlistInfo["coverImgUrl"].ToString();
-
+                Playlist.Source = playlistInfo;
                 foreach (var song in songs) Songs.Add(song);
             }
         }

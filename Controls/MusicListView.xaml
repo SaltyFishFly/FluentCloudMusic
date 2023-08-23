@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <DataTemplate
-                x:DataType="datamodels:Song"
+                x:DataType="datamodels:DeprecatedSong"
                 x:Key="SongDataTemplate">
                 <Grid
                     x:DefaultBindMode="OneTime">

@@ -7,17 +7,17 @@ using Windows.Media.Playback;
 
 namespace FluentCloudMusic.DataModels
 {
-    public class Song
+    public class DeprecatedSong
     {
-        public Song This { get; set; }
+        public DeprecatedSong This { get; set; }
         public string ID { get; set; }
         public string Name { get; set; }
         public string Alias { get; set; }
-        public Album Album { get; private set; }
-        public Artists Artists { get; private set; }
+        public DeprecatedAlbum Album { get; private set; }
+        public DrprecatedArtists Artists { get; private set; }
         public bool HasCopyright { get; private set; }
 
-        private Song()
+        private DeprecatedSong()
         {
             This = this;
             ID = string.Empty;
@@ -26,7 +26,7 @@ namespace FluentCloudMusic.DataModels
             HasCopyright = false;
         }
 
-        public static Song FromJson(JToken data, DataSource source)
+        public static DeprecatedSong FromJson(JToken data, DataSource source)
         {
             return source switch
             {
@@ -52,17 +52,17 @@ namespace FluentCloudMusic.DataModels
                 predicate(Album.Name);
         }
 
-        private static Song ParseOfficialMusic(JToken data)
+        private static DeprecatedSong ParseOfficialMusic(JToken data)
         {
-            Song result = new Song
+            DeprecatedSong result = new DeprecatedSong
             {
                 ID = data["id"].ToString(),
                 Name = data["name"].ToString(),
-                Album = Album.FromJson(data["al"], DataSource.Official),
+                Album = DeprecatedAlbum.FromJson(data["al"], DataSource.Official),
                 HasCopyright = !data["noCopyrightRcmd"].HasValues
             };
 
-            result.Artists = new Artists();
+            result.Artists = new DrprecatedArtists();
             foreach (var artist in data["ar"]) result.Artists.Add(artist["id"].ToString(), artist["name"].ToString());
 
             bool hasTrans = data["tns"] != null && data["tns"].HasValues;
@@ -78,15 +78,15 @@ namespace FluentCloudMusic.DataModels
             return result;
         }
 
-        private static Song ParseUserMusic(JToken data)
+        private static DeprecatedSong ParseUserMusic(JToken data)
         {
-            Song result = new Song
+            DeprecatedSong result = new DeprecatedSong
             {
                 ID = data["songId"].ToString(),
                 Name = data["songName"].ToString(),
                 Alias = $"( {data["fileName"]} )",
-                Album = Album.FromJson(data, DataSource.User),
-                Artists = new Artists()
+                Album = DeprecatedAlbum.FromJson(data, DataSource.User),
+                Artists = new DrprecatedArtists()
                 {
                     { string.Empty, data["artist"].ToString() }
                 },

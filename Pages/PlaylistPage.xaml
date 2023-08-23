@@ -17,9 +17,9 @@
         <controls:MusicListView.Header>
             <controls:ResourceDetailPresenter
                 x:Name="MusicListHeader"
-                ImageSource="{x:Bind Path=PlaylistInfo.CoverPictureUrl,Mode=OneWay}"
-                Title="{x:Bind Path=PlaylistInfo.Name,Mode=OneWay}"
-                Description="{x:Bind Path=PlaylistInfo.Description,Mode=OneWay}"/>
+                ImageSource="{x:Bind Path=Playlist.ImageUrl,Mode=OneWay}"
+                Title="{x:Bind Path=Playlist.Name,Mode=OneWay}"
+                Description="{x:Bind Path=Playlist.Description,Mode=OneWay}"/>
         </controls:MusicListView.Header>
     </controls:MusicListView>
 </Page>

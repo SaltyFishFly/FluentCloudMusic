@@ -8,11 +8,11 @@ using System.Text;
 
 namespace FluentCloudMusic.DataModels
 {
-    public class Artist : INotifyPropertyChanged
+    public class DrprecatedArtist : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Artist()
+        public DrprecatedArtist()
         {
             _ID = string.Empty;
             _Name = string.Empty;
@@ -74,15 +74,15 @@ namespace FluentCloudMusic.DataModels
         }
     }
 
-    public class Artists : IEnumerable<Artist>
+    public class DrprecatedArtists : IEnumerable<DrprecatedArtist>
     {
-        public Artist MainArtist { get => _Artists.FirstOrDefault(); }
+        public DrprecatedArtist MainArtist { get => _Artists.FirstOrDefault(); }
 
-        private readonly List<Artist> _Artists;
+        private readonly List<DrprecatedArtist> _Artists;
 
-        public Artists()
+        public DrprecatedArtists()
         {
-            _Artists = new List<Artist>();
+            _Artists = new List<DrprecatedArtist>();
         }
 
         public override string ToString()
@@ -98,16 +98,16 @@ namespace FluentCloudMusic.DataModels
 
         public void Add(string id, string name)
         {
-            _Artists.Add(new Artist
+            _Artists.Add(new DrprecatedArtist
             {
                 ID = id,
                 Name = name
             });
         }
 
-        public IEnumerator<Artist> GetEnumerator()
+        public IEnumerator<DrprecatedArtist> GetEnumerator()
         {
-            return ((IEnumerable<Artist>)_Artists).GetEnumerator();
+            return ((IEnumerable<DrprecatedArtist>)_Artists).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:services="using:FluentCloudMusic.Services"
-    xmlns:datamodels="using:FluentCloudMusic.DataModels"
+    xmlns:jsonmodels="using:FluentCloudMusic.DataModels.JSONModels"
     xmlns:controls="using:FluentCloudMusic.Controls"
     xmlns:converters="using:FluentCloudMusic.Converters"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -16,7 +16,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <DataTemplate
-                x:DataType="datamodels:Playlist"
+                x:DataType="jsonmodels:Playlist"
                 x:Key="PlaylistItemTemplate">
                 <Grid
                     Width="180"
@@ -38,7 +38,7 @@
                         <Border.Background>
                             <ImageBrush
                                 x:Name="PlaylistCover"
-                                ImageSource="{x:Bind Path=CoverPictureUrl}"/>
+                                ImageSource="{x:Bind Path=ImageUrl}"/>
                         </Border.Background>
                     </Border>
                     <TextBlock

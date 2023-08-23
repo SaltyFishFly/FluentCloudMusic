@@ -26,8 +26,8 @@ namespace FluentCloudMusic.Controls
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MediaPlayer Player { get; private set; }
-        public List<Song> PlaybackItemList { get; private set; } = new List<Song>();
-        public List<Song> ShuffledPlaybackItemList { get; private set; } = new List<Song>();
+        public List<DeprecatedSong> PlaybackItemList { get; private set; } = new List<DeprecatedSong>();
+        public List<DeprecatedSong> ShuffledPlaybackItemList { get; private set; } = new List<DeprecatedSong>();
         public MediaPlaybackState PlayState { get => Player.PlaybackSession.PlaybackState; }
         public TimeSpan NaturalDuration { get => Player.PlaybackSession.NaturalDuration; }
         public TimeSpan Position
@@ -96,7 +96,7 @@ namespace FluentCloudMusic.Controls
             this.InitializeComponent();
         }
 
-        public void Play(List<Song> songs)
+        public void Play(List<DeprecatedSong> songs)
         {
             PlaybackItemList = songs;
             ShuffledPlaybackItemList = songs.Shuffle();

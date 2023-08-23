@@ -1,4 +1,5 @@
 ﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System.Collections.ObjectModel;
@@ -17,12 +18,12 @@ namespace FluentCloudMusic.Pages
     public sealed partial class DiscoverPage : Page
     {
         public readonly ObservableCollection<Playlist> DailyRecommendPlaylists;
-        public readonly ObservableCollection<Song> DailyRecommendSongs;
+        public readonly ObservableCollection<DeprecatedSong> DailyRecommendSongs;
 
         public DiscoverPage()
         {
             DailyRecommendPlaylists = new ObservableCollection<Playlist>();
-            DailyRecommendSongs = new ObservableCollection<Song>();
+            DailyRecommendSongs = new ObservableCollection<DeprecatedSong>();
 
             InitializeComponent();
         }

@@ -16,13 +16,13 @@ namespace FluentCloudMusic.Pages
     {
         public static SearchPage INSTANCE;
 
-        private ObservableCollection<Song> Songs;
+        private ObservableCollection<DeprecatedSong> Songs;
         private SearchRequest CurrentSearchRequest;
 
         public SearchPage()
         {
             this.InitializeComponent();
-            Songs = new ObservableCollection<Song>();
+            Songs = new ObservableCollection<DeprecatedSong>();
             INSTANCE = this;
         }
 

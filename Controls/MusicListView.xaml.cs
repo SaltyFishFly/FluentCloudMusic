@@ -13,7 +13,7 @@ namespace FluentCloudMusic.Controls
     public sealed partial class MusicListView : UserControl
     {
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(ObservableCollection<Song>), typeof(MusicListView), new PropertyMetadata(new ObservableCollection<Song>()));
+            DependencyProperty.Register("ItemsSource", typeof(ObservableCollection<DeprecatedSong>), typeof(MusicListView), new PropertyMetadata(new ObservableCollection<DeprecatedSong>()));
         public static readonly DependencyProperty HeaderProperty =
             DependencyProperty.Register("Header", typeof(UIElement), typeof(MusicListView), new PropertyMetadata(null));
         public static readonly DependencyProperty FooterProperty =
@@ -25,9 +25,9 @@ namespace FluentCloudMusic.Controls
         public static readonly DependencyProperty IsToolBarEnabledProperty =
             DependencyProperty.Register("IsToolBarEnabled", typeof(bool), typeof(MusicListView), new PropertyMetadata(true));
 
-        public ObservableCollection<Song> ItemsSource
+        public ObservableCollection<DeprecatedSong> ItemsSource
         {
-            get { return (ObservableCollection<Song>)GetValue(ItemsSourceProperty); }
+            get { return (ObservableCollection<DeprecatedSong>)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
         }
         public UIElement Header
@@ -56,7 +56,7 @@ namespace FluentCloudMusic.Controls
             set { SetValue(IsToolBarEnabledProperty, value); }
         }
 
-        private List<Song> OriginalSongs;
+        private List<DeprecatedSong> OriginalSongs;
 
         public MusicListView()
         {
@@ -65,14 +65,14 @@ namespace FluentCloudMusic.Controls
 
         private void ApplyFilter(string filter)
         {
-            OriginalSongs ??= new List<Song>(ItemsSource);
+            OriginalSongs ??= new List<DeprecatedSong>(ItemsSource);
             ItemsSource.Clear();
             OriginalSongs.ForEach(song => { if (song.RelateTo(filter)) ItemsSource.Add(song); });
         }
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.Player.Play(new List<Song>() { (Song)((FrameworkElement)sender).Tag });
+            MainPage.Player.Play(new List<DeprecatedSong>() { (DeprecatedSong)((FrameworkElement)sender).Tag });
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -87,7 +87,7 @@ namespace FluentCloudMusic.Controls
 
         private void PlayAllButton_Click(object sender, RoutedEventArgs e)
         {
-            var playlist = new List<Song>(ItemsSource);
+            var playlist = new List<DeprecatedSong>(ItemsSource);
             MainPage.Player.Play(playlist);
         }
 
@@ -102,7 +102,7 @@ namespace FluentCloudMusic.Controls
             if (subMenu == null) return;
 
             subMenu.Items.Clear();
-            foreach (var artist in (Artists)subMenu.Tag)
+            foreach (var artist in (DrprecatedArtists)subMenu.Tag)
             {
                 var artistButton = new MenuFlyoutItem()
                 {

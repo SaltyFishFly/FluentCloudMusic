@@ -14,13 +14,13 @@ namespace FluentCloudMusic.Pages
     /// </summary>
     public sealed partial class CloudPage : Page
     {
-        private ObservableCollection<Song> Songs;
+        private ObservableCollection<DeprecatedSong> Songs;
         private SearchSection CurrentSearchSection;
 
         public CloudPage()
         {
             this.InitializeComponent();
-            Songs = new ObservableCollection<Song>();
+            Songs = new ObservableCollection<DeprecatedSong>();
         }
 
         private async void GetUserCloud(SearchSection section)
