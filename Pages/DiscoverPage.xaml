@@ -64,7 +64,7 @@
                 x:Uid="NotLoginInfoBar"
                 CornerRadius="8"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
-                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                 IsOpen="True"
                 IsClosable="False">
             </muxc:InfoBar>
@@ -77,7 +77,7 @@
                 ScrollViewer.VerticalScrollMode="Disabled"
                 ScrollViewer.HorizontalScrollMode="Enabled"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
+                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
                 ItemsSource="{x:Bind Path=DailyRecommendPlaylists}"
                 ItemTemplate="{StaticResource PlaylistItemTemplate}"
                 ItemContainerStyle="{StaticResource DailyRecommendPlaylistsGridViewItemContainerStyle}"
@@ -93,7 +93,7 @@
             <controls:MusicListView
                 x:Name="MusicList"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
-                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
+                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
                 IsToolBarEnabled="False"
                 ItemsSource="{x:Bind Path=DailyRecommendSongs}">
                 <controls:MusicListView.Header>

@@ -133,6 +133,9 @@
     <Compile Include="Converters\MediaPlaybackStateToBoolConverter.cs" />
     <Compile Include="Converters\MediaPlaybackStateToSymbolConverter.cs" />
     <Compile Include="DataModels\DataSource.cs" />
+    <Compile Include="DataModels\JSONModels\LoginCellphoneResponse.cs" />
+    <Compile Include="DataModels\JSONModels\LoginStatusResponse.cs" />
+    <Compile Include="DataModels\JSONModels\Profile.cs" />
     <Compile Include="Services\AlbumService.cs" />
     <Compile Include="Services\CacheService.cs" />
     <Compile Include="Services\SongService.cs" />
@@ -395,7 +398,9 @@
       <Name>NeteaseCloudMusicApi</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DataModels\ViewModels\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

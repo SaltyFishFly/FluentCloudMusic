@@ -1,6 +1,5 @@
 ﻿using FluentCloudMusic.DataModels;
 using NeteaseCloudMusicApi;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;

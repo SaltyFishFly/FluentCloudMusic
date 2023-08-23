@@ -1,8 +1,8 @@
 ﻿using FluentCloudMusic.Controls;
 using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Pages;
 using FluentCloudMusic.Services;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -68,7 +68,7 @@ namespace FluentCloudMusic
         /// </summary>
         private async void GeneratePlaylistButtons()
         {
-            var (isSuccess, playlists) = await NetworkService.GetUserPlaylist(AccountService.User.UserID);
+            var (isSuccess, playlists) = await NetworkService.GetUserPlaylist(AccountService.UserProfile.UserID);
             if (isSuccess)
             {
                 CreatedPlaylistButtons.Clear();
@@ -83,7 +83,7 @@ namespace FluentCloudMusic
                         Content = playlist.Name
                     };
 
-                    if (playlist.CreatorID == AccountService.User.UserID)
+                    if (playlist.CreatorID == AccountService.UserProfile.UserID)
                         CreatedPlaylistButtons.Add(item);
                     else
                         BookmarkedPlaylistButtons.Add(item);
@@ -122,7 +122,7 @@ namespace FluentCloudMusic
             Player.Dispose();
         }
 
-        private void OnLogin(JObject loginResult)
+        private void OnLogin(Profile profile)
         {
             GeneratePlaylistButtons();
             ContentFrame.Navigate(typeof(DiscoverPage), null);

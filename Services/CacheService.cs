@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using FluentCloudMusic.DataModels.JSONModels;
 using System;
 using System.Collections.Generic;
 
@@ -34,7 +34,7 @@ namespace FluentCloudMusic.Services
             foreach (var resource in CachedResources.Values) resource.Reset();
         }
 
-        private static void OnLogin(JObject loginInfo) => ResetAll();
+        private static void OnLogin(Profile profile) => ResetAll();
 
         private static void OnLogout() => ResetAll();
     }

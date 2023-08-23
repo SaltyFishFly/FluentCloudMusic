@@ -44,7 +44,7 @@ namespace FluentCloudMusic.Pages
 
         private async void GetRecommendations()
         {
-            if (!AccountService.User.HasLogin) return;
+            if (!AccountService.UserProfile.HasLogin) return;
 
             DailyRecommendPlaylists.Clear();
             DailyRecommendSongs.Clear();
