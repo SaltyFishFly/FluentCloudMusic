@@ -132,6 +132,9 @@
     <Compile Include="Classes\SMTCController.cs" />
     <Compile Include="Converters\MediaPlaybackStateToBoolConverter.cs" />
     <Compile Include="Converters\MediaPlaybackStateToSymbolConverter.cs" />
+    <Compile Include="DataModels\DataSource.cs" />
+    <Compile Include="Services\AlbumService.cs" />
+    <Compile Include="Services\CacheService.cs" />
     <Compile Include="Services\SongService.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Services\StorageService.cs" />

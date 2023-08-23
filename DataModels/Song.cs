@@ -1,6 +1,7 @@
 ﻿using FluentCloudMusic.Services;
 using Newtonsoft.Json.Linq;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.Media.Playback;
 
@@ -22,57 +23,17 @@ namespace FluentCloudMusic.DataModels
             ID = string.Empty;
             Name = string.Empty;
             Alias = string.Empty;
-            HasCopyright = true;
+            HasCopyright = false;
         }
 
-        public static Song ParseOfficialMusic(JToken json)
+        public static Song FromJson(JToken data, DataSource source)
         {
-            Song result = new Song
+            return source switch
             {
-                ID = json["id"].ToString(),
-                Name = json["name"].ToString(),
-                Album = new Album()
-                {
-                    ID = json["al"]["id"].ToString(),
-                    Name = json["al"]["name"].ToString()
-                },
-                Artists = new Artists()
+                DataSource.Official => ParseOfficialMusic(data),
+                DataSource.User => ParseUserMusic(data),
+                _ => throw new InvalidEnumArgumentException()
             };
-            foreach (var Item in json["ar"])
-            {
-                result.Artists.AddArtist(Item["id"].ToString(), Item["name"].ToString());
-            }
-            result.HasCopyright = !json["noCopyrightRcmd"].HasValues;
-
-            bool hasTrans = json["tns"] != null && json["tns"].HasValues;
-            bool hasAlias = json["alia"] != null && json["alia"].HasValues;
-
-            if (hasTrans && hasAlias) 
-                result.Alias = $"( {json["tns"].First} | {json["alia"].First} )";
-            else if (hasTrans) 
-                result.Alias = $"( {json["tns"].First} )";
-            else if (hasAlias) 
-                result.Alias = $"( {json["alia"].First} )";
-
-            return result;
-        }
-
-        public static Song ParseUserMusic(JToken json)
-        {
-            Song result = new Song
-            {
-                ID = json["songId"].ToString(),
-                Name = json["songName"].ToString(),
-                Alias = $"( {json["fileName"]} )",
-                Album = new Album()
-                {
-                    Name = json["album"].ToString()
-                },
-            };
-
-            result.Artists = new Artists();
-            result.Artists.AddArtist(null, json["artist"].ToString());
-            return result;
         }
 
         public async Task<MediaPlaybackItem> ToMediaPlaybackItem()
@@ -86,9 +47,53 @@ namespace FluentCloudMusic.DataModels
             bool predicate(string s) => s.Contains(filter, StringComparison.CurrentCultureIgnoreCase);
             return
                 predicate(Name) ||
-                predicate(Alias) || 
-                predicate(Artists.MainArtist.Name) || 
+                predicate(Alias) ||
+                predicate(Artists.MainArtist.Name) ||
                 predicate(Album.Name);
+        }
+
+        private static Song ParseOfficialMusic(JToken data)
+        {
+            Song result = new Song
+            {
+                ID = data["id"].ToString(),
+                Name = data["name"].ToString(),
+                Album = Album.FromJson(data["al"], DataSource.Official),
+                HasCopyright = !data["noCopyrightRcmd"].HasValues
+            };
+
+            result.Artists = new Artists();
+            foreach (var artist in data["ar"]) result.Artists.Add(artist["id"].ToString(), artist["name"].ToString());
+
+            bool hasTrans = data["tns"] != null && data["tns"].HasValues;
+            bool hasAlias = data["alia"] != null && data["alia"].HasValues;
+
+            if (hasTrans && hasAlias)
+                result.Alias = $"( {data["tns"].First} | {data["alia"].First} )";
+            else if (hasTrans) 
+                result.Alias = $"( {data["tns"].First} )";
+            else if (hasAlias) 
+                result.Alias = $"( {data["alia"].First} )";
+
+            return result;
+        }
+
+        private static Song ParseUserMusic(JToken data)
+        {
+            Song result = new Song
+            {
+                ID = data["songId"].ToString(),
+                Name = data["songName"].ToString(),
+                Alias = $"( {data["fileName"]} )",
+                Album = Album.FromJson(data, DataSource.User),
+                Artists = new Artists()
+                {
+                    { string.Empty, data["artist"].ToString() }
+                },
+                HasCopyright = true
+            };
+
+            return result;
         }
     }
 }

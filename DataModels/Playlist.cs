@@ -83,11 +83,11 @@ namespace FluentCloudMusic.DataModels
 
         public Playlist()
         {
-            _ID = null;
-            _Name = null;
-            _Description = null;
+            _ID = string.Empty;
+            _Name = string.Empty;
+            _Description = string.Empty;
             _CoverImageUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
-            _CreatorID = null;
+            _CreatorID = string.Empty;
             _Privacy = 0;
         }
 

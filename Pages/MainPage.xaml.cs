@@ -50,8 +50,8 @@ namespace FluentCloudMusic
             InitializeComponent();
             Player = MusicPlayer;
             Frame = ContentFrame;
-            AccountService.LoginEvent += OnLogin;
-            AccountService.LogoutEvent += OnLogout;
+            AccountService.Login += OnLogin;
+            AccountService.Logout += OnLogout;
             MainNav.SelectedItem = NavItemDiscover;
 
             _ = AccountService.CheckLoginStatusAsync();
@@ -117,8 +117,8 @@ namespace FluentCloudMusic
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            AccountService.LoginEvent -= OnLogin;
-            AccountService.LogoutEvent -= OnLogout;
+            AccountService.Login -= OnLogin;
+            AccountService.Logout -= OnLogout;
             Player.Dispose();
         }
 

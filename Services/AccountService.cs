@@ -14,8 +14,8 @@ namespace FluentCloudMusic.Services
         public delegate void LoginEventHandler(JObject loginInfo);
         public delegate void LogoutEventHandler();
 
-        public static event LoginEventHandler LoginEvent;
-        public static event LogoutEventHandler LogoutEvent;
+        public static event LoginEventHandler Login;
+        public static event LogoutEventHandler Logout;
 
         public static async Task<int> LoginAsync(string countryCode, string account, string password)
         {
@@ -36,7 +36,7 @@ namespace FluentCloudMusic.Services
             }
             StorageService.SetSetting("LoginCookie", App.API.Cookies.GetString());
 
-            LoginEvent(jsonResult);
+            Login(jsonResult);
             return code;
         }
 
@@ -57,7 +57,7 @@ namespace FluentCloudMusic.Services
             }
             StorageService.SetSetting("LoginCookie", App.API.Cookies.GetString());
 
-            LoginEvent(jsonResult);
+            Login(jsonResult);
             return code;
         }
 
@@ -69,7 +69,7 @@ namespace FluentCloudMusic.Services
             if (code != 200) return false;
             
             StorageService.RemoveSetting("LoginCookie");
-            LogoutEvent();
+            Logout();
             return true;
         }
 
@@ -91,8 +91,8 @@ namespace FluentCloudMusic.Services
                 AvatarUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
                 HasVip = false;
 
-                LoginEvent += OnLogin;
-                LogoutEvent += OnLogout;
+                Login += OnLogin;
+                Logout += OnLogout;
             }
 
             private void OnLogin(JObject loginInfo)

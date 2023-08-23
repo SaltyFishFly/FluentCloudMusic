@@ -1,5 +1,6 @@
 ﻿using FluentCloudMusic.DataModels;
 using NeteaseCloudMusicApi;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace FluentCloudMusic.Services
 
             var result = new List<Song>();
             if (jsonResult["code"].Value<int>() == 200)
-                foreach (var item in jsonResult["data"]["dailySongs"]) result.Add(Song.ParseOfficialMusic(item));
+                foreach (var item in jsonResult["data"]["dailySongs"]) result.Add(Song.FromJson(item, DataSource.Official));
             return result;
         }
 
@@ -57,7 +58,7 @@ namespace FluentCloudMusic.Services
                 var result = new LinkedList<Song>();
                 foreach (JToken jsonSearchResult in jsonResult["result"]["songs"])
                 {
-                    var searchResult = Song.ParseOfficialMusic(jsonSearchResult);
+                    var searchResult = Song.FromJson(jsonSearchResult, DataSource.Official);
                     result.AddLast(searchResult);
                 }
                 //计算页数
@@ -95,7 +96,7 @@ namespace FluentCloudMusic.Services
             var result = new LinkedList<Song>();
             foreach (var jsonSong in jsonSongs["songs"])
             {
-                result.AddLast(Song.ParseOfficialMusic(jsonSong));
+                result.AddLast(Song.FromJson(jsonSong, DataSource.Official));
             }
 
             return (true, jsonPlaylist["playlist"], result);
@@ -110,25 +111,12 @@ namespace FluentCloudMusic.Services
                 var result = new LinkedList<Song>();
                 foreach (var item in jsonResult["data"])
                 {
-                    result.AddLast(Song.ParseUserMusic(item));
+                    result.AddLast(Song.FromJson(item, DataSource.User));
                 }
                 int page = (int)Math.Ceiling(jsonResult["count"].Value<double>() / section.Limit);
                 return (true, page, result);
             }
             return (false, 0, null);
-        }
-
-        /// <summary>
-        /// 获取专辑信息
-        /// </summary>
-        /// <param name="albumID"></param>
-        /// <returns></returns>
-        public static async Task<(bool IsSuccess, JToken AlbumInfo)> GetAlbumDetailAsync(string albumID)
-        {
-            var parameters = new Dictionary<string, object> { { "id", albumID } };
-            var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Album, parameters);
-            if (jsonResult["code"].Value<int>() != 200) return (false, null);
-            return (true, jsonResult);
         }
 
         /// <summary>

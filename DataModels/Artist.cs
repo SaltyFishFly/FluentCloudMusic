@@ -96,7 +96,7 @@ namespace FluentCloudMusic.DataModels
             return result.ToString();
         }
 
-        public void AddArtist(string id, string name)
+        public void Add(string id, string name)
         {
             _Artists.Add(new Artist
             {
