@@ -1,14 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using FluentCloudMusic.DataModels.JSONModels.Responses;
+using FluentCloudMusic.Services;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Windows.Media.Playback;
 
 namespace FluentCloudMusic.DataModels.JSONModels
 {
-    public class Song
+    public class Song : ISong
     {
         [JsonIgnore]
-        public Song This { get; set; }
+        public Song This { get; }
 
         public string Id { get; set; }
 
@@ -46,7 +50,8 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         public bool HasCopyright { get => NoCopyrightRecommendation == null; }
         public Artist MainArtist { get => Artists[0]; }
-        public string ArtistsNameString
+        public string AlbumName { get => Album.Name; }
+        public string ArtistName
         {
             get
             {
@@ -90,6 +95,12 @@ namespace FluentCloudMusic.DataModels.JSONModels
                 predicate(Description) ||
                 predicate(MainArtist.Name) ||
                 predicate(Album.Name);
+        }
+
+        public async Task<MediaPlaybackItem> ToMediaPlaybackItem()
+        {
+            var (isSuccess, result) = await SongService.GetNeteaseSongUrl(this);
+            return isSuccess ? result : null;
         }
     }
 

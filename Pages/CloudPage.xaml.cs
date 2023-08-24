@@ -1,4 +1,5 @@
 ﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
@@ -14,13 +15,13 @@ namespace FluentCloudMusic.Pages
     /// </summary>
     public sealed partial class CloudPage : Page
     {
-        private ObservableCollection<DeprecatedSong> Songs;
+        private ObservableCollection<UserCloudSong> Songs;
         private SearchSection CurrentSearchSection;
 
         public CloudPage()
         {
             this.InitializeComponent();
-            Songs = new ObservableCollection<DeprecatedSong>();
+            Songs = new ObservableCollection<UserCloudSong>();
         }
 
         private async void GetUserCloud(SearchSection section)

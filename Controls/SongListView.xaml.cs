@@ -1,5 +1,6 @@
 ﻿using FluentCloudMusic.DataModels;
 using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.Pages;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,20 +12,20 @@ using Windows.UI.Xaml.Controls;
 
 namespace FluentCloudMusic.Controls
 {
-    public sealed partial class MusicListView : UserControl
+    public sealed partial class SongListView : UserControl
     {
         public static readonly DependencyProperty ItemsSourceProperty =
-            DependencyProperty.Register("ItemsSource", typeof(ObservableCollection<Song>), typeof(MusicListView), new PropertyMetadata(new ObservableCollection<Song>()));
+            DependencyProperty.Register("ItemsSource", typeof(ObservableCollection<Song>), typeof(SongListView), new PropertyMetadata(new ObservableCollection<Song>()));
         public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("Header", typeof(UIElement), typeof(MusicListView), new PropertyMetadata(null));
+            DependencyProperty.Register("Header", typeof(UIElement), typeof(SongListView), new PropertyMetadata(null));
         public static readonly DependencyProperty FooterProperty =
-            DependencyProperty.Register("Footer", typeof(UIElement), typeof(MusicListView), new PropertyMetadata(null));
+            DependencyProperty.Register("Footer", typeof(UIElement), typeof(SongListView), new PropertyMetadata(null));
         public static readonly DependencyProperty IsArtistButtonEnabledProperty =
-            DependencyProperty.Register("IsArtistButtonEnabled", typeof(bool), typeof(MusicListView), new PropertyMetadata(true));
+            DependencyProperty.Register("IsArtistButtonEnabled", typeof(bool), typeof(SongListView), new PropertyMetadata(true));
         public static readonly DependencyProperty IsAlbumButtonEnabledProperty =
-            DependencyProperty.Register("IsAlbumButtonEnabled", typeof(bool), typeof(MusicListView), new PropertyMetadata(true));
+            DependencyProperty.Register("IsAlbumButtonEnabled", typeof(bool), typeof(SongListView), new PropertyMetadata(true));
         public static readonly DependencyProperty IsToolBarEnabledProperty =
-            DependencyProperty.Register("IsToolBarEnabled", typeof(bool), typeof(MusicListView), new PropertyMetadata(true));
+            DependencyProperty.Register("IsToolBarEnabled", typeof(bool), typeof(SongListView), new PropertyMetadata(true));
 
         public ObservableCollection<Song> ItemsSource
         {
@@ -59,7 +60,7 @@ namespace FluentCloudMusic.Controls
 
         private List<Song> OriginalSongs;
 
-        public MusicListView()
+        public SongListView()
         {
             InitializeComponent();
         }
@@ -73,7 +74,7 @@ namespace FluentCloudMusic.Controls
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.Player.Play(new List<DeprecatedSong>() { (DeprecatedSong)((FrameworkElement)sender).Tag });
+            MainPage.Player.Play(new List<ISong>() { (ISong)((FrameworkElement)sender).Tag });
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -88,10 +89,8 @@ namespace FluentCloudMusic.Controls
 
         private void PlayAllButton_Click(object sender, RoutedEventArgs e)
         {
-            var playlist = new List<Song>(ItemsSource);
-            /*
+            var playlist = new List<ISong>(ItemsSource);
             MainPage.Player.Play(playlist);
-            */
         }
 
         private void FilterInputBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -105,7 +104,7 @@ namespace FluentCloudMusic.Controls
             if (subMenu == null) return;
 
             subMenu.Items.Clear();
-            foreach (var artist in (DrprecatedArtists)subMenu.Tag)
+            foreach (var artist in (Artist[])subMenu.Tag)
             {
                 var artistButton = new MenuFlyoutItem()
                 {

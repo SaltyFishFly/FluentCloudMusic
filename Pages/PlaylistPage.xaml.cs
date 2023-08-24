@@ -1,5 +1,4 @@
-﻿using FluentCloudMusic.DataModels;
-using FluentCloudMusic.DataModels.JSONModels;
+﻿using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;

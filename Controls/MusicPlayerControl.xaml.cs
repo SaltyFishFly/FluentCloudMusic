@@ -1,5 +1,6 @@
 ﻿using FluentCloudMusic.Classes;
-using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System;
@@ -26,8 +27,8 @@ namespace FluentCloudMusic.Controls
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MediaPlayer Player { get; private set; }
-        public List<DeprecatedSong> PlaybackItemList { get; private set; } = new List<DeprecatedSong>();
-        public List<DeprecatedSong> ShuffledPlaybackItemList { get; private set; } = new List<DeprecatedSong>();
+        public List<ISong> PlaybackItemList { get; private set; } = new List<ISong>();
+        public List<ISong> ShuffledPlaybackItemList { get; private set; } = new List<ISong>();
         public MediaPlaybackState PlayState { get => Player.PlaybackSession.PlaybackState; }
         public TimeSpan NaturalDuration { get => Player.PlaybackSession.NaturalDuration; }
         public TimeSpan Position
@@ -96,7 +97,7 @@ namespace FluentCloudMusic.Controls
             this.InitializeComponent();
         }
 
-        public void Play(List<DeprecatedSong> songs)
+        public void Play(List<ISong> songs)
         {
             PlaybackItemList = songs;
             ShuffledPlaybackItemList = songs.Shuffle();
@@ -117,7 +118,8 @@ namespace FluentCloudMusic.Controls
 
         public void Replay()
         {
-            Play(PlayIndex);
+            if (!HasNext) return;
+            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Play(PlayIndex));
         }
 
         public void Dispose()

@@ -1,4 +1,5 @@
-﻿using FluentCloudMusic.DataModels;
+﻿using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.DataModels.JSONModels.Responses;
 using NeteaseCloudMusicApi;
 using Newtonsoft.Json.Linq;
 using System;
@@ -11,11 +12,11 @@ namespace FluentCloudMusic.Services
 {
     public static class SongService
     {
-        public static async Task<(bool IsSuccess, MediaPlaybackItem Result)> GetNeteaseSongUrl(DeprecatedSong song)
+        public static async Task<(bool IsSuccess, MediaPlaybackItem Result)> GetNeteaseSongUrl(ISong song)
         {
             if (song == null || !song.HasCopyright) return (false, null);
 
-            var parameters = new Dictionary<string, object> { { "id", song.ID } };
+            var parameters = new Dictionary<string, object> { { "id", song.Id } };
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.SongUrl, parameters);
             var code = jsonResult["code"].Value<int>();
@@ -26,9 +27,9 @@ namespace FluentCloudMusic.Services
 
             var metadata = result.GetDisplayProperties();
             metadata.Type = Windows.Media.MediaPlaybackType.Music;
-            metadata.MusicProperties.Title = $"{song.Name}{song.Alias}";
-            metadata.MusicProperties.Artist = song.Artists.MainArtist.Name;
-            metadata.MusicProperties.AlbumTitle = song.Album.Name;
+            metadata.MusicProperties.Title = $"{song.Name}{song.Description}";
+            metadata.MusicProperties.Artist = song.ArtistName;
+            metadata.MusicProperties.AlbumTitle = song.AlbumName;
             result.ApplyDisplayProperties(metadata);
 
             return (true, result);

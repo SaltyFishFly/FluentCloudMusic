@@ -10,16 +10,16 @@
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <controls:MusicListView
+    <controls:SongListView
         x:Name="MusicList"
         Background="{ThemeResource LayerFillColorDefaultBrush}"
         IsAlbumButtonEnabled="False"
         ItemsSource="{x:Bind Path=Songs}">
-        <controls:MusicListView.Header>
+        <controls:SongListView.Header>
             <controls:ResourceDetailPresenter
                 ImageSource="{x:Bind Path=Album.ImageUrl,Mode=OneWay}"
                 Title="{x:Bind Path=Album.Name,Mode=OneWay}"
                 Description="{x:Bind Path=Album.Description,Mode=OneWay}"/>
-        </controls:MusicListView.Header>
-    </controls:MusicListView>
+        </controls:SongListView.Header>
+    </controls:SongListView>
 </Page>

@@ -90,13 +90,13 @@
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
-            <controls:MusicListView
+            <controls:SongListView
                 x:Name="MusicList"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
                 Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
                 IsToolBarEnabled="False"
                 ItemsSource="{x:Bind Path=DailyRecommendSongs}">
-                <controls:MusicListView.Header>
+                <controls:SongListView.Header>
                     <Grid
                         Padding="24,0,8,0">
                         <Grid.ColumnDefinitions>
@@ -114,8 +114,8 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"/>
                     </Grid>
-                </controls:MusicListView.Header>
-            </controls:MusicListView>
+                </controls:SongListView.Header>
+            </controls:SongListView>
         </StackPanel>
     </ScrollViewer>
 </Page>

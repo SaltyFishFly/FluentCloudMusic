@@ -1,5 +1,4 @@
 ﻿using FluentCloudMusic.Utils;
-using Newtonsoft.Json;
 
 namespace FluentCloudMusic.DataModels.JSONModels
 {
@@ -13,6 +12,8 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         [MultipleJsonProperty("picUrl", "coverImgUrl")]
         public string ImageUrl { get; set; }
+
+        public Profile Creator { get; set; }
 
         public TrackId[] TrackIds { get; set; }
     }

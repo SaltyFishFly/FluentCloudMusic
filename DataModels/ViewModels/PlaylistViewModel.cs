@@ -1,4 +1,5 @@
 ﻿using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.Utils;
 using System.ComponentModel;
 
 namespace FluentCloudMusic.DataModels.ViewModels
@@ -11,11 +12,13 @@ namespace FluentCloudMusic.DataModels.ViewModels
         {
             set
             {
+                var oldImgUrl = _Source?.ImageUrl;
+
                 _Source = value;
                 Notify(nameof(Id));
                 Notify(nameof(Name));
                 Notify(nameof(Description));
-                Notify(nameof(ImageUrl));
+                if (!UrlUtils.IsSameImage(oldImgUrl, ImageUrl)) Notify(nameof(ImageUrl));
             }
         }
         public string Id => _Source != null ? _Source.Id : string.Empty;

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace FluentCloudMusic.DataModels.JSONModels.Responses
+﻿namespace FluentCloudMusic.DataModels.JSONModels.Responses
 {
     public class CloudSearchResponse
     {

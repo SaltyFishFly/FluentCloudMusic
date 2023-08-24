@@ -5,9 +5,7 @@ using FluentCloudMusic.Utils;
 using NeteaseCloudMusicApi;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 
 namespace FluentCloudMusic.Services
 {

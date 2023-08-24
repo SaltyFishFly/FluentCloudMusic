@@ -68,32 +68,29 @@ namespace FluentCloudMusic
         /// </summary>
         private async void GeneratePlaylistButtons()
         {
-            var (isSuccess, playlists) = await NetworkService.GetUserPlaylist(AccountService.UserProfile.UserID);
-            if (isSuccess)
+            var (isSuccess, playlists) = await NetworkService.GetUserPlaylist(AccountService.UserProfile.UserId);
+
+            if (!isSuccess) return;
+
+            CreatedPlaylistButtons.Clear();
+            BookmarkedPlaylistButtons.Clear();
+
+            playlists.ForEach(playlist =>
             {
-                CreatedPlaylistButtons.Clear();
-                BookmarkedPlaylistButtons.Clear();
-
-                foreach (var playlist in playlists)
+                var item = new muxc.NavigationViewItem()
                 {
-                    var item = new muxc.NavigationViewItem()
-                    {
-                        Name = "NavItemPlaylist",
-                        Tag = playlist,
-                        Content = playlist.Name
-                    };
+                    Name = "NavItemPlaylist",
+                    Tag = playlist,
+                    Content = playlist.Name
+                };
 
-                    if (playlist.CreatorID == AccountService.UserProfile.UserID)
-                        CreatedPlaylistButtons.Add(item);
-                    else
-                        BookmarkedPlaylistButtons.Add(item);
-                }
-            }
+                if (playlist.Creator.UserId == AccountService.UserProfile.UserId) CreatedPlaylistButtons.Add(item);
+                else BookmarkedPlaylistButtons.Add(item);
+            });
         }
 
         private object FindNavigationItem(Type destPageType, object navigationParameter)
         {
-            /*
             if (NavButtons.ContainsValue(destPageType))
             {
                 return MainNav.MenuItems
@@ -112,10 +109,8 @@ namespace FluentCloudMusic
 
                 return CreatedPlaylistButtons
                     .Concat(BookmarkedPlaylistButtons)
-                    .FirstOrDefault(button => ((DeprecatedPlaylist)button.Tag).ID == ((DeprecatedPlaylist)navigationParameter).ID);
+                    .FirstOrDefault(button => ((Playlist)button.Tag).Id == ((Playlist)navigationParameter).Id);
             }
-            */
-            return null;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

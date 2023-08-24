@@ -10,8 +10,6 @@ namespace FluentCloudMusic.Pages
     /// </summary>
     public sealed partial class ArtistPage : Page
     {
-        private DrprecatedArtist Artist;
-
         public ArtistPage()
         {
             this.InitializeComponent();

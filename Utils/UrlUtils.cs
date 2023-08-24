@@ -1,6 +1,6 @@
 ﻿namespace FluentCloudMusic.Utils
 {
-    public static class StringUtils
+    public static class UrlUtils
     {
         /// <summary>
         /// 比较两个图片字符串是否指向不同服务器上的相同图片，如
@@ -11,7 +11,7 @@
         /// <param name="url1WithoutQuery">URL字符串1</param>
         /// <param name="url2WithOutQuery">URL字符串2</param>
         /// <returns>URL1和URL2是否相同</returns>
-        public static bool IsSameImageUrl(string url1, string url2)
+        public static bool IsSameImage(string url1, string url2)
         {
             if (url1 == null || url2 == null) return false;
 

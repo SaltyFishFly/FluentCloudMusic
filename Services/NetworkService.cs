@@ -6,7 +6,6 @@ using NeteaseCloudMusicApi;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,21 +87,16 @@ namespace FluentCloudMusic.Services
             return (true, result1.Playlist, result2.Songs.ToList());
         }
 
-        public static async Task<(bool IsSuccess, int CurrentPage, LinkedList<DeprecatedSong> SongList)> GetUserCloudAsync(SearchSection section)
+        public static async Task<(bool IsSuccess, int CurrentPage, List<UserCloudSong> SongList)> GetUserCloudAsync(SearchSection section)
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.UserCloud, section.ToDictionary());
-            var code = jsonResult["code"].Value<int>();
-            if (code == 200)
-            {
-                var result = new LinkedList<DeprecatedSong>();
-                foreach (var item in jsonResult["data"])
-                {
-                    result.AddLast(DeprecatedSong.FromJson(item, DataSource.User));
-                }
-                int page = (int)Math.Ceiling(jsonResult["count"].Value<double>() / section.Limit);
-                return (true, page, result);
-            }
-            return (false, 0, null);
+            var result = jsonResult.ToObject<UserCloudResponse>(JsonUtils.Serializer);
+
+            if (result.Code != 200) return (false, 0, null);
+
+            int page = (int)Math.Ceiling((double)result.Count / section.Limit);
+
+            return (true, page, result.Data.ToList());
         }
 
         /// <summary>
@@ -110,27 +104,14 @@ namespace FluentCloudMusic.Services
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public static async Task<(bool IsSuccess, LinkedList<DeprecatedPlaylist>)> GetUserPlaylist(string uid)
+        public static async Task<(bool IsSuccess, List<Playlist>)> GetUserPlaylist(string uid)
         {
             var parameters = new Dictionary<string, object> { { "uid", uid } };
+
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.UserPlaylist, parameters);
-            if (jsonResult["code"].Value<int>() == 200)
-            {
-                var result = new LinkedList<DeprecatedPlaylist>();
-                foreach (var item in jsonResult["playlist"])
-                {
-                    result.AddLast(new DeprecatedPlaylist
-                    {
-                        ID = item["id"].ToString(),
-                        Name = item["name"].ToString(),
-                        CoverPictureUrl = item["coverImgUrl"].ToString(),
-                        CreatorID = item["creator"]["userId"].ToString(),
-                        Privacy = item["privacy"].Value<int>()
-                    });
-                }
-                return (true, result);
-            }
-            return (false, null);
+            var result = jsonResult.ToObject<UserPlaylistResponse>(JsonUtils.Serializer);
+
+            return result.Code == 200 ? (true, result.Playlists.ToList()) : (false, null);
         }
     }
 }

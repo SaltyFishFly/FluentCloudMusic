@@ -1,5 +1,4 @@
 ﻿using FluentCloudMusic.DataModels.JSONModels;
-using FluentCloudMusic.Utils;
 using System.ComponentModel;
 
 namespace FluentCloudMusic.DataModels.ViewModels
