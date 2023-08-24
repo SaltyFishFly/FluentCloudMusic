@@ -1,8 +1,8 @@
 ﻿using FluentCloudMusic.Controls;
 using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Pages;
 using FluentCloudMusic.Services;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -68,27 +68,25 @@ namespace FluentCloudMusic
         /// </summary>
         private async void GeneratePlaylistButtons()
         {
-            var (isSuccess, playlists) = await NetworkService.GetUserPlaylist(AccountService.User.UserID);
-            if (isSuccess)
+            var (isSuccess, playlists) = await NetworkService.GetUserPlaylist(AccountService.UserProfile.UserId);
+
+            if (!isSuccess) return;
+
+            CreatedPlaylistButtons.Clear();
+            BookmarkedPlaylistButtons.Clear();
+
+            playlists.ForEach(playlist =>
             {
-                CreatedPlaylistButtons.Clear();
-                BookmarkedPlaylistButtons.Clear();
-
-                foreach (var playlist in playlists)
+                var item = new muxc.NavigationViewItem()
                 {
-                    var item = new muxc.NavigationViewItem()
-                    {
-                        Name = "NavItemPlaylist",
-                        Tag = playlist,
-                        Content = playlist.Name
-                    };
+                    Name = "NavItemPlaylist",
+                    Tag = playlist,
+                    Content = playlist.Name
+                };
 
-                    if (playlist.CreatorID == AccountService.User.UserID)
-                        CreatedPlaylistButtons.Add(item);
-                    else
-                        BookmarkedPlaylistButtons.Add(item);
-                }
-            }
+                if (playlist.Creator.UserId == AccountService.UserProfile.UserId) CreatedPlaylistButtons.Add(item);
+                else BookmarkedPlaylistButtons.Add(item);
+            });
         }
 
         private object FindNavigationItem(Type destPageType, object navigationParameter)
@@ -111,7 +109,7 @@ namespace FluentCloudMusic
 
                 return CreatedPlaylistButtons
                     .Concat(BookmarkedPlaylistButtons)
-                    .FirstOrDefault(button => ((Playlist)button.Tag).ID == ((Playlist)navigationParameter).ID);
+                    .FirstOrDefault(button => ((Playlist)button.Tag).Id == ((Playlist)navigationParameter).Id);
             }
         }
 
@@ -122,7 +120,7 @@ namespace FluentCloudMusic
             Player.Dispose();
         }
 
-        private void OnLogin(JObject loginResult)
+        private void OnLogin(Profile profile)
         {
             GeneratePlaylistButtons();
             ContentFrame.Navigate(typeof(DiscoverPage), null);
@@ -177,7 +175,7 @@ namespace FluentCloudMusic
                 SearchRequest Request = new SearchRequest(sender.Text);
                 if (ContentFrame.CurrentSourcePageType == typeof(SearchPage))
                 {
-                    SearchPage.INSTANCE.Search(Request);
+                    SearchPage.Instance.Search(Request);
                 }
                 else
                 {

@@ -20,7 +20,7 @@ namespace FluentCloudMusic.Pages
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (AccountService.User.HasLogin) return;
+            if (AccountService.UserProfile.HasLogin) return;
 
             try
             {

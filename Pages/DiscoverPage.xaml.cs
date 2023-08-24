@@ -1,4 +1,4 @@
-﻿using FluentCloudMusic.DataModels;
+﻿using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System.Collections.ObjectModel;
@@ -44,7 +44,7 @@ namespace FluentCloudMusic.Pages
 
         private async void GetRecommendations()
         {
-            if (!AccountService.User.HasLogin) return;
+            if (!AccountService.UserProfile.HasLogin) return;
 
             DailyRecommendPlaylists.Clear();
             DailyRecommendSongs.Clear();

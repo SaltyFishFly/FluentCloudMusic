@@ -1,4 +1,5 @@
 ﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
@@ -14,16 +15,17 @@ namespace FluentCloudMusic.Pages
     /// </summary>
     public sealed partial class SearchPage : Page
     {
-        public static SearchPage INSTANCE;
+        public static SearchPage Instance;
 
         private ObservableCollection<Song> Songs;
         private SearchRequest CurrentSearchRequest;
 
         public SearchPage()
         {
-            this.InitializeComponent();
             Songs = new ObservableCollection<Song>();
-            INSTANCE = this;
+            Instance = this;
+
+            this.InitializeComponent();
         }
 
         public async void Search(SearchRequest request)

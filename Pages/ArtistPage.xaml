@@ -9,15 +9,4 @@
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <controls:MusicListView
-        x:Name="MusicList"
-        Background="{ThemeResource LayerFillColorDefaultBrush}"
-        IsAlbumButtonEnabled="False">
-        <controls:MusicListView.Header>
-            <controls:ResourceDetailPresenter
-                ImageSource="{x:Bind Path=Artist.AvatarUrl,Mode=OneWay}"
-                Title="{x:Bind Path=Artist.Name,Mode=OneWay}"
-                Description="{x:Bind Path=Artist.Description,Mode=OneWay}"/>
-        </controls:MusicListView.Header>
-    </controls:MusicListView>
 </Page>

@@ -1,11 +1,11 @@
 ﻿<UserControl
-    x:Class="FluentCloudMusic.Controls.MusicListView"
+    x:Class="FluentCloudMusic.Controls.SongListView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:FluentCloudMusic.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:datamodels="using:FluentCloudMusic.DataModels"
+    xmlns:jsonmodels="using:FluentCloudMusic.DataModels.JSONModels"
     xmlns:converters="using:FluentCloudMusic.Converters"
     mc:Ignorable="d"
     x:Name="ControlRoot">
@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <DataTemplate
-                x:DataType="datamodels:Song"
+                x:DataType="jsonmodels:Song"
                 x:Key="SongDataTemplate">
                 <Grid
                     x:DefaultBindMode="OneTime">
@@ -34,7 +34,7 @@
                             <MenuFlyoutItem
                                 x:Uid="SongFlyoutMenuAlbumButton"
                                 Tag="{x:Bind Path=Album}"
-                                Text="{x:Bind Path=Album.Name}"
+                                Text="{x:Bind Path=AlbumName}"
                                 Click="AlbumNameButton_Click">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon 
@@ -68,7 +68,7 @@
                                 <Run
                                     Text="{x:Bind Path=Name}"/>
                                 <Run
-                                    Text="{x:Bind Path=Alias}"
+                                    Text="{x:Bind Path=Description}"
                                     Foreground="{ThemeResource DescriptionTextBrush}"/>
                             </TextBlock>
                         </HyperlinkButton.Content>
@@ -77,15 +77,15 @@
                         Grid.Column="1"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Left"
-                        Tag="{x:Bind Path=Artists.MainArtist}"
-                        ToolTipService.ToolTip="{x:Bind Path=Artists.MainArtist.Name}"
+                        Tag="{x:Bind Path=MainArtist}"
+                        ToolTipService.ToolTip="{x:Bind Path=MainArtist.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
                         IsEnabled="{Binding Path=IsArtistButtonEnabled,ElementName=ControlRoot}"
                         Click="ArtistNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock
                                 TextTrimming="CharacterEllipsis"
-                                Text="{x:Bind Path=Artists.ToString()}"/>
+                                Text="{x:Bind Path=ArtistName}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                     <HyperlinkButton
@@ -93,14 +93,14 @@
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Left"
                         Tag="{x:Bind Path=Album}"
-                        ToolTipService.ToolTip="{x:Bind Path=Album.Name}"
+                        ToolTipService.ToolTip="{x:Bind Path=AlbumName}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
                         IsEnabled="{Binding Path=IsAlbumButtonEnabled,ElementName=ControlRoot}"
                         Click="AlbumNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock
                                 TextTrimming="CharacterEllipsis"
-                                Text="{x:Bind Path=Album.Name}"/>
+                                Text="{x:Bind Path=AlbumName}"/>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
                 </Grid>

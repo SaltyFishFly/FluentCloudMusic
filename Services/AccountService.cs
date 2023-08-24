@@ -1,17 +1,19 @@
-﻿using FluentCloudMusic.Utils;
+﻿using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.DataModels.JSONModels.Responses;
+using FluentCloudMusic.DataModels.ViewModels;
+using FluentCloudMusic.Utils;
 using NeteaseCloudMusicApi;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace FluentCloudMusic.Services
 {
     public static class AccountService
     {
-        public static readonly UserProfile User = new UserProfile();
+        public static readonly UserProfileViewModel UserProfile = new UserProfileViewModel();
 
-        public delegate void LoginEventHandler(JObject loginInfo);
+        public delegate void LoginEventHandler(Profile profile);
         public delegate void LogoutEventHandler();
 
         public static event LoginEventHandler Login;
@@ -27,17 +29,19 @@ namespace FluentCloudMusic.Services
             };
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginCellphone, parameters);
-            var code = jsonResult["code"].Value<int>();
+            var result = jsonResult.ToObject<LoginCellphoneResponse>(JsonUtils.Serializer);
 
-            if (code != 200)
+            if (result.Code != 200)
             {
                 StorageService.RemoveSetting("LoginCookie");
-                return code;
+                return result.Code;
             }
             StorageService.SetSetting("LoginCookie", App.API.Cookies.GetString());
 
-            Login(jsonResult);
-            return code;
+            UserProfile.Source = result.Profile;
+            Login(result.Profile);
+
+            return result.Code;
         }
 
         public static async Task<int> CheckLoginStatusAsync()
@@ -48,17 +52,19 @@ namespace FluentCloudMusic.Services
             App.API.Cookies.LoadFromString(loginCookie);
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginStatus);
-            var code = jsonResult["code"].Value<int>();
+            var result = jsonResult.ToObject<LoginStatusResponse>(JsonUtils.Serializer);
 
-            if (code != 200)
+            if (result.Code != 200)
             {
                 StorageService.RemoveSetting("LoginCookie");
-                return code;
+                return result.Code;
             }
             StorageService.SetSetting("LoginCookie", App.API.Cookies.GetString());
 
-            Login(jsonResult);
-            return code;
+            UserProfile.Source = result.Profile;
+            Login(result.Profile);
+
+            return result.Code;
         }
 
         public static async Task<bool> LogoutAsync()
@@ -69,72 +75,11 @@ namespace FluentCloudMusic.Services
             if (code != 200) return false;
             
             StorageService.RemoveSetting("LoginCookie");
+
+            UserProfile.Source = null;
             Logout();
+
             return true;
-        }
-
-        public class UserProfile : INotifyPropertyChanged
-        {
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            public bool HasLogin { get; private set; }
-            public string UserID { get; private set; }
-            public string Nickname { get; private set; }
-            public string AvatarUrl { get; private set; }
-            public bool HasVip { get; private set; }
-
-            public UserProfile()
-            {
-                HasLogin = false;
-                UserID = string.Empty;
-                Nickname = string.Empty;
-                AvatarUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
-                HasVip = false;
-
-                Login += OnLogin;
-                Logout += OnLogout;
-            }
-
-            private void OnLogin(JObject loginInfo)
-            {
-                HasLogin = true;
-                Notify(nameof(HasLogin));
-
-                UserID = loginInfo["profile"]["userId"].ToString();
-                Notify(nameof(UserID));
-
-                Nickname = loginInfo["profile"]["nickname"].ToString();
-                Notify(nameof(Nickname));
-
-                AvatarUrl = loginInfo["profile"]["avatarUrl"].ToString();
-                Notify(nameof(AvatarUrl));
-
-                HasVip = loginInfo["profile"]["vipType"].Value<int>() != 0;
-                Notify(nameof(HasVip));
-            }
-
-            private void OnLogout()
-            {
-                HasLogin = false;
-                Notify(nameof(HasLogin));
-
-                UserID = string.Empty;
-                Notify(nameof(UserID));
-
-                Nickname = string.Empty;
-                Notify(nameof(Nickname));
-
-                AvatarUrl = "ms-appx:///Assets/LargeTile.scale-400.png";
-                Notify(nameof(AvatarUrl));
-
-                HasVip = false;
-                Notify(nameof(HasVip));
-            }
-
-            private void Notify(string member)
-            {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(member));
-            }
         }
     }
 }

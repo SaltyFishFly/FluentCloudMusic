@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:services="using:FluentCloudMusic.Services"
-    xmlns:datamodels="using:FluentCloudMusic.DataModels"
+    xmlns:jsonmodels="using:FluentCloudMusic.DataModels.JSONModels"
     xmlns:controls="using:FluentCloudMusic.Controls"
     xmlns:converters="using:FluentCloudMusic.Converters"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
@@ -16,7 +16,7 @@
     <Page.Resources>
         <ResourceDictionary>
             <DataTemplate
-                x:DataType="datamodels:Playlist"
+                x:DataType="jsonmodels:Playlist"
                 x:Key="PlaylistItemTemplate">
                 <Grid
                     Width="180"
@@ -38,7 +38,7 @@
                         <Border.Background>
                             <ImageBrush
                                 x:Name="PlaylistCover"
-                                ImageSource="{x:Bind Path=CoverPictureUrl}"/>
+                                ImageSource="{x:Bind Path=ImageUrl}"/>
                         </Border.Background>
                     </Border>
                     <TextBlock
@@ -64,7 +64,7 @@
                 x:Uid="NotLoginInfoBar"
                 CornerRadius="8"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
-                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                 IsOpen="True"
                 IsClosable="False">
             </muxc:InfoBar>
@@ -77,7 +77,7 @@
                 ScrollViewer.VerticalScrollMode="Disabled"
                 ScrollViewer.HorizontalScrollMode="Enabled"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
+                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
                 ItemsSource="{x:Bind Path=DailyRecommendPlaylists}"
                 ItemTemplate="{StaticResource PlaylistItemTemplate}"
                 ItemContainerStyle="{StaticResource DailyRecommendPlaylistsGridViewItemContainerStyle}"
@@ -90,13 +90,13 @@
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
-            <controls:MusicListView
+            <controls:SongListView
                 x:Name="MusicList"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
-                Visibility="{x:Bind Path=services:AccountService.User.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
+                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
                 IsToolBarEnabled="False"
                 ItemsSource="{x:Bind Path=DailyRecommendSongs}">
-                <controls:MusicListView.Header>
+                <controls:SongListView.Header>
                     <Grid
                         Padding="24,0,8,0">
                         <Grid.ColumnDefinitions>
@@ -114,8 +114,8 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"/>
                     </Grid>
-                </controls:MusicListView.Header>
-            </controls:MusicListView>
+                </controls:SongListView.Header>
+            </controls:SongListView>
         </StackPanel>
     </ScrollViewer>
 </Page>

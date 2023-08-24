@@ -1,4 +1,6 @@
-﻿using FluentCloudMusic.DataModels;
+﻿using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.DataModels.ViewModels;
+using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -13,22 +15,23 @@ namespace FluentCloudMusic.Pages
     public sealed partial class AlbumPage : Page
     {
         private readonly ObservableCollection<Song> Songs;
-        private readonly Album Album;
+        private readonly AlbumViewModel Album;
 
         public AlbumPage()
         {
             Songs = new ObservableCollection<Song>();
-            Album = new Album();
+            Album = new AlbumViewModel();
 
             InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var (isSuccess, detailedAlbum, songs) = await ((Album)e.Parameter).GetDetail();
+            var (isSuccess, album, songs) = await AlbumService.GetAlbumDetailAsync(((Album)e.Parameter).Id);
             if (!isSuccess) return;
-            detailedAlbum.CopyTo(Album);
-            foreach (var song in songs) Songs.Add(song);
+
+            Album.Source = album;
+            foreach (var song in songs) { Songs.Add(song); }
         }
     }
 }
