@@ -68,7 +68,7 @@ namespace FluentCloudMusic
         /// </summary>
         private async void GeneratePlaylistButtons()
         {
-            var (isSuccess, playlists) = await NetworkService.GetUserPlaylist(AccountService.UserProfile.UserId);
+            var (isSuccess, playlists) = await PlaylistService.GetUserPlaylist(AccountService.UserProfile.UserId);
 
             if (!isSuccess) return;
 

@@ -11,7 +11,7 @@ namespace FluentCloudMusic.Pages
     {
         public PodcastsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

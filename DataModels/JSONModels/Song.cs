@@ -49,8 +49,13 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
 
         public bool HasCopyright { get => NoCopyrightRecommendation == null; }
+
+        public string ImageUrl => Album.ImageUrl ?? "ms-appx:///Assets/LargeTile.scale-400.png";
+
         public Artist MainArtist { get => Artists[0]; }
+
         public string AlbumName { get => Album.Name; }
+
         public string ArtistName
         {
             get
@@ -93,8 +98,8 @@ namespace FluentCloudMusic.DataModels.JSONModels
             return
                 predicate(Name) ||
                 predicate(Description) ||
-                predicate(MainArtist.Name) ||
-                predicate(Album.Name);
+                predicate(ArtistName) ||
+                predicate(AlbumName);
         }
 
         public async Task<MediaPlaybackItem> ToMediaPlaybackItem()
@@ -117,5 +122,4 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         public int Sr { get; set; }
     }
-
 }

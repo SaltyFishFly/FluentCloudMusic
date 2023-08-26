@@ -11,25 +11,30 @@
     Background="{ThemeResource SystemControlTransparentBrush}">
 
     <controls:SongListView
-        x:Name="MusicList"
+        x:Name="SongList"
         Background="{ThemeResource LayerFillColorDefaultBrush}"
-        IsToolBarEnabled="False"
         ItemsSource="{x:Bind Path=Songs}">
+        <controls:SongListView.Header>
+            <controls:ToolBar
+                Margin="16"
+                IsShareButtonEnabled="False"
+                IsDownloadButtonEnabled="False"
+                PlayAllButtonClickedEvent="PlayAllButtonClickedEvent"/>
+        </controls:SongListView.Header>
         <controls:SongListView.Footer>
             <Grid
-                Margin="8"
+                Padding="8"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+                ColumnSpacing="16">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="16"/>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button
                     x:Name="PreviousPageButton"
-                    Grid.Column="1"
+                    Grid.Column="0"
+                    IsEnabled="{x:Bind Path=CurrentRequestViewModel.HasPrev,Mode=OneWay}"
                     Click="PreviousPageButton_Click">
                     <Button.Content>
                         <FontIcon
@@ -38,15 +43,17 @@
                             FontSize="16"/>
                     </Button.Content>
                 </Button>
-                <TextBlock 
-                    Grid.Column="2"
+                <TextBlock
                     x:Name="PageText"
+                    Grid.Column="1"
                     Margin="0,0,0,4"
+                    VerticalAlignment="Center"
                     FontSize="16"
-                    VerticalAlignment="Center"/>
+                    Text="{x:Bind Path=CurrentRequestViewModel.PageString,Mode=OneWay}"/>
                 <Button
                     x:Name="NextPageButton"
-                    Grid.Column="3"
+                    Grid.Column="2"
+                    IsEnabled="{x:Bind Path=CurrentRequestViewModel.HasNext,Mode=OneWay}"
                     Click="NextPageButton_Click">
                     <Button.Content>
                         <FontIcon

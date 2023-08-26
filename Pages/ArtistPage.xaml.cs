@@ -1,5 +1,4 @@
-﻿using FluentCloudMusic.DataModels;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -12,7 +11,7 @@ namespace FluentCloudMusic.Pages
     {
         public ArtistPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

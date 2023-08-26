@@ -120,6 +120,9 @@
   <data name="AccountInputBox.PlaceholderText" xml:space="preserve">
     <value>手机号</value>
   </data>
+  <data name="CopiedToClipboardMessage" xml:space="preserve">
+    <value>分享链接已保存到剪贴板</value>
+  </data>
   <data name="DailyRecommendSongsTitle.Text" xml:space="preserve">
     <value>每日推荐歌曲</value>
   </data>

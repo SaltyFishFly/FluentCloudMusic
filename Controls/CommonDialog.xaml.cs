@@ -12,10 +12,10 @@ namespace FluentCloudMusic.Controls
 
         public CommonDialog(string title, string message, string buttonText)
         {
-            this.InitializeComponent();
-            this.Title = title;
-            this.Message = message;
-            this.ButtonText = buttonText;
+            InitializeComponent();
+            Title = title;
+            Message = message;
+            ButtonText = buttonText;
         }
     }
 }

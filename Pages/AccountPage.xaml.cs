@@ -12,7 +12,7 @@ namespace FluentCloudMusic.Pages
     {
         public AccountPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void LogoutButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

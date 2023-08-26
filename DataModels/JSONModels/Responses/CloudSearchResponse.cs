@@ -9,6 +9,8 @@
         public class CloudSearchResponseResult
         {
             public Song[] Songs { get; set; }
+
+            public int SongCount { get; set; }
         }
     }
 }

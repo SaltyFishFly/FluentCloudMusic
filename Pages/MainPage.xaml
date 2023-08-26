@@ -133,7 +133,6 @@
         </muxc:NavigationView.FooterMenuItems>
         <muxc:NavigationView.Content>
             <Grid
-                Width="Auto"
                 Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -143,7 +142,6 @@
                     x:Name="ContentFrame"
                     Grid.Row="0"
                     CornerRadius="8"
-                    CacheSize="5"
                     Navigated="ContentFrame_Navigated"/>
                 <local:MusicPlayerControl
                     x:Name="MusicPlayer"

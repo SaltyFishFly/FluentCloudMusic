@@ -23,23 +23,23 @@ namespace FluentCloudMusic.Controls
 
         public ObservableCollection<UserCloudSong> ItemsSource
         {
-            get { return (ObservableCollection<UserCloudSong>)GetValue(ItemsSourceProperty); }
-            set { SetValue(ItemsSourceProperty, value); }
+            get => (ObservableCollection<UserCloudSong>)GetValue(ItemsSourceProperty);
+            set => SetValue(ItemsSourceProperty, value);
         }
         public UIElement Header
         {
-            get { return (UIElement)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            get => (UIElement)GetValue(HeaderProperty);
+            set => SetValue(HeaderProperty, value);
         }
         public UIElement Footer
         {
-            get { return (UIElement)GetValue(FooterProperty); }
-            set { SetValue(FooterProperty, value); }
+            get => (UIElement)GetValue(FooterProperty);
+            set => SetValue(FooterProperty, value);
         }
         public bool IsToolBarEnabled
         {
-            get { return (bool)GetValue(IsToolBarEnabledProperty); }
-            set { SetValue(IsToolBarEnabledProperty, value); }
+            get => (bool)GetValue(IsToolBarEnabledProperty);
+            set => SetValue(IsToolBarEnabledProperty, value);
         }
 
         private List<UserCloudSong> OriginalSongs;
@@ -49,7 +49,7 @@ namespace FluentCloudMusic.Controls
             InitializeComponent();
         }
 
-        private void ApplyFilter(string filter)
+        public void ApplyFilter(string filter)
         {
             OriginalSongs ??= new List<UserCloudSong>(ItemsSource);
             ItemsSource.Clear();
@@ -58,7 +58,9 @@ namespace FluentCloudMusic.Controls
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.Player.Play(new List<ISong>() { (ISong)((FrameworkElement)sender).Tag });
+            var playlist = new List<ISong>(ItemsSource);
+            int index = ItemsSource.IndexOf((sender as FrameworkElement).Tag as UserCloudSong);
+            _ = MainPage.Player.PlayAsync(playlist, index);
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -69,17 +71,6 @@ namespace FluentCloudMusic.Controls
         private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
         {
             MainPage.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).Tag);
-        }
-
-        private void PlayAllButton_Click(object sender, RoutedEventArgs e)
-        {
-            var playlist = new List<ISong>(ItemsSource);
-            MainPage.Player.Play(playlist);
-        }
-
-        private void FilterInputBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            ApplyFilter(sender.Text);
         }
     }
 }

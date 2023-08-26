@@ -11,7 +11,7 @@ namespace FluentCloudMusic.Pages
     {
         public FavoritesPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

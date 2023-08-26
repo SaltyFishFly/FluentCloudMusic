@@ -24,9 +24,16 @@ namespace FluentCloudMusic.DataModels.JSONModels
         [JsonProperty("album")]
         public string AlbumName { get; set; }
 
+        [JsonProperty("simpleSong")]
+        public UserCloudSongData Data { get; set; }
+
         public string FileName { get; set; }
 
+
         public bool HasCopyright => true;
+
+        public string ImageUrl => Data.Album.ImageUrl ?? "ms-appx:///Assets/LargeTile.scale-400.png";
+
         public string Description => $"( {FileName} )";
 
         public UserCloudSong()
@@ -48,6 +55,12 @@ namespace FluentCloudMusic.DataModels.JSONModels
         {
             var (isSuccess, result) = await SongService.GetNeteaseSongUrl(this);
             return isSuccess ? result : null;
+        }
+
+        public class UserCloudSongData
+        {
+            [JsonProperty("al")]
+            public Album Album { get; set; }
         }
     }
 }

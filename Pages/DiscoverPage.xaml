@@ -35,11 +35,9 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
                         CornerRadius="8">
-                        <Border.Background>
-                            <ImageBrush
-                                x:Name="PlaylistCover"
-                                ImageSource="{x:Bind Path=ImageUrl}"/>
-                        </Border.Background>
+                        <Image
+                            x:Name="PlaylistCover"
+                            Source="{x:Bind Path=ImageUrl}"/>
                     </Border>
                     <TextBlock
                         Width="150"
@@ -91,10 +89,9 @@
                 </GridView.ItemsPanel>
             </GridView>
             <controls:SongListView
-                x:Name="MusicList"
+                x:Name="SongList"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
                 Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
-                IsToolBarEnabled="False"
                 ItemsSource="{x:Bind Path=DailyRecommendSongs}">
                 <controls:SongListView.Header>
                     <Grid

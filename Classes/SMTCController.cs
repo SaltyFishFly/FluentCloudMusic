@@ -15,25 +15,30 @@ namespace FluentCloudMusic.Classes
         public SMTCController(MusicPlayerControl musicPlayer)
         {
             MusicPlayerControl = musicPlayer;
-            Player.SourceChanged += Player_SourceChanged;
-            CommandManager.PreviousReceived += (sender, args) =>
-            {
-                MusicPlayerControl.Previous();
-                args.Handled = true;
-            };
-            CommandManager.NextReceived += (sender, args) =>
-            {
-                MusicPlayerControl.Next();
-                args.Handled = true;
-            };
-        }
 
-        private void Player_SourceChanged(MediaPlayer sender, object args)
-        {
-            CommandManager.PreviousBehavior.EnablingRule =
-                MusicPlayerControl.HasPrevious ? MediaCommandEnablingRule.Always : MediaCommandEnablingRule.Never;
-            CommandManager.NextBehavior.EnablingRule =
-                MusicPlayerControl.HasNext ? MediaCommandEnablingRule.Always : MediaCommandEnablingRule.Never;
+            Player.SourceChanged += (sender, args) =>
+            {
+                CommandManager.PreviousBehavior.EnablingRule =
+                    MusicPlayerControl.HasPrevious ? MediaCommandEnablingRule.Always : MediaCommandEnablingRule.Never;
+                CommandManager.NextBehavior.EnablingRule =
+                    MusicPlayerControl.HasNext ? MediaCommandEnablingRule.Always : MediaCommandEnablingRule.Never;
+            };
+
+            CommandManager.PreviousReceived += async (sender, args) =>
+            {
+                var defer = args.GetDeferral();
+                await MusicPlayerControl.Previous();
+                args.Handled = true;
+                defer.Complete();
+            };
+
+            CommandManager.NextReceived += async (sender, args) =>
+            {
+                var defer = args.GetDeferral();
+                await MusicPlayerControl.Next();
+                args.Handled = true;
+                defer.Complete();
+            };
         }
     }
 }

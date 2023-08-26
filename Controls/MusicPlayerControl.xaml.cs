@@ -1,11 +1,11 @@
 ﻿using FluentCloudMusic.Classes;
-using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Windows.Media.Playback;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -94,32 +94,32 @@ namespace FluentCloudMusic.Controls
             PlayMode = StorageService.HasSetting("PlayMode") ? StorageService.GetSetting<PlayMode>("PlayMode") : PlayMode.RepeatList;
             Volume = StorageService.HasSetting("Volume") ? StorageService.GetSetting<double>("Volume") : 500.0;
 
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
-        public void Play(List<ISong> songs)
+        public async Task PlayAsync(List<ISong> songs, int startIndex = 0)
         {
             PlaybackItemList = songs;
             ShuffledPlaybackItemList = songs.Shuffle();
-            Play(0);
+            await PlayAsync(startIndex);
         }
 
-        public void Previous()
+        public async Task Previous()
         {
             if (!HasPrevious) return;
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Play(--PlayIndex));
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await PlayAsync(--PlayIndex));
         }
 
-        public void Next()
+        public async Task Next()
         {
             if (!HasNext) return;
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Play(++PlayIndex));
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await PlayAsync(++PlayIndex));
         }
 
-        public void Replay()
+        public async Task Replay()
         {
             if (!HasNext) return;
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Play(PlayIndex));
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await PlayAsync(PlayIndex));
         }
 
         public void Dispose()
@@ -127,7 +127,7 @@ namespace FluentCloudMusic.Controls
             Player.Dispose();
         }
 
-        private async void Play(int index)
+        private async Task PlayAsync(int index)
         {
             if (PlaybackItemList.Count <= index) return;
 
@@ -142,8 +142,8 @@ namespace FluentCloudMusic.Controls
 
         private void Player_MediaEnded(MediaPlayer sender, object args)
         {
-            if (PlayMode == PlayMode.RepeatOne) Replay();
-            else Next();
+            if (PlayMode == PlayMode.RepeatOne) _ = Replay();
+            else _ = Next();
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -161,12 +161,12 @@ namespace FluentCloudMusic.Controls
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
         {
-            Previous();
+            _ = Previous();
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            Next();
+            _ = Next();
         }
 
         private void Timeline_Loaded(object sender, RoutedEventArgs e)

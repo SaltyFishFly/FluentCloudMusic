@@ -11,7 +11,7 @@ namespace FluentCloudMusic.Pages
     {
         public HistoryPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

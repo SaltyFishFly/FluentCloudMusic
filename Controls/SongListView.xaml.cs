@@ -1,5 +1,4 @@
-﻿using FluentCloudMusic.DataModels;
-using FluentCloudMusic.DataModels.JSONModels;
+﻿using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.Pages;
 using System.Collections.Generic;
@@ -24,38 +23,31 @@ namespace FluentCloudMusic.Controls
             DependencyProperty.Register("IsArtistButtonEnabled", typeof(bool), typeof(SongListView), new PropertyMetadata(true));
         public static readonly DependencyProperty IsAlbumButtonEnabledProperty =
             DependencyProperty.Register("IsAlbumButtonEnabled", typeof(bool), typeof(SongListView), new PropertyMetadata(true));
-        public static readonly DependencyProperty IsToolBarEnabledProperty =
-            DependencyProperty.Register("IsToolBarEnabled", typeof(bool), typeof(SongListView), new PropertyMetadata(true));
 
         public ObservableCollection<Song> ItemsSource
         {
-            get { return (ObservableCollection<Song>)GetValue(ItemsSourceProperty); }
-            set { SetValue(ItemsSourceProperty, value); }
+            get => (ObservableCollection<Song>)GetValue(ItemsSourceProperty);
+            set => SetValue(ItemsSourceProperty, value);
         }
         public UIElement Header
         {
-            get { return (UIElement)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            get => (UIElement)GetValue(HeaderProperty);
+            set => SetValue(HeaderProperty, value);
         }
         public UIElement Footer
         {
-            get { return (UIElement)GetValue(FooterProperty); }
-            set { SetValue(FooterProperty, value); }
+            get => (UIElement)GetValue(FooterProperty);
+            set => SetValue(FooterProperty, value);
         }
         public bool IsArtistButtonEnabled
         {
-            get { return (bool)GetValue(IsArtistButtonEnabledProperty); }
-            set { SetValue(IsArtistButtonEnabledProperty, value); }
+            get => (bool)GetValue(IsArtistButtonEnabledProperty);
+            set => SetValue(IsArtistButtonEnabledProperty, value);
         }
         public bool IsAlbumButtonEnabled
         {
-            get { return (bool)GetValue(IsAlbumButtonEnabledProperty); }
-            set { SetValue(IsAlbumButtonEnabledProperty, value); }
-        }
-        public bool IsToolBarEnabled
-        {
-            get { return (bool)GetValue(IsToolBarEnabledProperty); }
-            set { SetValue(IsToolBarEnabledProperty, value); }
+            get => (bool)GetValue(IsAlbumButtonEnabledProperty);
+            set => SetValue(IsAlbumButtonEnabledProperty, value);
         }
 
         private List<Song> OriginalSongs;
@@ -65,7 +57,7 @@ namespace FluentCloudMusic.Controls
             InitializeComponent();
         }
 
-        private void ApplyFilter(string filter)
+        public void ApplyFilter(string filter)
         {
             OriginalSongs ??= new List<Song>(ItemsSource);
             ItemsSource.Clear();
@@ -74,7 +66,9 @@ namespace FluentCloudMusic.Controls
 
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
-            MainPage.Player.Play(new List<ISong>() { (ISong)((FrameworkElement)sender).Tag });
+            var playlist = new List<ISong>(ItemsSource);
+            int index = ItemsSource.IndexOf((sender as FrameworkElement).Tag as Song);
+            _ = MainPage.Player.PlayAsync(playlist, index);
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -85,17 +79,6 @@ namespace FluentCloudMusic.Controls
         private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
         {
             MainPage.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).Tag);
-        }
-
-        private void PlayAllButton_Click(object sender, RoutedEventArgs e)
-        {
-            var playlist = new List<ISong>(ItemsSource);
-            MainPage.Player.Play(playlist);
-        }
-
-        private void FilterInputBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            ApplyFilter(sender.Text);
         }
 
         private void MenuFlyout_Opened(object sender, object e)

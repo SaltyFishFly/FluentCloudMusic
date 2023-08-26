@@ -11,6 +11,8 @@ namespace FluentCloudMusic.DataModels.JSONModels.Responses
 
         public string Description { get; }
 
+        public string ImageUrl { get; }
+
         public string ArtistName { get; }
 
         public string AlbumName { get; }

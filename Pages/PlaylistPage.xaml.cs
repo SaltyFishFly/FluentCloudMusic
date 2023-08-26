@@ -1,7 +1,13 @@
 ﻿using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Services;
+using FluentCloudMusic.Utils;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.ApplicationModel.Resources;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
@@ -30,14 +36,43 @@ namespace FluentCloudMusic.Pages
             Playlist.Source = e.Parameter as Playlist;
 
             var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("DailyRecommendPlaylistsToPlaylistPageAnimation");
-            anim?.TryStart(MusicListHeader.CoverImage);
+            anim?.TryStart(SongListHeader.CoverImage);
 
-            var (isSuccess, playlistInfo, songs) = await NetworkService.GetPlaylistDetailAsync(Playlist.Id);
+            var (isSuccess, playlistInfo, songs) = await PlaylistService.GetPlaylistDetailAsync(Playlist.Id);
             if (isSuccess)
             {
                 Playlist.Source = playlistInfo;
                 foreach (var song in songs) Songs.Add(song);
             }
+        }
+
+        private void PlayAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            var playlist = new List<ISong>(Songs);
+            _ = MainPage.Player.PlayAsync(playlist);
+        }
+
+        private void ShareButton_Click(object sender, RoutedEventArgs e)
+        {
+            var shareLink = $"https://music.163.com/#/playlist?id={Playlist.Id}";
+            ClipboardUtils.SetText(shareLink);
+            new Flyout()
+            {
+                Content = new TextBlock()
+                {
+                    Text = ResourceLoader.GetForCurrentView().GetString("CopiedToClipboardMessage")
+                }
+            }.ShowAt(sender as FrameworkElement);
+        }
+
+        private void DownloadButtonClickedEvent(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FilterInputBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            SongList.ApplyFilter(sender.Text);
         }
     }
 }

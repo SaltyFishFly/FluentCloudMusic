@@ -49,8 +49,8 @@ namespace FluentCloudMusic.Pages
             DailyRecommendPlaylists.Clear();
             DailyRecommendSongs.Clear();
 
-            var playlists = await NetworkService.GetDailyRecommendPlaylistsAsync();
-            var songs = await NetworkService.GetDailyRecommendSongsAsync();
+            var playlists = await PlaylistService.GetDailyRecommendPlaylistsAsync();
+            var songs = await SongService.GetDailyRecommendSongsAsync();
 
             playlists?.ForEach(playlist => DailyRecommendPlaylists.Add(playlist));
             songs?.GetRange(0, 5).ForEach(song => DailyRecommendSongs.Add(song));

@@ -11,7 +11,7 @@ namespace FluentCloudMusic.Pages
     {
         public DownloadsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

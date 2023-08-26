@@ -16,7 +16,8 @@
                 x:DataType="jsonmodels:UserCloudSong"
                 x:Key="SongDataTemplate">
                 <Grid
-                    x:DefaultBindMode="OneTime">
+                    x:DefaultBindMode="OneTime"
+                    ColumnSpacing="8">
                     <Grid.ContextFlyout>
                         <MenuFlyout>
                             <MenuFlyoutItem
@@ -50,34 +51,18 @@
                             </TextBlock>
                         </HyperlinkButton.Content>
                     </HyperlinkButton>
-                    <HyperlinkButton
+                    <TextBlock
                         Grid.Column="1"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Left"
+                        VerticalAlignment="Center"
                         ToolTipService.ToolTip="{x:Bind Path=ArtistName}"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
-                        IsEnabled="False"
-                        Click="ArtistNameButton_Click">
-                        <HyperlinkButton.Content>
-                            <TextBlock
-                                TextTrimming="CharacterEllipsis"
-                                Text="{x:Bind Path=ArtistName}"/>
-                        </HyperlinkButton.Content>
-                    </HyperlinkButton>
-                    <HyperlinkButton
+                        TextTrimming="CharacterEllipsis"
+                        Text="{x:Bind Path=ArtistName}"/>
+                    <TextBlock
                         Grid.Column="2"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Left"
+                        VerticalAlignment="Center"
                         ToolTipService.ToolTip="{x:Bind Path=AlbumName}"
-                        Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
-                        IsEnabled="False"
-                        Click="AlbumNameButton_Click">
-                        <HyperlinkButton.Content>
-                            <TextBlock
-                                TextTrimming="CharacterEllipsis"
-                                Text="{x:Bind Path=AlbumName}"/>
-                        </HyperlinkButton.Content>
-                    </HyperlinkButton>
+                        TextTrimming="CharacterEllipsis"
+                        Text="{x:Bind Path=ArtistName}"/>
                 </Grid>
             </DataTemplate>
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -91,56 +76,8 @@
         CornerRadius="8"
         SelectionMode="None"
         IsItemClickEnabled="True"
+        Header="{x:Bind Path=Header}"
+        Footer="{x:Bind Path=Footer}"
         ItemsSource="{x:Bind Path=ItemsSource}"
-        ItemTemplate="{StaticResource SongDataTemplate}">
-        <ListView.Header>
-            <StackPanel>
-                <Border
-                    Child="{x:Bind Path=Header}"/>
-                <Grid
-                    Padding="16"
-                    Visibility="{x:Bind Path=IsToolBarEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel
-                        Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        Orientation="Horizontal"
-                        Spacing="8">
-                        <Button
-                            x:Name="PlayAllButton"
-                            Click="PlayAllButton_Click">
-                            <SymbolIcon
-                                Symbol="Play"/>
-                        </Button>
-                        <Button
-                            x:Name="DownloadButton"
-                            Visibility="Collapsed">
-                            <SymbolIcon
-                                Symbol="Download"/>
-                        </Button>
-                    </StackPanel>
-                    <StackPanel
-                        Grid.Column="2"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal"
-                        Spacing="8">
-                        <AutoSuggestBox
-                            x:Name="FilterInputBox"
-                            x:Uid="FilterInputBox"
-                            Width="200"
-                            QueryIcon="Find"
-                            QuerySubmitted="FilterInputBox_QuerySubmitted"/>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
-        </ListView.Header>
-        <ListView.Footer>
-            <Border
-                Child="{x:Bind Path=Footer}"/>
-        </ListView.Footer>
-    </ListView>
+        ItemTemplate="{StaticResource SongDataTemplate}"/>
 </UserControl>

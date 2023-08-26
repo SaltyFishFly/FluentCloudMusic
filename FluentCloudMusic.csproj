@@ -130,6 +130,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classes\SMTCController.cs" />
+    <Compile Include="Controls\ToolBar.xaml.cs">
+      <DependentUpon>ToolBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UserCloudSongListView.xaml.cs">
       <DependentUpon>UserCloudSongListView.xaml</DependentUpon>
     </Compile>
@@ -155,10 +158,14 @@
     <Compile Include="DataModels\JSONModels\Song.cs" />
     <Compile Include="DataModels\ViewModels\AlbumViewModel.cs" />
     <Compile Include="DataModels\ViewModels\PlaylistViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\SearchRequestViewModel.cs" />
     <Compile Include="DataModels\ViewModels\UserProfileViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\SectionViewModel.cs" />
     <Compile Include="Services\AlbumService.cs" />
     <Compile Include="Services\CacheService.cs" />
+    <Compile Include="Services\PlaylistService.cs" />
     <Compile Include="Services\SongService.cs" />
+    <Compile Include="Utils\ClipboardUtils.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Services\StorageService.cs" />
     <Compile Include="Controls\SongListView.xaml.cs">
@@ -177,7 +184,7 @@
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="DataModels\SearchRequest.cs" />
-    <Compile Include="DataModels\SearchSection.cs" />
+    <Compile Include="DataModels\Section.cs" />
     <Compile Include="Converters\DoubleToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="Converters\TimeSpanToDoubleConverter.cs" />
@@ -306,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\ToolBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\UserCloudSongListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

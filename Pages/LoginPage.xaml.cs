@@ -15,7 +15,7 @@ namespace FluentCloudMusic.Pages
     {
         public LoginPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)

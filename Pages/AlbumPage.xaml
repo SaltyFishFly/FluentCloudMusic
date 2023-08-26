@@ -11,15 +11,22 @@
     Background="{ThemeResource SystemControlTransparentBrush}">
 
     <controls:SongListView
-        x:Name="MusicList"
+        x:Name="SongList"
         Background="{ThemeResource LayerFillColorDefaultBrush}"
         IsAlbumButtonEnabled="False"
         ItemsSource="{x:Bind Path=Songs}">
         <controls:SongListView.Header>
-            <controls:ResourceDetailPresenter
-                ImageSource="{x:Bind Path=Album.ImageUrl,Mode=OneWay}"
-                Title="{x:Bind Path=Album.Name,Mode=OneWay}"
-                Description="{x:Bind Path=Album.Description,Mode=OneWay}"/>
+            <StackPanel>
+                <controls:ResourceDetailPresenter
+                    ImageSource="{x:Bind Path=Album.ImageUrl,Mode=OneWay}"
+                    Title="{x:Bind Path=Album.Name,Mode=OneWay}"
+                    Description="{x:Bind Path=Album.Description,Mode=OneWay}"/>
+                <controls:ToolBar
+                    Margin="16"
+                    PlayAllButtonClickedEvent="PlayAllButton_Click"
+                    ShareButtonClickedEvent="ShareButton_Click"
+                    DownloadButtonClickedEvent="DownloadButtonClickedEvent"/>
+            </StackPanel>
         </controls:SongListView.Header>
     </controls:SongListView>
 </Page>

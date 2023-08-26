@@ -1,6 +1,9 @@
 ﻿using FluentCloudMusic.DataModels;
 using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.DataModels.JSONModels.Responses;
+using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Services;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -15,32 +18,43 @@ namespace FluentCloudMusic.Pages
     /// </summary>
     public sealed partial class SearchPage : Page
     {
-        public static SearchPage Instance;
+        public static SearchPage Instance { get; private set; }
 
-        private ObservableCollection<Song> Songs;
-        private SearchRequest CurrentSearchRequest;
+        private SearchRequest CurrentRequest
+        {
+            get => _CurrentRequest;
+            set
+            {
+                _CurrentRequest = value;
+                CurrentRequestViewModel.Source = value;
+            }
+        }
+
+        private readonly ObservableCollection<Song> Songs;
+        private readonly SearchRequestViewModel CurrentRequestViewModel;
+        private SearchRequest _CurrentRequest;
 
         public SearchPage()
         {
-            Songs = new ObservableCollection<Song>();
             Instance = this;
 
-            this.InitializeComponent();
+            Songs = new ObservableCollection<Song>();
+            CurrentRequestViewModel = new SearchRequestViewModel();
+
+            InitializeComponent();
         }
 
         public async void Search(SearchRequest request)
         {
-            CurrentSearchRequest = request;
-            var (isSuccess, currentPage, searchResults) = await NetworkService.SearchAsync(request);
-            if (isSuccess)
-            {
-                PageText.Text = request.Section.Page.ToString() + " / " + currentPage.ToString();
-                PreviousPageButton.IsEnabled = 1 < request.Section.Page;
-                NextPageButton.IsEnabled = request.Section.Page < currentPage;
+            CurrentRequest = request;
 
-                Songs.Clear();
-                foreach (var item in searchResults) Songs.Add(item);
-            }
+            var (isSuccess, pageCount, songs) = await NetworkService.SearchAsync(request);
+            if (!isSuccess) return;
+
+            CurrentRequestViewModel.MaxPage = pageCount;
+            Songs.Clear();
+
+            foreach (var item in songs) Songs.Add(item);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -48,14 +62,20 @@ namespace FluentCloudMusic.Pages
             Search((SearchRequest)e.Parameter);
         }
 
+        private void PlayAllButtonClickedEvent(object sender, RoutedEventArgs e)
+        {
+            var playlist = new List<ISong>(Songs);
+            _ = MainPage.Player.PlayAsync(playlist);
+        }
+
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)
         {
-            Search(CurrentSearchRequest.PrevPage());
+            Search(CurrentRequest.Prev());
         }
 
         private void NextPageButton_Click(object sender, RoutedEventArgs e)
         {
-            Search(CurrentSearchRequest.NextPage());
+            Search(CurrentRequest.Next());
         }
     }
 }

@@ -11,7 +11,7 @@ namespace FluentCloudMusic.Pages
     {
         public SettingsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

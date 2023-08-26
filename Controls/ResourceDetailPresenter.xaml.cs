@@ -34,7 +34,7 @@ namespace FluentCloudMusic.Controls
 
         public ResourceDetailPresenter()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

@@ -2,44 +2,47 @@
 
 namespace FluentCloudMusic.DataModels
 {
+    public enum SearchType
+    {
+        Music = 1, Album = 10, Artist = 100, Playlist = 1000, User = 1002, MV = 1004, Lyric = 1006, Podcast = 1009, Comprehensive = 1018
+    }
+
     public class SearchRequest
     {
-        // 需要重构
-
+        public int Page { get; private set; }
+        public int Capacity { get; }
         public string Keywords { get; }
         public SearchType Type { get; }
-        public SearchSection Section { get; }
 
-        public SearchRequest(string keywords, SearchType type = SearchType.Music, int limit = 50, int offset = 0)
+        public SearchRequest(string keywords, SearchType type = SearchType.Music, int page = 1, int capacity = 30)
         {
+            Page = page;
+            Capacity = capacity;
             Keywords = keywords;
             Type = type;
-            Section = new SearchSection(limit, offset);
+        }
+
+        public SearchRequest Prev()
+        {
+            if (Page > 1) Page--;
+            return this;
+        }
+
+        public SearchRequest Next()
+        {
+            Page++;
+            return this;
         }
 
         public Dictionary<string, object> ToDictionary()
         {
-            var Dic = Section.ToDictionary();
-            Dic.Add("keywords", Keywords);
-            Dic.Add("type", Type);
-            return Dic;
-        }
-
-        public SearchRequest PrevPage()
-        {
-            Section.PrevPage();
-            return this;
-        }
-
-        public SearchRequest NextPage()
-        {
-            Section.NextPage();
-            return this;
-        }
-
-        public enum SearchType
-        {
-            Music = 1, Album = 10, Artist = 100, Playlist = 1000, User = 1002, MV = 1004, Lyric = 1006, Podcast = 1009, Comprehensive = 1018
+            return new Dictionary<string, object>
+            {
+                { "limit", Capacity },
+                { "offset", (Page - 1) * Capacity },
+                { "keywords", Keywords },
+                { "type", Type },
+            };
         }
     }
 }
