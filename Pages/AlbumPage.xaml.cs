@@ -5,7 +5,6 @@ using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -33,7 +32,9 @@ namespace FluentCloudMusic.Pages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var (isSuccess, album, songs) = await AlbumService.GetAlbumDetailAsync(((Album)e.Parameter).Id);
+            Album.Source = e.Parameter as Album;
+
+            var (isSuccess, album, songs) = await AlbumService.GetAlbumDetailAsync(Album.Id);
             if (!isSuccess) return;
 
             Album.Source = album;

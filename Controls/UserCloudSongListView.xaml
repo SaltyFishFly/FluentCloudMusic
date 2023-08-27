@@ -71,7 +71,7 @@
 
     <ListView
         x:Name="ContentListView"
-        Padding="0,8,0,8"
+        Padding="{x:Bind Path=Padding}"
         Background="{x:Bind Path=Background}"
         CornerRadius="8"
         SelectionMode="None"

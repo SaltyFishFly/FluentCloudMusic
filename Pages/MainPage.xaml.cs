@@ -170,18 +170,13 @@ namespace FluentCloudMusic
 
         private void NavSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (sender.Text != string.Empty)
-            {
-                SearchRequest Request = new SearchRequest(sender.Text);
-                if (ContentFrame.CurrentSourcePageType == typeof(SearchPage))
-                {
-                    SearchPage.Instance.Search(Request);
-                }
-                else
-                {
-                    ContentFrame.Navigate(typeof(SearchPage), Request);
-                }
-            }
+            if (sender.Text == string.Empty) return;
+
+            var request = new SearchRequest(sender.Text);
+            if (ContentFrame.CurrentSourcePageType == typeof(SearchPage))
+                (ContentFrame.Content as SearchPage).Search(request);
+            else
+                ContentFrame.Navigate(typeof(SearchPage), request);
         }
     }
 }

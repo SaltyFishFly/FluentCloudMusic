@@ -11,10 +11,13 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         public string[] Alias { get; set; }
 
-        [MultipleJsonProperty("trans", "tns")]
+        [JsonProperty("briefDesc")]
+        public string Description { get; set; }
+
+        [MultipleJsonProperty("transNames", "trans", "tns")]
         public string[] Translations { get; set; }
 
-        [JsonProperty("picUrl")]
+        [MultipleJsonProperty("picUrl", "avatar")]
         public string ImageUrl { get; set; }
     }
 }

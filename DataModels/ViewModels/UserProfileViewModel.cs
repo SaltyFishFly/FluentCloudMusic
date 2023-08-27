@@ -22,7 +22,10 @@ namespace FluentCloudMusic.DataModels.ViewModels
         public bool HasLogin => _Source != null;
         public string UserId => HasLogin ? _Source.UserId : string.Empty;
         public string Nickname => HasLogin ? _Source.Nickname : string.Empty;
-        public string AvatarUrl => HasLogin ? _Source.AvatarUrl : "ms-appx:///Assets/LargeTile.scale-400.png";
+        public string AvatarUrl =>
+            _Source != null && _Source.AvatarUrl != null ?
+            _Source.AvatarUrl :
+            "ms-appx:///Assets/LargeTile.scale-400.png";
         public bool HasVip => HasLogin && _Source.VipType != 0;
 
         private Profile _Source;

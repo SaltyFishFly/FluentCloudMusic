@@ -90,6 +90,7 @@
             </GridView>
             <controls:SongListView
                 x:Name="SongList"
+                Padding="0,8,0,8"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
                 Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
                 ItemsSource="{x:Bind Path=DailyRecommendSongs}">

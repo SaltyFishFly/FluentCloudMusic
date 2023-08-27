@@ -9,4 +9,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
+    <StackPanel>
+        <controls:ResourceDetailPresenter
+            CornerRadius="8"
+            Background="{StaticResource LayerFillColorDefaultBrush}"
+            Title="{x:Bind Path=Artist.Name,Mode=OneWay}"
+            Description="{x:Bind Path=Artist.Description,Mode=OneWay}"
+            ImageSource="{x:Bind Path=Artist.ImageUrl,Mode=OneWay}"/>
+    </StackPanel>
 </Page>

@@ -22,7 +22,7 @@
                     Title="{x:Bind Path=Album.Name,Mode=OneWay}"
                     Description="{x:Bind Path=Album.Description,Mode=OneWay}"/>
                 <controls:ToolBar
-                    Margin="16"
+                    Margin="16,4,16,16"
                     PlayAllButtonClickedEvent="PlayAllButton_Click"
                     ShareButtonClickedEvent="ShareButton_Click"
                     DownloadButtonClickedEvent="DownloadButtonClickedEvent"/>

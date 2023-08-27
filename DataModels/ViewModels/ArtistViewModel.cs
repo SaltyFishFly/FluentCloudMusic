@@ -4,11 +4,11 @@ using System.ComponentModel;
 
 namespace FluentCloudMusic.DataModels.ViewModels
 {
-    public class PlaylistViewModel : INotifyPropertyChanged
+    public class ArtistViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Playlist Source
+        public Artist Source
         {
             set
             {
@@ -29,9 +29,9 @@ namespace FluentCloudMusic.DataModels.ViewModels
             _Source.ImageUrl :
             "ms-appx:///Assets/LargeTile.scale-400.png";
 
-        private Playlist _Source;
+        private Artist _Source;
 
-        private void Notify( string caller = null)
+        private void Notify(string caller = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
         }

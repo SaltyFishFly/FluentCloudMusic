@@ -143,6 +143,7 @@
     <Compile Include="DataModels\JSONModels\Playlist.cs" />
     <Compile Include="DataModels\JSONModels\Responses\AlbumResponse.cs" />
     <Compile Include="DataModels\JSONModels\Artist.cs" />
+    <Compile Include="DataModels\JSONModels\Responses\ArtistDetailResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\CloudSearchResponse.cs" />
     <Compile Include="DataModels\JSONModels\ISong.cs" />
     <Compile Include="DataModels\JSONModels\Responses\LoginCellphoneResponse.cs" />
@@ -157,11 +158,13 @@
     <Compile Include="DataModels\JSONModels\UserCloudSong.cs" />
     <Compile Include="DataModels\JSONModels\Song.cs" />
     <Compile Include="DataModels\ViewModels\AlbumViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\ArtistViewModel.cs" />
     <Compile Include="DataModels\ViewModels\PlaylistViewModel.cs" />
     <Compile Include="DataModels\ViewModels\SearchRequestViewModel.cs" />
     <Compile Include="DataModels\ViewModels\UserProfileViewModel.cs" />
     <Compile Include="DataModels\ViewModels\SectionViewModel.cs" />
     <Compile Include="Services\AlbumService.cs" />
+    <Compile Include="Services\ArtistService.cs" />
     <Compile Include="Services\CacheService.cs" />
     <Compile Include="Services\PlaylistService.cs" />
     <Compile Include="Services\SongService.cs" />

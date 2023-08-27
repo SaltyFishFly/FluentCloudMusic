@@ -5,7 +5,6 @@ using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,6 +27,7 @@ namespace FluentCloudMusic.Pages
         {
             Songs = new ObservableCollection<Song>();
             Playlist = new PlaylistViewModel();
+
             InitializeComponent();
         }
 

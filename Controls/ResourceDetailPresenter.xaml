@@ -9,9 +9,12 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Border>
+    <Border
+        Padding="{x:Bind Path=Padding,Mode=OneWay}"
+        Background="{x:Bind Path=Background,Mode=OneWay}"
+        CornerRadius="{x:Bind Path=CornerRadius,Mode=OneWay}">
         <Grid
-            Margin="16,8,16,8"
+            Padding="16"
             ColumnSpacing="16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
