@@ -62,7 +62,7 @@
                 x:Uid="NotLoginInfoBar"
                 CornerRadius="8"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
-                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin,Converter={StaticResource InverseBoolToVisibilityConverter},Mode=OneWay}"
                 IsOpen="True"
                 IsClosable="False">
             </muxc:InfoBar>
@@ -75,7 +75,7 @@
                 ScrollViewer.VerticalScrollMode="Disabled"
                 ScrollViewer.HorizontalScrollMode="Enabled"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
+                Visibility="{x:Bind Path=ViewModel.RecommendPlaylistsLoaded,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"
                 ItemsSource="{x:Bind Path=DailyRecommendPlaylists}"
                 ItemTemplate="{StaticResource PlaylistItemTemplate}"
                 ItemContainerStyle="{StaticResource DailyRecommendPlaylistsGridViewItemContainerStyle}"
@@ -92,7 +92,7 @@
                 x:Name="SongList"
                 Padding="0,8,0,8"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
-                Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Converter={StaticResource BoolToVisibilityConverter}}"
+                Visibility="{x:Bind Path=ViewModel.RecommendSongsLoaded,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"
                 ItemsSource="{x:Bind Path=DailyRecommendSongs}">
                 <controls:SongListView.Header>
                     <Grid
@@ -107,10 +107,12 @@
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
                         <HyperlinkButton
+                            x:Name="DailyRecommendSongsViewAllButton"
                             x:Uid="DailyRecommendSongsViewAllButton"
                             Grid.Column="1"
                             HorizontalAlignment="Right"
-                            VerticalAlignment="Center"/>
+                            VerticalAlignment="Center"
+                            Click="DailyRecommendSongsViewAllButton_Click"/>
                     </Grid>
                 </controls:SongListView.Header>
             </controls:SongListView>

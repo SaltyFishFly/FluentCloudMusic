@@ -16,7 +16,6 @@
                 x:DataType="jsonmodels:Song"
                 x:Key="SongDataTemplate">
                 <Grid
-                    x:DefaultBindMode="OneTime"
                     ColumnSpacing="8">
                     <Grid.ContextFlyout>
                         <MenuFlyout
@@ -81,7 +80,7 @@
                         Tag="{x:Bind Path=MainArtist}"
                         ToolTipService.ToolTip="{x:Bind Path=MainArtist.Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
-                        IsEnabled="{Binding Path=IsArtistButtonEnabled,ElementName=ControlRoot}"
+                        IsEnabled="{Binding Path=IsArtistButtonEnabled,ElementName=ControlRoot,Mode=OneWay}"
                         Click="ArtistNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock
@@ -96,7 +95,7 @@
                         Tag="{x:Bind Path=Album}"
                         ToolTipService.ToolTip="{x:Bind Path=AlbumName}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
-                        IsEnabled="{Binding Path=IsAlbumButtonEnabled,ElementName=ControlRoot}"
+                        IsEnabled="{Binding Path=IsAlbumButtonEnabled,ElementName=ControlRoot,Mode=OneWay}"
                         Click="AlbumNameButton_Click">
                         <HyperlinkButton.Content>
                             <TextBlock

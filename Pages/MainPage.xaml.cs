@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.ApplicationModel.Resources;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
@@ -81,8 +82,13 @@ namespace FluentCloudMusic
                 {
                     Name = "NavItemPlaylist",
                     Tag = playlist,
-                    Content = playlist.Name
+                    Content = new TextBlock()
+                    {
+                        Text = playlist.Name,
+                        TextTrimming = TextTrimming.CharacterEllipsis
+                    }
                 };
+                ToolTipService.SetToolTip(item, playlist.Name);
 
                 if (playlist.Creator.UserId == AccountService.UserProfile.UserId) CreatedPlaylistButtons.Add(item);
                 else BookmarkedPlaylistButtons.Add(item);

@@ -159,6 +159,7 @@
     <Compile Include="DataModels\JSONModels\Song.cs" />
     <Compile Include="DataModels\ViewModels\AlbumViewModel.cs" />
     <Compile Include="DataModels\ViewModels\ArtistViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\DiscoverPageViewModel.cs" />
     <Compile Include="DataModels\ViewModels\PlaylistViewModel.cs" />
     <Compile Include="DataModels\ViewModels\SearchRequestViewModel.cs" />
     <Compile Include="DataModels\ViewModels\UserProfileViewModel.cs" />

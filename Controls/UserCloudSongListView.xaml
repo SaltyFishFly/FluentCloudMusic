@@ -16,7 +16,6 @@
                 x:DataType="jsonmodels:UserCloudSong"
                 x:Key="SongDataTemplate">
                 <Grid
-                    x:DefaultBindMode="OneTime"
                     ColumnSpacing="8">
                     <Grid.ContextFlyout>
                         <MenuFlyout>
