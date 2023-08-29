@@ -5,10 +5,28 @@
     xmlns:local="using:FluentCloudMusic.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
-    <Grid>
-        
-    </Grid>
+    <StackPanel
+        Padding="16"
+        Background="{ThemeResource LayerFillColorDefaultBrush}">
+        <muxc:RadioButtons
+            x:Name="ThemeButtons"
+            x:Uid="/SettingsPage/ThemeButtons"
+            MaxColumns="3"
+            Loaded="ThemeButtons_Loaded"
+            SelectionChanged="ThemeButtons_SelectionChanged">
+            <RadioButton
+                x:Name="AutoTheme"
+                x:Uid="/SettingsPage/AutoTheme"/>
+            <RadioButton
+                x:Name="LightTheme"
+                x:Uid="/SettingsPage/LightTheme"/>
+            <RadioButton
+                x:Name="DarkTheme"
+                x:Uid="/SettingsPage/DarkTheme"/>
+        </muxc:RadioButtons>
+    </StackPanel>
 </Page>

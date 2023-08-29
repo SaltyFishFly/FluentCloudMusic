@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Empty" xml:space="preserve">
-    <value>empty</value>
+  <data name="DailyRecommendSongsTitle.Text" xml:space="preserve">
+    <value>Daily Recommend Songs</value>
+  </data>
+  <data name="DailyRecommendSongsViewAllButton.Content" xml:space="preserve">
+    <value>View All</value>
+  </data>
+  <data name="NotLoginInfoBar.Message" xml:space="preserve">
+    <value>Feature requires logged in status such as recommending songs and playlists has been hidden. You can still search, but some songs might not play the full version. To use the full features of FluentCloudMusic, please login at the bottom left.</value>
+  </data>
+  <data name="NotLoginInfoBar.Title" xml:space="preserve">
+    <value>Please Login</value>
   </data>
 </root>

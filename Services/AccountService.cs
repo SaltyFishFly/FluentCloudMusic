@@ -29,7 +29,7 @@ namespace FluentCloudMusic.Services
             };
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginCellphone, parameters);
-            var result = jsonResult.ToObject<LoginCellphoneResponse>(JsonUtils.Serializer);
+            var result = jsonResult.ToObject<LoginCellphoneResponse>(JsonUtil.Serializer);
 
             if (result.Code != 200)
             {
@@ -52,7 +52,7 @@ namespace FluentCloudMusic.Services
             App.API.Cookies.LoadFromString(loginCookie);
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginStatus);
-            var result = jsonResult.ToObject<LoginStatusResponse>(JsonUtils.Serializer);
+            var result = jsonResult.ToObject<LoginStatusResponse>(JsonUtil.Serializer);
 
             if (result.Code != 200)
             {

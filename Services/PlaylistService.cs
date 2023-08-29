@@ -14,7 +14,7 @@ namespace FluentCloudMusic.Services
         public static async Task<List<Playlist>> GetDailyRecommendPlaylistsAsync()
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.RecommendResource);
-            var result = jsonResult.ToObject<RecommendResourcesResponse>(JsonUtils.Serializer);
+            var result = jsonResult.ToObject<RecommendResourcesResponse>(JsonUtil.Serializer);
             return result.Code == 200 ? result.Playlists.ToList() : new List<Playlist>();
         }
 
@@ -23,7 +23,7 @@ namespace FluentCloudMusic.Services
             var parameters = new Dictionary<string, object> { { "uid", uid } };
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.UserPlaylist, parameters);
-            var result = jsonResult.ToObject<UserPlaylistResponse>(JsonUtils.Serializer);
+            var result = jsonResult.ToObject<UserPlaylistResponse>(JsonUtil.Serializer);
 
             return result.Code == 200 ? (true, result.Playlists.ToList()) : (false, null);
         }
@@ -33,7 +33,7 @@ namespace FluentCloudMusic.Services
             var playlistParams = new Dictionary<string, object> { { "id", playlistID } };
 
             var jsonResult1 = await App.API.RequestAsync(CloudMusicApiProviders.PlaylistDetail, playlistParams);
-            var result1 = jsonResult1.ToObject<PlaylistDetailResponse>(JsonUtils.Serializer);
+            var result1 = jsonResult1.ToObject<PlaylistDetailResponse>(JsonUtil.Serializer);
 
             if (result1.Code != 200) return (false, null, null);
             if (result1.Playlist.TrackIds.Length == 0) return (true, result1.Playlist, new List<Song>());
@@ -45,7 +45,7 @@ namespace FluentCloudMusic.Services
 
             var songParams = new Dictionary<string, object> { { "ids", musicIDsBuilder.ToString() } };
             var jsonResult2 = await App.API.RequestAsync(CloudMusicApiProviders.SongDetail, songParams);
-            var result2 = jsonResult2.ToObject<SongDetailResponse>(JsonUtils.Serializer);
+            var result2 = jsonResult2.ToObject<SongDetailResponse>(JsonUtil.Serializer);
 
             if (result2.Code != 200) return (true, result1.Playlist, new List<Song>());
 

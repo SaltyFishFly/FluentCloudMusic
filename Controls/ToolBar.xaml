@@ -54,7 +54,7 @@
                 Spacing="8">
             <AutoSuggestBox
                 x:Name="FilterInputBox"
-                x:Uid="FilterInputBox"
+                x:Uid="/SongListView/FilterInputBox"
                 Width="200"
                 Visibility="{x:Bind Path=IsFilterInputBoxEnabled, Converter={StaticResource BoolToVisibilityConverter}}"
                 QueryIcon="Find"

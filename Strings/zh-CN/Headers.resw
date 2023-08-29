@@ -117,7 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Empty" xml:space="preserve">
-    <value>empty</value>
+  <data name="AccountPage" xml:space="preserve">
+    <value>用户</value>
+  </data>
+  <data name="AlbumPage" xml:space="preserve">
+    <value>专辑</value>
+  </data>
+  <data name="ArtistPage" xml:space="preserve">
+    <value>艺术家</value>
+  </data>
+  <data name="CloudPage" xml:space="preserve">
+    <value>音乐云盘</value>
+  </data>
+  <data name="DiscoverPage" xml:space="preserve">
+    <value>发现音乐</value>
+  </data>
+  <data name="DownloadsPage" xml:space="preserve">
+    <value>本地音乐</value>
+  </data>
+  <data name="FavoritesPage" xml:space="preserve">
+    <value>我的收藏</value>
+  </data>
+  <data name="HistoryPage" xml:space="preserve">
+    <value>播放记录</value>
+  </data>
+  <data name="PlaylistPage" xml:space="preserve">
+    <value>歌单</value>
+  </data>
+  <data name="PodcastsPage" xml:space="preserve">
+    <value>我的播客</value>
+  </data>
+  <data name="SearchPage" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="SettingsPage" xml:space="preserve">
+    <value>设置</value>
   </data>
 </root>

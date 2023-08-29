@@ -2,7 +2,7 @@
 
 namespace FluentCloudMusic.Utils
 {
-    public class ClipboardUtils
+    public class ClipboardUtil
     {
         public static void SetText(string text)
         {

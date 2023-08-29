@@ -43,7 +43,7 @@
             </StackPanel>
             <Button
                 x:Name="LogoutButton"
-                x:Uid="LogoutButton"
+                x:Uid="/AccountPage/LogoutButton"
                 Grid.Column="2"
                 Click="LogoutButton_Click"/>
         </Grid>

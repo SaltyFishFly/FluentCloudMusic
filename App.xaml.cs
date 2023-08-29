@@ -1,4 +1,6 @@
-﻿using NeteaseCloudMusicApi;
+﻿using FluentCloudMusic.Pages;
+using FluentCloudMusic.Services;
+using NeteaseCloudMusicApi;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -24,7 +26,13 @@ namespace FluentCloudMusic
         public App()
         {
             InitializeComponent();
+
             Suspending += OnSuspending;
+        }
+
+        public static void SetTheme(ElementTheme theme)
+        {
+            (Window.Current.Content as FrameworkElement).RequestedTheme = theme;
         }
 
         /// <summary>
@@ -51,6 +59,13 @@ namespace FluentCloudMusic
                 }
                 Window.Current.Content = rootFrame;
             }
+
+            if (StorageService.HasSetting(SettingsPage.ThemeSetting))
+            {
+                var theme = StorageService.GetSetting<ElementTheme>(SettingsPage.ThemeSetting);
+                SetTheme(theme);
+            }
+                
 
             if (rootFrame.Content == null)
             {

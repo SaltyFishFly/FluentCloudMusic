@@ -18,7 +18,7 @@ namespace FluentCloudMusic.DataModels.ViewModels
                 Notify(nameof(Id));
                 Notify(nameof(Name));
                 Notify(nameof(Description));
-                if (!UrlUtils.IsSameImage(oldImgUrl, ImageUrl)) Notify(nameof(ImageUrl));
+                if (!UrlUtil.IsSameImage(oldImgUrl, ImageUrl)) Notify(nameof(ImageUrl));
             }
         }
         public string Id => _Source != null ? _Source.Id : string.Empty;

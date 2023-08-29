@@ -59,7 +59,7 @@
             Orientation="Vertical"
             Spacing="8">
             <muxc:InfoBar
-                x:Uid="NotLoginInfoBar"
+                x:Uid="/DiscoverPage/NotLoginInfoBar"
                 CornerRadius="8"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
                 Visibility="{x:Bind Path=services:AccountService.UserProfile.HasLogin,Converter={StaticResource InverseBoolToVisibilityConverter},Mode=OneWay}"
@@ -102,13 +102,13 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock
-                            x:Uid="DailyRecommendSongsTitle"
+                            x:Uid="/DiscoverPage/DailyRecommendSongsTitle"
                             Grid.Column="0"
                             FontWeight="Bold"
                             VerticalAlignment="Center"/>
                         <HyperlinkButton
                             x:Name="DailyRecommendSongsViewAllButton"
-                            x:Uid="DailyRecommendSongsViewAllButton"
+                            x:Uid="/DiscoverPage/DailyRecommendSongsViewAllButton"
                             Grid.Column="1"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"

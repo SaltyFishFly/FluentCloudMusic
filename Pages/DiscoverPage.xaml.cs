@@ -41,12 +41,19 @@ namespace FluentCloudMusic.Pages
 
         private void PlaylistItem_Click(object sender, ItemClickEventArgs e)
         {
+            // Apply transition animation to PlaylistPage
             var imageContainer = 
-                VisualTreeUtils.FindChildByName(DailyRecommendPlaylistsGridView.ContainerFromItem(e.ClickedItem), "CoverImageContainer");
+                VisualTreeUtil.FindChildByName(DailyRecommendPlaylistsGridView.ContainerFromItem(e.ClickedItem), "CoverImageContainer");
             ConnectedAnimationService
                 .GetForCurrentView()
                 .PrepareToAnimate("DailyRecommendPlaylistsToPlaylistPageAnimation", (UIElement)imageContainer);
+
             MainPage.Navigate(typeof(PlaylistPage), (Playlist)e.ClickedItem);
+        }
+
+        private void DailyRecommendSongsViewAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainPage.Navigate(typeof(PlaylistPage), new Playlist() { Id = DailyRecommendSongsPlaylistId });
         }
 
         private async void GetRecommendations()
@@ -60,15 +67,10 @@ namespace FluentCloudMusic.Pages
             playlists?.ForEach(playlist => { 
                 if (playlist.Id != DailyRecommendSongsPlaylistId) DailyRecommendPlaylists.Add(playlist); 
             });
-            songs?.GetRange(0, 5).ForEach(song => DailyRecommendSongs.Add(song));
-            
             ViewModel.RecommendPlaylistsLoaded = true;
-            ViewModel.RecommendSongsLoaded = true;
-        }
 
-        private void DailyRecommendSongsViewAllButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainPage.Navigate(typeof(PlaylistPage), new Playlist() { Id = DailyRecommendSongsPlaylistId });
+            songs?.GetRange(0, 5).ForEach(song => DailyRecommendSongs.Add(song));
+            ViewModel.RecommendSongsLoaded = true;
         }
     }
 }

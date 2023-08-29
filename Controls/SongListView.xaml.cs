@@ -1,6 +1,8 @@
 ﻿using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.Pages;
+using FluentCloudMusic.Services;
+using FluentCloudMusic.Utils;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -67,7 +69,7 @@ namespace FluentCloudMusic.Controls
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
             var playlist = new List<ISong>(ItemsSource);
-            int index = ItemsSource.IndexOf((sender as FrameworkElement).Tag as Song);
+            int index = ItemsSource.IndexOf((sender as FrameworkElement).DataContext as Song);
             _ = MainPage.Player.PlayAsync(playlist, index);
         }
 
@@ -81,13 +83,34 @@ namespace FluentCloudMusic.Controls
             MainPage.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).Tag);
         }
 
+        private async void PlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            var playlist = (sender as MenuFlyoutItem).Tag as Playlist;
+            var song = (sender as MenuFlyoutItem).DataContext as Song;
+            if (playlist == null || song == null) return;
+
+            var result = await playlist.AddAsync(song);
+            if (!result) return;
+            new Toast() { Content = ResourceUtil.Get("/Messages/AddedToPlaylistMessage") }.ShowAsync();
+        }
+
         private void MenuFlyout_Opened(object sender, object e)
         {
-            var subMenu = (sender as MenuFlyout).Items.FirstOrDefault(i => i.Name == "SongFlyoutMenuArtistsButton") as MenuFlyoutSubItem;
-            if (subMenu == null) return;
+            var flyout = sender as MenuFlyout;
+            GenerateArtistButtons(flyout);
+            GeneratePlaylistButtons(flyout);
+        }
 
-            subMenu.Items.Clear();
-            foreach (var artist in (Artist[])subMenu.Tag)
+        private void GenerateArtistButtons(MenuFlyout flyout)
+        {
+            if (flyout == null) return;
+
+            var artistsMenu = flyout.Items.FirstOrDefault(i => i.Name == "SongFlyoutArtistsMenu") as MenuFlyoutSubItem;
+            if (artistsMenu == null) return;
+            artistsMenu.Items.Clear();
+
+            var artists = artistsMenu.Tag as Artist[];
+            foreach (var artist in artists)
             {
                 var artistButton = new MenuFlyoutItem()
                 {
@@ -95,7 +118,29 @@ namespace FluentCloudMusic.Controls
                     Text = artist.Name
                 };
                 artistButton.Click += ArtistNameButton_Click;
-                subMenu.Items.Add(artistButton);
+                artistsMenu.Items.Add(artistButton);
+            }
+        }
+
+        private async void GeneratePlaylistButtons(MenuFlyout flyout)
+        {
+            if (flyout == null) return;
+
+            var playlistsMenu = flyout.Items.FirstOrDefault(i => i.Name == "SongFlyoutPlaylistsMenu") as MenuFlyoutSubItem;
+            if (playlistsMenu == null) return;
+            playlistsMenu.Items.Clear();
+
+            var playlists = await AccountService.UserProfile.GetPlaylistsAsync();
+            var userPlaylists = from p in playlists where p.IsOwner select p;
+            foreach (var playlist in userPlaylists)
+            {
+                var playlistButton = new MenuFlyoutItem()
+                {
+                    Tag = playlist,
+                    Text = playlist.Name
+                };
+                playlistButton.Click += PlaylistButton_Click;
+                playlistsMenu.Items.Add(playlistButton);
             }
         }
     }

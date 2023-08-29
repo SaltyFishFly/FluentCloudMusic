@@ -12,7 +12,7 @@
     <StackPanel>
         <controls:ResourceDetailPresenter
             CornerRadius="8"
-            Background="{StaticResource LayerFillColorDefaultBrush}"
+            Background="{ThemeResource LayerFillColorDefaultBrush}"
             Title="{x:Bind Path=Artist.Name,Mode=OneWay}"
             Description="{x:Bind Path=Artist.Description,Mode=OneWay}"
             ImageSource="{x:Bind Path=Artist.ImageUrl,Mode=OneWay}"/>

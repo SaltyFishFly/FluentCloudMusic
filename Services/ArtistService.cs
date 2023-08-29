@@ -14,7 +14,7 @@ namespace FluentCloudMusic.Services
             var parameters = new Dictionary<string, object> { { "id", artistId } };
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.ArtistDetail, parameters);
-            var result = jsonResult.ToObject<ArtistDetailResponse>(JsonUtils.Serializer);
+            var result = jsonResult.ToObject<ArtistDetailResponse>(JsonUtil.Serializer);
 
             return result.Code == 200 ? (true, result.Data.Artist) : (false, null);
         }

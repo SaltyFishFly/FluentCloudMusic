@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Empty" xml:space="preserve">
-    <value>empty</value>
+  <data name="FilterInputBox.PlaceholderText" xml:space="preserve">
+    <value>Search in the list</value>
+  </data>
+  <data name="SongFlyoutArtistsMenu.Text" xml:space="preserve">
+    <value>Artists</value>
+  </data>
+  <data name="SongFlyoutPlayButton.Text" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="SongFlyoutPlaylistsMenu.Text" xml:space="preserve">
+    <value>Add to playlist</value>
   </data>
 </root>

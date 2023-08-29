@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace FluentCloudMusic.Utils
 {
-    public static class JsonUtils
+    public static class JsonUtil
     {
         public static readonly JsonSerializer Serializer = new JsonSerializer()
         {

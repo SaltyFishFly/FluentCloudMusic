@@ -3,11 +3,11 @@ using FluentCloudMusic.DataModels;
 using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Pages;
 using FluentCloudMusic.Services;
+using FluentCloudMusic.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -69,14 +69,12 @@ namespace FluentCloudMusic
         /// </summary>
         private async void GeneratePlaylistButtons()
         {
-            var (isSuccess, playlists) = await PlaylistService.GetUserPlaylist(AccountService.UserProfile.UserId);
-
-            if (!isSuccess) return;
+            var playlists = await AccountService.UserProfile.GetPlaylistsAsync();
 
             CreatedPlaylistButtons.Clear();
             BookmarkedPlaylistButtons.Clear();
 
-            playlists.ForEach(playlist =>
+            playlists?.ForEach(playlist =>
             {
                 var item = new muxc.NavigationViewItem()
                 {
@@ -90,7 +88,7 @@ namespace FluentCloudMusic
                 };
                 ToolTipService.SetToolTip(item, playlist.Name);
 
-                if (playlist.Creator.UserId == AccountService.UserProfile.UserId) CreatedPlaylistButtons.Add(item);
+                if (playlist.IsOwner) CreatedPlaylistButtons.Add(item);
                 else BookmarkedPlaylistButtons.Add(item);
             });
         }
@@ -171,7 +169,7 @@ namespace FluentCloudMusic
             if (e.SourcePageType == null) return;
 
             MainNav.SelectedItem = FindNavigationItem(e.SourcePageType, e.Parameter);
-            HeaderText.Text = ResourceLoader.GetForCurrentView().GetString($"Header{e.SourcePageType.Name}");
+            HeaderText.Text = ResourceUtil.Get($"/Headers/{e.SourcePageType.Name}");
         }
 
         private void NavSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

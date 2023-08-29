@@ -1,11 +1,11 @@
-﻿using FluentCloudMusic.DataModels.JSONModels;
+﻿using FluentCloudMusic.Controls;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -55,14 +55,11 @@ namespace FluentCloudMusic.Pages
         private void ShareButton_Click(object sender, RoutedEventArgs e)
         {
             var shareLink = $"https://music.163.com/#/playlist?id={Playlist.Id}";
-            ClipboardUtils.SetText(shareLink);
-            new Flyout()
+            ClipboardUtil.SetText(shareLink);
+            new Toast()
             {
-                Content = new TextBlock()
-                {
-                    Text = ResourceLoader.GetForCurrentView().GetString("CopiedToClipboardMessage")
-                }
-            }.ShowAt(sender as FrameworkElement);
+                Content = ResourceUtil.Get("/Messages/CopiedToClipboardMessage")
+            }.ShowAsync();
         }
 
         private void DownloadButtonClickedEvent(object sender, RoutedEventArgs e)

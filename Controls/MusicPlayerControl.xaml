@@ -25,7 +25,7 @@
         MaxWidth="700"
         Padding="4"
         CornerRadius="8"
-        Background="{x:Bind Path=Background}">
+        Background="{x:Bind Path=Background,Mode=OneWay}">
         <Grid
             ColumnSpacing="4">
             <Grid.ColumnDefinitions>

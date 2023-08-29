@@ -17,7 +17,7 @@ namespace FluentCloudMusic.Services
         public static async Task<(bool IsSuccess, int PageCount, List<Song> SearchResults)> SearchAsync(SearchRequest request)
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Cloudsearch, request.ToDictionary());
-            var result = jsonResult.ToObject<CloudSearchResponse>(JsonUtils.Serializer);
+            var result = jsonResult.ToObject<CloudSearchResponse>(JsonUtil.Serializer);
 
             if (result.Code != 200) return (false, 0, null);
 
@@ -29,7 +29,7 @@ namespace FluentCloudMusic.Services
         public static async Task<(bool IsSuccess, int PageCount, List<UserCloudSong> SongList)> GetUserCloudAsync(Section section)
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.UserCloud, section.ToDictionary());
-            var result = jsonResult.ToObject<UserCloudResponse>(JsonUtils.Serializer);
+            var result = jsonResult.ToObject<UserCloudResponse>(JsonUtil.Serializer);
 
             if (result.Code != 200) return (false, 0, null);
 

@@ -1,5 +1,8 @@
 ﻿using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.Services;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace FluentCloudMusic.DataModels.ViewModels
 {
@@ -29,6 +32,17 @@ namespace FluentCloudMusic.DataModels.ViewModels
         public bool HasVip => HasLogin && _Source.VipType != 0;
 
         private Profile _Source;
+        private List<Playlist> _Playlists;
+
+        public async Task<List<Playlist>> GetPlaylistsAsync()
+        {
+            if (_Playlists == null)
+            {
+                var (isSuccess, playlists) = await PlaylistService.GetUserPlaylist(AccountService.UserProfile.UserId);
+                if (isSuccess) _Playlists = playlists;
+            }
+            return _Playlists;
+        }
 
         private void Notify(string member)
         {

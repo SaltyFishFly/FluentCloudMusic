@@ -59,7 +59,7 @@ namespace FluentCloudMusic.Controls
         private void MusicNameButton_Click(object sender, RoutedEventArgs e)
         {
             var playlist = new List<ISong>(ItemsSource);
-            int index = ItemsSource.IndexOf((sender as FrameworkElement).Tag as UserCloudSong);
+            int index = ItemsSource.IndexOf((sender as FrameworkElement).DataContext as UserCloudSong);
             _ = MainPage.Player.PlayAsync(playlist, index);
         }
 

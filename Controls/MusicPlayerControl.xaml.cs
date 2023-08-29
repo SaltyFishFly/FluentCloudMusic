@@ -100,7 +100,7 @@ namespace FluentCloudMusic.Controls
         public async Task PlayAsync(List<ISong> songs, int startIndex = 0)
         {
             PlaybackItemList = songs;
-            ShuffledPlaybackItemList = songs.Shuffle();
+            ShuffledPlaybackItemList = songs.Shuffle(startIndex);
             await PlayAsync(startIndex);
         }
 
@@ -171,7 +171,7 @@ namespace FluentCloudMusic.Controls
 
         private void Timeline_Loaded(object sender, RoutedEventArgs e)
         {
-            var thumb = VisualTreeUtils.FindChildByName(Timeline, "HorizontalThumb") as Thumb;
+            var thumb = VisualTreeUtil.FindChildByName(Timeline, "HorizontalThumb") as Thumb;
             thumb.DragStarted += (sender, args) => IsDragging = true;
             thumb.DragCompleted += (sender, args) => IsDragging = false;
         }

@@ -9,8 +9,6 @@ namespace FluentCloudMusic.DataModels.JSONModels
 {
     public class UserCloudSong : ISong
     {
-        [JsonIgnore]
-        public UserCloudSong This { get; }
 
         [JsonProperty("songId")]
         public string Id { get; set; }
@@ -35,11 +33,6 @@ namespace FluentCloudMusic.DataModels.JSONModels
         public string ImageUrl => Data.Album.ImageUrl ?? "ms-appx:///Assets/LargeTile.scale-400.png";
 
         public string Description => $"( {FileName} )";
-
-        public UserCloudSong()
-        {
-            This = this;
-        }
 
         public bool RelateTo(string filter)
         {

@@ -1,6 +1,6 @@
 ﻿namespace FluentCloudMusic.Utils
 {
-    public static class UrlUtils
+    public static class UrlUtil
     {
         /// <summary>
         /// 比较两个图片字符串是否指向不同服务器上的相同图片，如

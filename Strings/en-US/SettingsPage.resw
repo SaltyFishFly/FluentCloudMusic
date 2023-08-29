@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Empty" xml:space="preserve">
-    <value>empty</value>
+  <data name="AutoTheme.Content" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="DarkTheme.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="LightTheme.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ThemeButtons.Header" xml:space="preserve">
+    <value>Application Theme</value>
   </data>
 </root>

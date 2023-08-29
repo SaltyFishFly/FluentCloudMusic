@@ -23,7 +23,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock
-            x:Uid="LoginText"
+            x:Uid="/LoginPage/LoginText"
             Grid.Row="0"
             FontSize="32"/>
         <Grid
@@ -35,17 +35,17 @@
             </Grid.ColumnDefinitions>
             <muxc:DropDownButton
                 x:Name="CountryCodeSelector"
-                x:Uid="CountryCodeSelector"
+                x:Uid="/LoginPage/CountryCodeSelector"
                 Grid.Column="0"
                 Content="+86"/>
             <TextBox
                 x:Name="AccountInputBox"
-                x:Uid="AccountInputBox"
+                x:Uid="/LoginPage/AccountInputBox"
                 Grid.Column="2"/>
         </Grid>
         <PasswordBox
             x:Name="PasswordInputBox"
-            x:Uid="PasswordInputBox"
+            x:Uid="/LoginPage/PasswordInputBox"
             Grid.Row="2"
             Grid.Column="0"
             Grid.ColumnSpan="1"
@@ -75,7 +75,7 @@
                 <Button.Flyout>
                     <Flyout>
                         <TextBlock
-                            x:Uid="LoginTipsButtonText"/>
+                            x:Uid="/LoginPage/LoginTipsButtonText"/>
                     </Flyout>
                 </Button.Flyout>
             </Button>

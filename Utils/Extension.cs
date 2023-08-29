@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentCloudMusic.DataModels.JSONModels.Responses;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -7,16 +8,22 @@ namespace FluentCloudMusic.Utils
 {
     public static class ListExtension
     {
-        public static List<T> Shuffle<T>(this List<T> list)
+        public static List<ISong> Shuffle(this List<ISong> list, int fixedIndex)
         {
-            Random random = new Random();
+            if (list.Count < 2) return new List<ISong>(list);
 
-            var result = new List<T>(list);
-            for (int i = result.Count - 1; i > 0; i--)
+            var random = new Random();
+            var result = new List<ISong>(list);
+            var maxIndex = result.Count - 1;
+
+            (result[maxIndex], result[fixedIndex]) = (result[fixedIndex], result[maxIndex]);
+            for (int i = result.Count - 2; i > 0; i--)
             {
                 int j = random.Next(0, i);
                 (result[i], result[j]) = (result[j], result[i]);
             }
+            (result[maxIndex], result[fixedIndex]) = (result[fixedIndex], result[maxIndex]);
+
             return result;
         }
     }

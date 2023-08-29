@@ -117,7 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Empty" xml:space="preserve">
-    <value>empty</value>
+  <data name="AccountPage" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="AlbumPage" xml:space="preserve">
+    <value>Album</value>
+  </data>
+  <data name="ArtistPage" xml:space="preserve">
+    <value>Artist</value>
+  </data>
+  <data name="CloudPage" xml:space="preserve">
+    <value>Cloud</value>
+  </data>
+  <data name="DiscoverPage" xml:space="preserve">
+    <value>Discover</value>
+  </data>
+  <data name="DownloadsPage" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="FavoritesPage" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="HistoryPage" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="PlaylistPage" xml:space="preserve">
+    <value>Playlist</value>
+  </data>
+  <data name="PodcastsPage" xml:space="preserve">
+    <value>Podcasts</value>
+  </data>
+  <data name="SearchPage" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SettingsPage" xml:space="preserve">
+    <value>Settings</value>
   </data>
 </root>

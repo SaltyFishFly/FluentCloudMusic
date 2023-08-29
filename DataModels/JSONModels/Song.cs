@@ -11,9 +11,6 @@ namespace FluentCloudMusic.DataModels.JSONModels
 {
     public class Song : ISong
     {
-        [JsonIgnore]
-        public Song This { get; }
-
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -85,11 +82,6 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
                 return string.Empty;
             }
-        }
-
-        public Song()
-        {
-            This = this;
         }
 
         public bool RelateTo(string filter)

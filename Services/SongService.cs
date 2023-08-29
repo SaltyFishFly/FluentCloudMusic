@@ -18,11 +18,11 @@ namespace FluentCloudMusic.Services
         public static async Task<List<Song>> GetDailyRecommendSongsAsync()
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.RecommendSongs);
-            var result = jsonResult.ToObject<RecommendSongsResponse>(JsonUtils.Serializer);
+            var result = jsonResult.ToObject<RecommendSongsResponse>(JsonUtil.Serializer);
             return result.Code == 200 ? result.Data.DailySongs.ToList() : new List<Song>();
         }
 
-        public static async Task<(bool IsSuccess, MediaPlaybackItem Result)> GetNeteaseSongUrl(ISong song)
+        public static async Task<(bool isSuccess, MediaPlaybackItem result)> GetNeteaseSongUrl(ISong song)
         {
             if (song == null || !song.HasCopyright) return (false, null);
 

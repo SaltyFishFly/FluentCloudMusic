@@ -21,18 +21,17 @@
                         <MenuFlyout
                             Opened="MenuFlyout_Opened">
                             <MenuFlyoutItem
-                                x:Uid="SongFlyoutMenuPlayButton"
-                                Tag="{x:Bind Path=This}"
+                                x:Uid="/SongListView/SongFlyoutPlayButton"
                                 Icon="Play"
                                 Click="MusicNameButton_Click"/>
                             <MenuFlyoutSeparator/>
                             <MenuFlyoutSubItem
-                                x:Name="SongFlyoutMenuArtistsButton"
-                                x:Uid="SongFlyoutMenuArtistsButton"
+                                x:Name="SongFlyoutArtistsMenu"
+                                x:Uid="/SongListView/SongFlyoutArtistsMenu"
                                 Tag="{x:Bind Path=Artists}"
                                 Icon="Contact"/>
                             <MenuFlyoutItem
-                                x:Uid="SongFlyoutMenuAlbumButton"
+                                x:Uid="/SongListView/SongFlyoutAlbumButton"
                                 Tag="{x:Bind Path=Album}"
                                 Text="{x:Bind Path=AlbumName}"
                                 Click="AlbumNameButton_Click">
@@ -43,8 +42,9 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutSeparator/>
-                            <MenuFlyoutItem
-                                x:Uid="SongFlyoutMenuAddToPlaylistButton"
+                            <MenuFlyoutSubItem
+                                x:Name="SongFlyoutPlaylistsMenu"
+                                x:Uid="/SongListView/SongFlyoutPlaylistsMenu"
                                 Icon="Add"/>
                         </MenuFlyout>
                     </Grid.ContextFlyout>
@@ -57,7 +57,6 @@
                         Grid.Column="0"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Left"
-                        Tag="{x:Bind Path=This}"
                         ToolTipService.ToolTip="{x:Bind Path=Name}"
                         Foreground="{ThemeResource DefaultTextForegroundThemeBrush}"
                         IsEnabled="{x:Bind Path=HasCopyright}"

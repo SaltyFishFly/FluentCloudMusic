@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Media;
 
 namespace FluentCloudMusic.Utils
 {
-    public static class VisualTreeUtils
+    public static class VisualTreeUtil
     {
         public static DependencyObject FindChildByName(DependencyObject parent, string name)
         {
