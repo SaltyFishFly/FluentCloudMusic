@@ -7,53 +7,53 @@ using FluentCloudMusic.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using muxc = Microsoft.UI.Xaml.Controls;
 
-// https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
-
 namespace FluentCloudMusic
 {
-    /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         private static readonly Dictionary<string, Type> NavButtons = new Dictionary<string, Type>
         {
-            { "NavItemDiscover" , typeof(DiscoverPage)  },
-            { "NavItemHistory"  , typeof(HistoryPage)   },
-            { "NavItemDownloads", typeof(DownloadsPage) },
-            { "NavItemCloud"    , typeof(CloudPage)     },
-            { "NavItemFavorites", typeof(FavoritesPage) },
-            { "NavItemPodcasts" , typeof(PodcastsPage)  },
-            { "NavItemLogin"    , typeof(LoginPage)     },
-            { "NavItemAccount"  , typeof(AccountPage)   },
-            { "NavItemSettings" , typeof(SettingsPage)  },
+            { "ItemDiscover" , typeof(DiscoverPage)  },
+            { "ItemHistory"  , typeof(HistoryPage)   },
+            { "ItemDownloads", typeof(DownloadsPage) },
+            { "ItemCloud"    , typeof(CloudPage)     },
+            { "ItemFavorites", typeof(FavoritesPage) },
+            { "ItemPodcasts" , typeof(PodcastsPage)  },
+            { "ItemLogin"    , typeof(LoginPage)     },
+            { "ItemAccount"  , typeof(AccountPage)   },
+            { "ItemSettings" , typeof(SettingsPage)  },
         };
 
         public static MusicPlayerControl Player;
 
         private static new Frame Frame;
 
-        public ObservableCollection<muxc.NavigationViewItem> CreatedPlaylistButtons { get; }
+        public readonly ObservableCollection<muxc.NavigationViewItem> CreatedPlaylistButtons;
 
-        public ObservableCollection<muxc.NavigationViewItem> BookmarkedPlaylistButtons { get; }
+        public readonly ObservableCollection<muxc.NavigationViewItem> BookmarkedPlaylistButtons;
 
         public MainPage()
         {
             CreatedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
             BookmarkedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
+
             InitializeComponent();
+
             Player = MusicPlayer;
             Frame = ContentFrame;
             AccountService.Login += OnLogin;
             AccountService.Logout += OnLogout;
-            MainNav.SelectedItem = NavItemDiscover;
+            MainNav.SelectedItem = ItemDiscover;
 
             _ = AccountService.CheckLoginStatusAsync();
         }
@@ -62,6 +62,13 @@ namespace FluentCloudMusic
         {
             if (Frame == null) return false;
             return Frame.Navigate(sourcePageType, parameter, infoOverride);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            AccountService.Login -= OnLogin;
+            AccountService.Logout -= OnLogout;
+            Player.Dispose();
         }
 
         /// <summary>
@@ -76,20 +83,25 @@ namespace FluentCloudMusic
 
             playlists?.ForEach(playlist =>
             {
-                var item = new muxc.NavigationViewItem()
+                var item = new muxc.NavigationViewItem
                 {
-                    Name = "NavItemPlaylist",
+                    Name = "ItemPlaylist",
                     Tag = playlist,
                     Content = new TextBlock()
                     {
                         Text = playlist.Name,
                         TextTrimming = TextTrimming.CharacterEllipsis
-                    }
+                    },
+                    Icon = playlist.IsPrivate ?
+                           new FontIcon() { FontFamily = new FontFamily("Segoe Fluent Icons"), Glyph = "\xe72e" } :
+                           new SymbolIcon() { Symbol = Symbol.MusicInfo } as IconElement
                 };
                 ToolTipService.SetToolTip(item, playlist.Name);
 
-                if (playlist.IsOwner) CreatedPlaylistButtons.Add(item);
-                else BookmarkedPlaylistButtons.Add(item);
+                if (playlist.IsOwner)
+                    CreatedPlaylistButtons.Add(item);
+                else
+                    BookmarkedPlaylistButtons.Add(item);
             });
         }
 
@@ -117,13 +129,6 @@ namespace FluentCloudMusic
             }
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            AccountService.Login -= OnLogin;
-            AccountService.Logout -= OnLogout;
-            Player.Dispose();
-        }
-
         private void OnLogin(Profile profile)
         {
             GeneratePlaylistButtons();
@@ -136,6 +141,22 @@ namespace FluentCloudMusic
             ContentFrame.Navigate(typeof(LoginPage), null);
             ContentFrame.BackStack.Clear();
         }
+        
+        private void MainNav_BackRequested(muxc.NavigationView sender, muxc.NavigationViewBackRequestedEventArgs args)
+        {
+            ContentFrame.GoBack();
+        }
+
+        private void NavSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (sender.Text == string.Empty) return;
+
+            var request = new SearchRequest(sender.Text);
+            if (ContentFrame.CurrentSourcePageType == typeof(SearchPage))
+                (ContentFrame.Content as SearchPage).Search(request);
+            else
+                ContentFrame.Navigate(typeof(SearchPage), request);
+        }
 
         /// <summary>
         /// 负责处理导航事件
@@ -147,15 +168,15 @@ namespace FluentCloudMusic
             var item = args.SelectedItemContainer;
             if (item == null) return;
 
-            if (item.Name == "NavItemPlaylist")
+            if (item.Name == "ItemPlaylist")
                 ContentFrame.Navigate(typeof(PlaylistPage), item.Tag, args.RecommendedNavigationTransitionInfo);
             else
                 ContentFrame.Navigate(NavButtons[item.Name], item.Tag, args.RecommendedNavigationTransitionInfo);
         }
-        
-        private void MainNav_BackRequested(muxc.NavigationView sender, muxc.NavigationViewBackRequestedEventArgs args)
+
+        private void ItemCreatePlaylist_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            ContentFrame.GoBack();
+            
         }
 
         /// <summary>
@@ -170,17 +191,6 @@ namespace FluentCloudMusic
 
             MainNav.SelectedItem = FindNavigationItem(e.SourcePageType, e.Parameter);
             HeaderText.Text = ResourceUtil.Get($"/Headers/{e.SourcePageType.Name}");
-        }
-
-        private void NavSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (sender.Text == string.Empty) return;
-
-            var request = new SearchRequest(sender.Text);
-            if (ContentFrame.CurrentSourcePageType == typeof(SearchPage))
-                (ContentFrame.Content as SearchPage).Search(request);
-            else
-                ContentFrame.Navigate(typeof(SearchPage), request);
         }
     }
 }

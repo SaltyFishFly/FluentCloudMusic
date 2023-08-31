@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:services="using:FluentCloudMusic.Services"
+    xmlns:controls="using:FluentCloudMusic.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
@@ -24,19 +25,13 @@
                 Grid.Column="0"
                 Orientation="Horizontal"
                 Spacing="16">
-                <Border
+                <controls:AnimatedImage
                     Height="100"
                     Width="100"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    CornerRadius="50">
-                    <Image
-                        x:Name="AvatarPicure"
-                        Height="100"
-                        Width="100"
-                        Stretch="Fill"
-                        Source="{x:Bind Path=services:AccountService.UserProfile.AvatarUrl, Mode=OneWay}"/>
-                </Border>
+                    CornerRadius="50"
+                    Source="{x:Bind Path=services:AccountService.UserProfile.AvatarUrl, Mode=OneWay}"/>
                 <TextBlock
                     Text="{x:Bind Path=services:AccountService.UserProfile.Nickname, Mode=OneWay}"
                     FontSize="32"/>

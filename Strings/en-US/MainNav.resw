@@ -129,6 +129,9 @@
   <data name="ItemCloud.Content" xml:space="preserve">
     <value>Cloud</value>
   </data>
+  <data name="ItemCreatePlaylist" xml:space="preserve">
+    <value>Create playlist</value>
+  </data>
   <data name="ItemDiscover.Content" xml:space="preserve">
     <value>Discover</value>
   </data>

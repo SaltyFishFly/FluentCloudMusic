@@ -24,10 +24,7 @@ namespace FluentCloudMusic.DataModels.ViewModels
         public string Id => _Source != null ? _Source.Id : string.Empty;
         public string Name => _Source != null ? _Source.Name : string.Empty;
         public string Description => _Source != null ? _Source.Description : string.Empty;
-        public string ImageUrl =>
-            _Source != null && _Source.ImageUrl != null ?
-            _Source.ImageUrl :
-            "ms-appx:///Assets/LargeTile.scale-400.png";
+        public string ImageUrl => _Source != null ? _Source.ImageUrl : string.Empty;
 
         private Playlist _Source;
 

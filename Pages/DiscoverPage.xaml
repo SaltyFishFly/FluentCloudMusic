@@ -27,22 +27,19 @@
                         <RowDefinition Height="10"/>
                         <RowDefinition Height="55"/>
                     </Grid.RowDefinitions>
-                    <Border
+                    <controls:AnimatedImage
                         x:Name="CoverImageContainer"
+                        Grid.Row="0"
                         Height="150"
                         Width="150"
-                        Grid.Row="0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
-                        CornerRadius="8">
-                        <Image
-                            x:Name="PlaylistCover"
-                            Source="{x:Bind Path=ImageUrl}"/>
-                    </Border>
+                        CornerRadius="8"
+                        Source="{x:Bind Path=ImageUrl}"/>
                     <TextBlock
+                        Grid.Row="2"
                         Width="150"
                         Height="80"
-                        Grid.Row="2"
                         MaxLines="2"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="Wrap"

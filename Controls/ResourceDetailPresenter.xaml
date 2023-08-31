@@ -20,20 +20,16 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Border
+            <local:AnimatedImage
                 x:Name="CoverImageContainer"
                 Height="240"
                 Width="240"
                 Grid.Column="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                CornerRadius="8">
-                <Image
-                    Height="240"
-                    Width="240"
-                    Stretch="Fill"
-                    Source="{x:Bind Path=ImageSource,Mode=OneWay}"/>
-            </Border>
+                CornerRadius="8"
+                Source="{x:Bind Path=ImageSource,Mode=OneWay}">
+            </local:AnimatedImage>
             <Grid
                 Height="240"
                 Grid.Column="1"

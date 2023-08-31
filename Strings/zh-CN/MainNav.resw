@@ -129,6 +129,9 @@
   <data name="ItemCloud.Content" xml:space="preserve">
     <value>音乐云盘</value>
   </data>
+  <data name="ItemCreatePlaylist" xml:space="preserve">
+    <value>创建歌单</value>
+  </data>
   <data name="ItemDiscover.Content" xml:space="preserve">
     <value>发现音乐</value>
   </data>

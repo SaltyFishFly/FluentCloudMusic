@@ -8,7 +8,7 @@ namespace FluentCloudMusic.Controls
     public sealed partial class ResourceDetailPresenter : UserControl
     {
         public static DependencyProperty ImageSourceProperty =
-            DependencyProperty.Register("ImageSource", typeof(string), typeof(ResourceDetailPresenter), new PropertyMetadata("ms-appx:///Assets/LargeTile.scale-400.png"));
+            DependencyProperty.Register("ImageSource", typeof(string), typeof(ResourceDetailPresenter), new PropertyMetadata(string.Empty));
         public static DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(ResourceDetailPresenter), new PropertyMetadata(string.Empty));
         public static DependencyProperty DescriptionProperty =

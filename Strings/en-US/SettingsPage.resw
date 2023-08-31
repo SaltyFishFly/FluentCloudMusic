@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutSectionTextBlock.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
   <data name="AutoTheme.Content" xml:space="preserve">
     <value>Auto</value>
   </data>
@@ -126,7 +129,22 @@
   <data name="LightTheme.Content" xml:space="preserve">
     <value>Light</value>
   </data>
-  <data name="ThemeButtons.Header" xml:space="preserve">
+  <data name="OpenSourceLicenseHyperlink.Text" xml:space="preserve">
+    <value>the MIT License</value>
+  </data>
+  <data name="OpenSourceLicensePart1.Text" xml:space="preserve">
+    <value>This application is open-sourced with</value>
+  </data>
+  <data name="OpenSourceLicensePart2.Text" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="StoreButton.Content" xml:space="preserve">
+    <value>Microsoft Store Page</value>
+  </data>
+  <data name="ThemeButtonsSectionTextBlock.Text" xml:space="preserve">
     <value>Application Theme</value>
+  </data>
+  <data name="Version.Text" xml:space="preserve">
+    <value>Version </value>
   </data>
 </root>

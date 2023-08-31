@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutSectionTextBlock.Text" xml:space="preserve">
+    <value>关于应用</value>
+  </data>
   <data name="AutoTheme.Content" xml:space="preserve">
     <value>自动</value>
   </data>
@@ -126,7 +129,22 @@
   <data name="LightTheme.Content" xml:space="preserve">
     <value>浅色</value>
   </data>
-  <data name="ThemeButtons.Header" xml:space="preserve">
+  <data name="OpenSourceLicenseHyperlink.Text" xml:space="preserve">
+    <value>MIT协议</value>
+  </data>
+  <data name="OpenSourceLicensePart1.Text" xml:space="preserve">
+    <value>此应用使用</value>
+  </data>
+  <data name="OpenSourceLicensePart2.Text" xml:space="preserve">
+    <value>开源。</value>
+  </data>
+  <data name="StoreButton.Content" xml:space="preserve">
+    <value>商店页面</value>
+  </data>
+  <data name="ThemeButtonsSectionTextBlock.Text" xml:space="preserve">
     <value>应用主题</value>
+  </data>
+  <data name="Version.Text" xml:space="preserve">
+    <value>版本 </value>
   </data>
 </root>

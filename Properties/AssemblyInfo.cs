@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("FluentCloudMusic")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A Third-party client for NeteaseCloud Music powered by UWP.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("FluentCloudMusic")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
+[assembly: AssemblyCopyright("Copyright 2023 by Fish_Fly_")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

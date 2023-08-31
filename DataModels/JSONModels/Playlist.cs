@@ -18,6 +18,8 @@ namespace FluentCloudMusic.DataModels.JSONModels
         [MultipleJsonProperty("picUrl", "coverImgUrl")]
         public string ImageUrl { get; set; }
 
+        public int Privacy { get; set; }
+
         public Profile Creator { get; set; }
 
         public TrackId[] TrackIds { get; set; }
@@ -30,6 +32,8 @@ namespace FluentCloudMusic.DataModels.JSONModels
                 return Creator.UserId == AccountService.UserProfile.UserId;
             }
         }
+
+        public bool IsPrivate => Privacy != 0;
 
         public async Task<bool> AddAsync(Song song)
         {

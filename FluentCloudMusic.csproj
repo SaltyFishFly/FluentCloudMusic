@@ -130,6 +130,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classes\SMTCController.cs" />
+    <Compile Include="Controls\AnimatedImage.xaml.cs">
+      <DependentUpon>AnimatedImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Toast.cs" />
     <Compile Include="Controls\ToolBar.xaml.cs">
       <DependentUpon>ToolBar.xaml</DependentUpon>
@@ -139,6 +142,7 @@
     </Compile>
     <Compile Include="Converters\MediaPlaybackStateToBoolConverter.cs" />
     <Compile Include="Converters\MediaPlaybackStateToSymbolConverter.cs" />
+    <Compile Include="Converters\VersionToStringConverter.cs" />
     <Compile Include="DataModels\DataSource.cs" />
     <Compile Include="DataModels\JSONModels\Album.cs" />
     <Compile Include="DataModels\JSONModels\Playlist.cs" />
@@ -264,6 +268,7 @@
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
     <Content Include="Assets\LargeTile.scale-200.png" />
+    <Content Include="Assets\DefaultImage.png" />
     <Content Include="Assets\LargeTile.scale-400.png" />
     <Content Include="Assets\SmallTile.scale-100.png" />
     <Content Include="Assets\SmallTile.scale-125.png" />
@@ -307,6 +312,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="LICENSE.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -320,6 +326,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\AnimatedImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ToolBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

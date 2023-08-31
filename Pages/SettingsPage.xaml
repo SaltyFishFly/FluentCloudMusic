@@ -6,27 +6,84 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:sys="using:Windows.ApplicationModel"
+    xmlns:converters="using:FluentCloudMusic.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
+    <Page.Resources>
+        <converters:VersionToStringConverter x:Key="VersionToStringConverter"/>
+    </Page.Resources>
+
     <StackPanel
         Padding="16"
-        Background="{ThemeResource LayerFillColorDefaultBrush}">
-        <muxc:RadioButtons
-            x:Name="ThemeButtons"
-            x:Uid="/SettingsPage/ThemeButtons"
-            MaxColumns="3"
-            Loaded="ThemeButtons_Loaded"
-            SelectionChanged="ThemeButtons_SelectionChanged">
-            <RadioButton
-                x:Name="AutoTheme"
-                x:Uid="/SettingsPage/AutoTheme"/>
-            <RadioButton
-                x:Name="LightTheme"
-                x:Uid="/SettingsPage/LightTheme"/>
-            <RadioButton
-                x:Name="DarkTheme"
-                x:Uid="/SettingsPage/DarkTheme"/>
-        </muxc:RadioButtons>
+        Background="{ThemeResource LayerFillColorDefaultBrush}"
+        Spacing="16">
+        <StackPanel>
+            <TextBlock
+                x:Uid="/SettingsPage/ThemeButtonsSectionTextBlock"
+                Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <muxc:RadioButtons
+                x:Name="ThemeButtons"
+                x:Uid="/SettingsPage/ThemeButtons"
+                MaxColumns="3"
+                Loaded="ThemeButtons_Loaded"
+                SelectionChanged="ThemeButtons_SelectionChanged">
+                <RadioButton
+                    x:Name="AutoTheme"
+                    x:Uid="/SettingsPage/AutoTheme"/>
+                <RadioButton
+                    x:Name="LightTheme"
+                    x:Uid="/SettingsPage/LightTheme"/>
+                <RadioButton
+                    x:Name="DarkTheme"
+                    x:Uid="/SettingsPage/DarkTheme"/>
+            </muxc:RadioButtons>
+        </StackPanel>
+        <StackPanel
+            Spacing="12">
+            <TextBlock
+                x:Uid="/SettingsPage/AboutSectionTextBlock"
+                x:Name="AboutSectionTextBlock"
+                Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <RelativePanel>
+                <Image
+                    x:Name="LogoImage"
+                    Width="60"
+                    Height="60"
+                    Margin="0,0,16,0"
+                    Source="ms-appx:///Assets/StoreLogo.scale-400.png"/>
+                <StackPanel
+                    RelativePanel.RightOf="LogoImage"
+                    RelativePanel.AlignVerticalCenterWith="LogoImage">
+                    <TextBlock
+                        Text="FluentCloudMusic"
+                        Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                    <TextBlock
+                        Foreground="{ThemeResource DescriptionTextBrush}">
+                        <Run
+                            x:Uid="/SettingsPage/Version"/>
+                        <Run
+                            Text="{x:Bind Path=sys:Package.Current.Id.Version,Converter={StaticResource VersionToStringConverter}}"/>
+                    </TextBlock>
+                </StackPanel>
+                <HyperlinkButton
+                    x:Uid="/SettingsPage/StoreButton"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    NavigateUri="ms-windows-store://pdp/?productid=9MSRXWZK6T4X"/>
+            </RelativePanel>
+            <TextBlock>
+                <Run
+                    x:Uid="/SettingsPage/OpenSourceLicensePart1"/>
+                <Hyperlink
+                    NavigateUri="https://github.com/SaltyFishFly/FluentCloudMusic/blob/master/LICENSE">
+                    <Run
+                        x:Uid="/SettingsPage/OpenSourceLicenseHyperlink"/>
+                </Hyperlink>
+                <Run
+                    x:Uid="/SettingsPage/OpenSourceLicensePart2"/>
+            </TextBlock>
+        </StackPanel>
     </StackPanel>
 </Page>
