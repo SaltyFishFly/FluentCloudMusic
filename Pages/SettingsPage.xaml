@@ -52,7 +52,7 @@
                     Width="60"
                     Height="60"
                     Margin="0,0,16,0"
-                    Source="ms-appx:///Assets/StoreLogo.scale-400.png"/>
+                    Source="ms-appx:///Assets/AppLogo.png"/>
                 <StackPanel
                     RelativePanel.RightOf="LogoImage"
                     RelativePanel.AlignVerticalCenterWith="LogoImage">
