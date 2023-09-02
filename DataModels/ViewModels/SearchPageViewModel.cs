@@ -2,7 +2,7 @@
 
 namespace FluentCloudMusic.DataModels.ViewModels
 {
-    public class SearchRequestViewModel : INotifyPropertyChanged
+    public class SearchPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

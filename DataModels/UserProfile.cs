@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FluentCloudMusic.DataModels.ViewModels
 {
-    public class UserProfileViewModel : INotifyPropertyChanged
+    public class UserProfile : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,5 +46,4 @@ namespace FluentCloudMusic.DataModels.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(member));
         }
     }
-
 }

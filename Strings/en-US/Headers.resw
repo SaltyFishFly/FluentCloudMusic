@@ -147,6 +147,9 @@
   <data name="PodcastsPage" xml:space="preserve">
     <value>Podcasts</value>
   </data>
+  <data name="RecommendSongsPage" xml:space="preserve">
+    <value>Daily Recommends</value>
+  </data>
   <data name="SearchPage" xml:space="preserve">
     <value>Search</value>
   </data>

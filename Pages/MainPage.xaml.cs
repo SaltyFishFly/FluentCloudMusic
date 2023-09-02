@@ -22,15 +22,16 @@ namespace FluentCloudMusic
     {
         private static readonly Dictionary<string, Type> NavButtons = new Dictionary<string, Type>
         {
-            { "ItemDiscover" , typeof(DiscoverPage)  },
-            { "ItemHistory"  , typeof(HistoryPage)   },
-            { "ItemDownloads", typeof(DownloadsPage) },
-            { "ItemCloud"    , typeof(CloudPage)     },
-            { "ItemFavorites", typeof(FavoritesPage) },
-            { "ItemPodcasts" , typeof(PodcastsPage)  },
-            { "ItemLogin"    , typeof(LoginPage)     },
-            { "ItemAccount"  , typeof(AccountPage)   },
-            { "ItemSettings" , typeof(SettingsPage)  },
+            { "ItemDiscover"       , typeof(DiscoverPage)       },
+            { "ItemRecommendSongs" , typeof(RecommendSongsPage) },
+            { "ItemHistory"        , typeof(HistoryPage)        },
+            { "ItemDownloads"      , typeof(DownloadsPage)      },
+            { "ItemCloud"          , typeof(CloudPage)          },
+            { "ItemFavorites"      , typeof(FavoritesPage)      },
+            { "ItemPodcasts"       , typeof(PodcastsPage)       },
+            { "ItemLogin"          , typeof(LoginPage)          },
+            { "ItemAccount"        , typeof(AccountPage)        },
+            { "ItemSettings"       , typeof(SettingsPage)       },
         };
 
         public static MusicPlayerControl Player;

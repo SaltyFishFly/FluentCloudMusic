@@ -53,6 +53,16 @@
             <muxc:NavigationViewItemHeader
                 x:Uid="/MainNav/Header1"/>
             <muxc:NavigationViewItem
+                x:Name="ItemRecommendSongs"
+                x:Uid="/MainNav/ItemRecommendSongs"
+                IsEnabled="{x:Bind Path=services:AccountService.UserProfile.HasLogin, Mode=OneWay}">
+                <muxc:NavigationViewItem.Icon>
+                    <FontIcon
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        Glyph="&#xEC4F;"/>
+                </muxc:NavigationViewItem.Icon>
+            </muxc:NavigationViewItem>
+            <muxc:NavigationViewItem
                 Visibility="Collapsed"
                 x:Name="ItemHistory"
                 x:Uid="/MainNav/ItemHistory"

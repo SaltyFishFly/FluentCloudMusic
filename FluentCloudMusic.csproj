@@ -163,13 +163,17 @@
     <Compile Include="DataModels\JSONModels\Responses\UserPlaylistResponse.cs" />
     <Compile Include="DataModels\JSONModels\UserCloudSong.cs" />
     <Compile Include="DataModels\JSONModels\Song.cs" />
-    <Compile Include="DataModels\ViewModels\AlbumViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\ArtistViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\AlbumPageViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\ArtistPageViewModel.cs" />
     <Compile Include="DataModels\ViewModels\DiscoverPageViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\PlaylistViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\SearchRequestViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\UserProfileViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\PlaylistPageViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\RecommendSongsPageViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\SearchPageViewModel.cs" />
+    <Compile Include="DataModels\UserProfile.cs" />
     <Compile Include="DataModels\ViewModels\SectionViewModel.cs" />
+    <Compile Include="Pages\RecommendSongsPage.xaml.cs">
+      <DependentUpon>RecommendSongsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\AlbumService.cs" />
     <Compile Include="Services\ArtistService.cs" />
     <Compile Include="Services\CacheService.cs" />
@@ -400,6 +404,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\PodcastsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\RecommendSongsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -147,6 +147,9 @@
   <data name="PodcastsPage" xml:space="preserve">
     <value>我的播客</value>
   </data>
+  <data name="RecommendSongsPage" xml:space="preserve">
+    <value>每日推荐</value>
+  </data>
   <data name="SearchPage" xml:space="preserve">
     <value>搜索</value>
   </data>

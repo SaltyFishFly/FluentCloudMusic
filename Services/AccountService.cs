@@ -11,7 +11,7 @@ namespace FluentCloudMusic.Services
 {
     public static class AccountService
     {
-        public static readonly UserProfileViewModel UserProfile = new UserProfileViewModel();
+        public static readonly UserProfile UserProfile = new UserProfile();
 
         public delegate void LoginEventHandler(Profile profile);
         public delegate void LogoutEventHandler();

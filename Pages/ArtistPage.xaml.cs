@@ -8,11 +8,11 @@ namespace FluentCloudMusic.Pages
 {
     public sealed partial class ArtistPage : Page
     {
-        private ArtistViewModel Artist { get; }
+        private ArtistPageViewModel Artist { get; }
 
         public ArtistPage()
         {
-            Artist = new ArtistViewModel();
+            Artist = new ArtistPageViewModel();
 
             InitializeComponent();
         }

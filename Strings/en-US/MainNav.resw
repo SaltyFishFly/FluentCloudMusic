@@ -129,8 +129,8 @@
   <data name="ItemCloud.Content" xml:space="preserve">
     <value>Cloud</value>
   </data>
-  <data name="ItemCreatePlaylist" xml:space="preserve">
-    <value>Create playlist</value>
+  <data name="ItemCreatePlaylist.Content" xml:space="preserve">
+    <value>Create Playlist</value>
   </data>
   <data name="ItemDiscover.Content" xml:space="preserve">
     <value>Discover</value>
@@ -155,6 +155,9 @@
   </data>
   <data name="ItemPodcasts.Content" xml:space="preserve">
     <value>Podcasts</value>
+  </data>
+  <data name="ItemRecommendSongs.Content" xml:space="preserve">
+    <value>Daily Recommends</value>
   </data>
   <data name="ItemSettings.Content" xml:space="preserve">
     <value>Settings</value>

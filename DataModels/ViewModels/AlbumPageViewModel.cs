@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace FluentCloudMusic.DataModels.ViewModels
 {
-    public class AlbumViewModel : INotifyPropertyChanged
+    public class AlbumPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

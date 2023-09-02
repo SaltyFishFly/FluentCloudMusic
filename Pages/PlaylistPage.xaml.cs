@@ -16,12 +16,12 @@ namespace FluentCloudMusic.Pages
     public sealed partial class PlaylistPage : Page
     {
         private readonly ObservableCollection<Song> Songs;
-        private readonly PlaylistViewModel Playlist;
+        private readonly PlaylistPageViewModel Playlist;
 
         public PlaylistPage()
         {
             Songs = new ObservableCollection<Song>();
-            Playlist = new PlaylistViewModel();
+            Playlist = new PlaylistPageViewModel();
 
             InitializeComponent();
         }

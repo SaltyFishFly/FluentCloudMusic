@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿using FluentCloudMusic.DataModels.JSONModels;
+using FluentCloudMusic.Services;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace FluentCloudMusic.DataModels.ViewModels
 {
@@ -27,8 +30,26 @@ namespace FluentCloudMusic.DataModels.ViewModels
             }
         }
 
+        public readonly ObservableCollection<Playlist> RecommendPlaylists = new ObservableCollection<Playlist>();
+        public readonly ObservableCollection<Song> RecommendSongs = new ObservableCollection<Song>();
+
         private bool _RecommendPlaylistsLoaded;
         private bool _RecommendSongsLoaded;
+
+        public async void LoadContents()
+        {
+            RecommendPlaylists.Clear();
+            RecommendSongs.Clear();
+
+            var playlists = await PlaylistService.GetDailyRecommendPlaylistsAsync();
+            var songs = await SongService.GetDailyRecommendSongsAsync();
+
+            playlists?.ForEach(playlist => RecommendPlaylists.Add(playlist));
+            RecommendPlaylistsLoaded = true;
+
+            songs?.GetRange(0, 5).ForEach(song => RecommendSongs.Add(song));
+            RecommendSongsLoaded = true;
+        }
 
         private void Notify(string caller = null)
         {

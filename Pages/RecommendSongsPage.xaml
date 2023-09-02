@@ -1,0 +1,23 @@
+﻿<Page
+    x:Class="FluentCloudMusic.Pages.RecommendSongsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FluentCloudMusic.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:FluentCloudMusic.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlTransparentBrush}">
+
+    <controls:SongListView
+        Background="{ThemeResource LayerFillColorDefaultBrush}"
+        ItemsSource="{x:Bind Path=ViewModel.Songs}">
+        <controls:SongListView.Header>
+            <StackPanel>
+                <controls:ToolBar
+                    Margin="16"
+                    IsShareButtonEnabled="False"/>
+            </StackPanel>
+        </controls:SongListView.Header>
+    </controls:SongListView>
+</Page>

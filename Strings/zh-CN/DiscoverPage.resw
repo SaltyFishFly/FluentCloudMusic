@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DailyRecommendSongsTitle.Text" xml:space="preserve">
-    <value>每日推荐歌曲</value>
+    <value>每日推荐</value>
   </data>
   <data name="DailyRecommendSongsViewAllButton.Content" xml:space="preserve">
     <value>查看全部</value>

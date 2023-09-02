@@ -10,6 +10,7 @@
     xmlns:controls="using:FluentCloudMusic.Controls"
     xmlns:converters="using:FluentCloudMusic.Converters"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:sys="using:System"
     mc:Ignorable="d"
     Background="{ThemeResource SystemControlTransparentBrush}">
 
@@ -65,23 +66,22 @@
             </muxc:InfoBar>
             <GridView
                 x:Name="DailyRecommendPlaylistsGridView"
-                Background="{ThemeResource LayerFillColorDefaultBrush}"
-                CornerRadius="8"
-                SelectionMode="None"
-                IsItemClickEnabled="True"
                 ScrollViewer.VerticalScrollMode="Disabled"
                 ScrollViewer.HorizontalScrollMode="Enabled"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
                 Visibility="{x:Bind Path=ViewModel.RecommendPlaylistsLoaded,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"
-                ItemsSource="{x:Bind Path=DailyRecommendPlaylists}"
+                CornerRadius="8"
+                SelectionMode="None"
+                IsItemClickEnabled="True"
+                ItemsSource="{x:Bind Path=ViewModel.RecommendPlaylists}"
                 ItemTemplate="{StaticResource PlaylistItemTemplate}"
                 ItemContainerStyle="{StaticResource DailyRecommendPlaylistsGridViewItemContainerStyle}"
                 ItemClick="PlaylistItem_Click">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ItemsWrapGrid
-                            Orientation="Vertical"
-                            MaximumRowsOrColumns="1"/>
+                        <ItemsStackPanel
+                            Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
             </GridView>
@@ -90,7 +90,7 @@
                 Padding="0,8,0,8"
                 Background="{ThemeResource LayerFillColorDefaultBrush}"
                 Visibility="{x:Bind Path=ViewModel.RecommendSongsLoaded,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"
-                ItemsSource="{x:Bind Path=DailyRecommendSongs}">
+                ItemsSource="{x:Bind Path=ViewModel.RecommendSongs}">
                 <controls:SongListView.Header>
                     <Grid
                         Padding="24,0,8,0">

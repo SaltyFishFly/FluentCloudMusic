@@ -28,6 +28,7 @@
             <Button
                 x:Name="PlayAllButton"
                 Visibility="{x:Bind Path=IsPlayAllButtonEnabled, Converter={StaticResource BoolToVisibilityConverter}}"
+                CornerRadius="8"
                 Click="PlayAllButton_Click">
                 <SymbolIcon
                     Symbol="Play"/>
@@ -35,6 +36,7 @@
             <Button
                 x:Name="ShareButton"
                 Visibility="{x:Bind Path=IsShareButtonEnabled, Converter={StaticResource BoolToVisibilityConverter}}"
+                CornerRadius="8"
                 Click="ShareButton_Click">
                 <SymbolIcon
                     Symbol="Share"/>
@@ -42,21 +44,23 @@
             <Button
                 x:Name="DownloadButton"
                 Visibility="{x:Bind Path=IsDownloadButtonEnabled, Converter={StaticResource BoolToVisibilityConverter}}"
+                CornerRadius="8"
                 Click="DownloadButton_Click">
                 <SymbolIcon
                     Symbol="Download"/>
             </Button>
         </StackPanel>
         <StackPanel
-                Grid.Column="2"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal"
-                Spacing="8">
+            Grid.Column="2"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal"
+            Spacing="8">
             <AutoSuggestBox
                 x:Name="FilterInputBox"
                 x:Uid="/SongListView/FilterInputBox"
                 Width="200"
                 Visibility="{x:Bind Path=IsFilterInputBoxEnabled, Converter={StaticResource BoolToVisibilityConverter}}"
+                CornerRadius="8"
                 QueryIcon="Find"
                 QuerySubmitted="FilterInputBox_QuerySubmitted"/>
         </StackPanel>

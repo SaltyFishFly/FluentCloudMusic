@@ -26,7 +26,7 @@ namespace FluentCloudMusic.Pages
         }
 
         private readonly ObservableCollection<Song> Songs;
-        private readonly SearchRequestViewModel CurrentRequestViewModel;
+        private readonly SearchPageViewModel CurrentRequestViewModel;
         private SearchRequest _CurrentRequest;
 
         public SearchPage()
@@ -34,7 +34,7 @@ namespace FluentCloudMusic.Pages
             Instance = this;
 
             Songs = new ObservableCollection<Song>();
-            CurrentRequestViewModel = new SearchRequestViewModel();
+            CurrentRequestViewModel = new SearchPageViewModel();
 
             InitializeComponent();
         }
