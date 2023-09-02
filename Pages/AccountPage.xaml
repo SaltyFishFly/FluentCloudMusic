@@ -33,14 +33,23 @@
                     CornerRadius="50"
                     Source="{x:Bind Path=services:AccountService.UserProfile.AvatarUrl, Mode=OneWay}"/>
                 <TextBlock
-                    Text="{x:Bind Path=services:AccountService.UserProfile.Nickname, Mode=OneWay}"
-                    FontSize="32"/>
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Text="{x:Bind Path=services:AccountService.UserProfile.Nickname, Mode=OneWay}"/>
             </StackPanel>
             <Button
                 x:Name="LogoutButton"
-                x:Uid="/AccountPage/LogoutButton"
                 Grid.Column="2"
-                Click="LogoutButton_Click"/>
+                Click="LogoutButton_Click">
+                <StackPanel
+                    Orientation="Horizontal"
+                    Spacing="8">
+                    <FontIcon
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        Glyph="&#xf3b1;"/>
+                    <TextBlock
+                        x:Uid="/AccountPage/LogoutButtonText"/>
+                </StackPanel>
+            </Button>
         </Grid>
     </StackPanel>
 </Page>

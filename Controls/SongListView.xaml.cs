@@ -66,41 +66,6 @@ namespace FluentCloudMusic.Controls
             OriginalSongs.ForEach(song => { if (song.RelateTo(filter)) ItemsSource.Add(song); });
         }
 
-        private void MusicNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            var playlist = new List<ISong>(ItemsSource);
-            int index = ItemsSource.IndexOf((sender as FrameworkElement).DataContext as Song);
-            _ = MainPage.Player.PlayAsync(playlist, index);
-        }
-
-        private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainPage.Navigate(typeof(ArtistPage), ((FrameworkElement)sender).Tag);
-        }
-
-        private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainPage.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).Tag);
-        }
-
-        private async void PlaylistButton_Click(object sender, RoutedEventArgs e)
-        {
-            var playlist = (sender as MenuFlyoutItem).Tag as Playlist;
-            var song = (sender as MenuFlyoutItem).DataContext as Song;
-            if (playlist == null || song == null) return;
-
-            var result = await playlist.AddAsync(song);
-            if (!result) return;
-            new Toast() { Content = ResourceUtil.Get("/Messages/AddedToPlaylistMessage") }.ShowAsync();
-        }
-
-        private void MenuFlyout_Opened(object sender, object e)
-        {
-            var flyout = sender as MenuFlyout;
-            GenerateArtistButtons(flyout);
-            GeneratePlaylistButtons(flyout);
-        }
-
         private void GenerateArtistButtons(MenuFlyout flyout)
         {
             if (flyout == null) return;
@@ -142,6 +107,48 @@ namespace FluentCloudMusic.Controls
                 playlistButton.Click += PlaylistButton_Click;
                 playlistsMenu.Items.Add(playlistButton);
             }
+        }
+
+        private void MusicNameButton_Click(object sender, RoutedEventArgs e)
+        {
+            var playlist = new List<ISong>(ItemsSource);
+            int index = ItemsSource.IndexOf((sender as FrameworkElement).DataContext as Song);
+            _ = MainPage.Player.PlayAsync(playlist, index);
+        }
+
+        private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainPage.Navigate(typeof(ArtistPage), ((FrameworkElement)sender).Tag);
+        }
+
+        private void AlbumNameButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainPage.Navigate(typeof(AlbumPage), ((FrameworkElement)sender).Tag);
+        }
+
+        private async void PlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            var playlist = (sender as MenuFlyoutItem).Tag as Playlist;
+            var song = (sender as MenuFlyoutItem).DataContext as Song;
+            if (playlist == null || song == null) return;
+
+            var result = await playlist.AddAsync(song);
+            if (!result) return;
+            new Toast() { Content = ResourceUtil.Get("/Messages/AddedToPlaylistMessage") }.ShowAsync();
+        }
+
+        private void MenuFlyout_Opened(object sender, object e)
+        {
+            var flyout = sender as MenuFlyout;
+            GenerateArtistButtons(flyout);
+            GeneratePlaylistButtons(flyout);
+        }
+
+        private void CopySongNameButton_Click(object sender, RoutedEventArgs e)
+        {
+            var song = (sender as MenuFlyoutItem).DataContext as Song;
+            ClipboardUtil.SetText(song.Name);
+            new Toast() { Content = ResourceUtil.Get("/Messages/CopiedToClipboardMessage") }.ShowAsync();
         }
     }
 }

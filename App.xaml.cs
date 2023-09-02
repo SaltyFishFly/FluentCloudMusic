@@ -1,28 +1,24 @@
-﻿using FluentCloudMusic.Pages;
+﻿using FluentCloudMusic.Controls;
+using FluentCloudMusic.Pages;
 using FluentCloudMusic.Services;
 using NeteaseCloudMusicApi;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace FluentCloudMusic
 {
-    /// <summary>
-    /// 提供特定于应用程序的行为，以补充默认的应用程序类。
-    /// </summary>
     sealed partial class App : Application
     {
         public static CloudMusicApi API = new CloudMusicApi();
 
-        /// <summary>
-        /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
-        /// 已执行，逻辑上等同于 main() 或 WinMain()。
-        /// </summary>
         public App()
         {
             InitializeComponent();
@@ -30,47 +26,22 @@ namespace FluentCloudMusic
             Suspending += OnSuspending;
         }
 
-        public static void SetTheme(ElementTheme theme)
+        public static void UpdateTheme()
         {
+            if (!StorageService.HasSetting(SettingsPage.ThemeSetting)) return;
+
+            var theme = StorageService.GetSetting<ElementTheme>(SettingsPage.ThemeSetting);
             (Window.Current.Content as FrameworkElement).RequestedTheme = theme;
         }
 
-        /// <summary>
-        /// 在应用程序由最终用户正常启动时进行调用。
-        /// 将在启动应用程序以打开特定文件等情况下使用。
-        /// </summary>
-        /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            var rootFrame = Window.Current.Content as Frame;
-
             CoreApplication.EnablePrelaunch(false);
 
-            SetWindowMinSize(500, 400);
             TransparentTitleBar();
-
-            if (rootFrame == null)
-            {
-                rootFrame = new Frame();
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: 从之前挂起的应用程序加载状态
-                }
-                Window.Current.Content = rootFrame;
-            }
-
-            if (StorageService.HasSetting(SettingsPage.ThemeSetting))
-            {
-                var theme = StorageService.GetSetting<ElementTheme>(SettingsPage.ThemeSetting);
-                SetTheme(theme);
-            }
-                
-
-            if (rootFrame.Content == null)
-            {
-                rootFrame.Navigate(typeof(MainPage), null);
-            }
+            SetWindowMinSize(500, 400);
+            InitRootFrame();
+            UpdateTheme();
 
             Window.Current.Activate();
         }
@@ -86,6 +57,31 @@ namespace FluentCloudMusic
         private void SetWindowMinSize(double width, double height)
         {
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(width, height));
+        }
+
+        private void InitRootFrame()
+        {
+            var frame = Window.Current.Content as Frame;
+            if (frame == null)
+            {
+                frame = new Frame();
+                Window.Current.Content = frame;
+            }
+            frame.PreviewKeyDown += GlobalHotkey_Pressed;
+
+            if (frame.Content == null)
+            {
+                frame.Navigate(typeof(MainPage), null);
+            }
+        }
+
+        private void GlobalHotkey_Pressed(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Space)
+            {
+                MusicPlayerControl.Instance.SwitchPlayStatus();
+                e.Handled = true;
+            }
         }
 
         private void OnSuspending(object sender, SuspendingEventArgs e)

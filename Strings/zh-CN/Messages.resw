@@ -121,6 +121,6 @@
     <value>已添加到歌单</value>
   </data>
   <data name="CopiedToClipboardMessage" xml:space="preserve">
-    <value>分享链接已保存到剪贴板</value>
+    <value>已保存到剪贴板</value>
   </data>
 </root>

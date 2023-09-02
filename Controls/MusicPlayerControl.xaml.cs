@@ -13,8 +13,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 
-//https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
-
 namespace FluentCloudMusic.Controls
 {
     public enum PlayMode
@@ -25,6 +23,8 @@ namespace FluentCloudMusic.Controls
     public sealed partial class MusicPlayerControl : UserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public static MusicPlayerControl Instance { get; private set; }
 
         public MediaPlayer Player { get; private set; }
         public List<ISong> PlaybackItemList { get; private set; } = new List<ISong>();
@@ -75,6 +75,8 @@ namespace FluentCloudMusic.Controls
         
         public MusicPlayerControl()
         {
+            Instance = this;
+
             Player = new MediaPlayer
             {
                 AudioCategory = MediaPlayerAudioCategory.Media,
@@ -102,6 +104,19 @@ namespace FluentCloudMusic.Controls
             PlaybackItemList = songs;
             ShuffledPlaybackItemList = songs.Shuffle(startIndex);
             await PlayAsync(startIndex);
+        }
+
+        public void SwitchPlayStatus()
+        {
+            switch (Player.PlaybackSession.PlaybackState)
+            {
+                case MediaPlaybackState.Playing:
+                    Player.Pause();
+                    break;
+                case MediaPlaybackState.Paused:
+                    Player.Play();
+                    break;
+            }
         }
 
         public async Task Previous()
@@ -148,15 +163,7 @@ namespace FluentCloudMusic.Controls
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            switch (Player.PlaybackSession.PlaybackState)
-            {
-                case MediaPlaybackState.Playing:
-                    Player.Pause();
-                    break;
-                case MediaPlaybackState.Paused:
-                    Player.Play();
-                    break;
-            }
+            SwitchPlayStatus();
         }
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)

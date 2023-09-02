@@ -7,7 +7,6 @@ using FluentCloudMusic.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -141,7 +140,7 @@ namespace FluentCloudMusic
             ContentFrame.Navigate(typeof(LoginPage), null);
             ContentFrame.BackStack.Clear();
         }
-        
+
         private void MainNav_BackRequested(muxc.NavigationView sender, muxc.NavigationViewBackRequestedEventArgs args)
         {
             ContentFrame.GoBack();

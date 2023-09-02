@@ -123,6 +123,9 @@
   <data name="SongFlyoutArtistsMenu.Text" xml:space="preserve">
     <value>Artists</value>
   </data>
+  <data name="SongFlyoutCopySongNameButton.Text" xml:space="preserve">
+    <value>Copy name</value>
+  </data>
   <data name="SongFlyoutPlayButton.Text" xml:space="preserve">
     <value>Play</value>
   </data>

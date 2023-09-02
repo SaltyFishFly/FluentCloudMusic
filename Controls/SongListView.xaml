@@ -25,6 +25,12 @@
                                 Icon="Play"
                                 Click="MusicNameButton_Click"/>
                             <MenuFlyoutSeparator/>
+                            <MenuFlyoutItem
+                                x:Uid="/SongListView/SongFlyoutCopySongNameButton"
+                                Icon="Copy"
+                                Click="CopySongNameButton_Click">
+                            </MenuFlyoutItem>
+                            <MenuFlyoutSeparator/>
                             <MenuFlyoutSubItem
                                 x:Name="SongFlyoutArtistsMenu"
                                 x:Uid="/SongListView/SongFlyoutArtistsMenu"

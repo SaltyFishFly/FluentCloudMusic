@@ -121,6 +121,6 @@
     <value>Successfully added to playlist</value>
   </data>
   <data name="CopiedToClipboardMessage" xml:space="preserve">
-    <value>Share link is copied to clipboard</value>
+    <value>Successfully copied to clipboard</value>
   </data>
 </root>

@@ -123,6 +123,9 @@
   <data name="SongFlyoutArtistsMenu.Text" xml:space="preserve">
     <value>艺术家</value>
   </data>
+  <data name="SongFlyoutCopySongNameButton.Text" xml:space="preserve">
+    <value>复制歌名</value>
+  </data>
   <data name="SongFlyoutPlayButton.Text" xml:space="preserve">
     <value>播放</value>
   </data>
