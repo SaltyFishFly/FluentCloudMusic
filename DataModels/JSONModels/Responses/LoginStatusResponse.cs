@@ -1,9 +1,7 @@
 ﻿namespace FluentCloudMusic.DataModels.JSONModels.Responses
 {
-    public class LoginStatusResponse
+    public class LoginStatusResponse : BaseResponse
     {
-        public int Code { get; set; }
-
-        public Profile Profile { get; set; }
+        public Account Profile { get; set; }
     }
 }

@@ -46,8 +46,8 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         public async Task<MediaPlaybackItem> ToMediaPlaybackItem()
         {
-            var (isSuccess, result) = await SongService.GetNeteaseSongUrl(this);
-            return isSuccess ? result : null;
+            var result = await SongService.GetNeteaseSongUrl(this);
+            return result;
         }
 
         public class UserCloudSongData

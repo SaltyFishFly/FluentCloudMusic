@@ -106,6 +106,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style
         x:Key="VolumeButtonFlyoutPresenterStyle"
         TargetType="FlyoutPresenter"
@@ -116,6 +117,7 @@
         <Setter Property="MinWidth" Value="0" />
         <Setter Property="MinHeight" Value="0" />
     </Style>
+    
     <Style
         x:Key="MusicPlayerButtonStyle"
         TargetType="Button"
@@ -182,6 +184,14 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <AcrylicBrush
+        x:Key="ToastBackgroundAcrylicBrush"
+        BackgroundSource="Backdrop"
+        TintColor="#FF1C1C1C"
+        TintOpacity="0.6"
+        TintLuminosityOpacity="0.6"
+        FallbackColor="#D0303030"/>
     <Style
         TargetType="controls:Toast">
         <Setter Property="IsTabStop" Value="False"/>
@@ -195,7 +205,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
                         RequestedTheme="{TemplateBinding RequestedTheme}"
-                        Background="{ThemeResource ForegroundElementAcrylicBrush}"
+                        Background="{StaticResource ToastBackgroundAcrylicBrush}"
                         CornerRadius="8">
                         <TextBlock
                             Margin="16,12"

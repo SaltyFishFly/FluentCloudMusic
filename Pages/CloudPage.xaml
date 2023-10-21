@@ -18,7 +18,7 @@
             <controls:ToolBar
                 Margin="16"
                 IsShareButtonEnabled="False"
-                PlayAllButtonClickedEvent="PlayAllButton_Click"/>
+                PlayAllButtonClicked="PlayAllButton_Click"/>
         </controls:UserCloudSongListView.Header>
         <controls:UserCloudSongListView.Footer>
             <Grid

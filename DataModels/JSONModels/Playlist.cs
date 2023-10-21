@@ -15,12 +15,12 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         public string Description { get; set; }
 
-        [MultipleJsonProperty("picUrl", "coverImgUrl")]
+        [JsonMultipleProperty("picUrl", "coverImgUrl")]
         public string ImageUrl { get; set; }
 
         public int Privacy { get; set; }
 
-        public Profile Creator { get; set; }
+        public Account Creator { get; set; }
 
         public TrackId[] TrackIds { get; set; }
 
@@ -35,7 +35,7 @@ namespace FluentCloudMusic.DataModels.JSONModels
 
         public bool IsPrivate => Privacy != 0;
 
-        public async Task<bool> AddAsync(Song song)
+        public async Task AddAsync(Song song)
         {
             var param = new Dictionary<string, object>()
             {
@@ -44,11 +44,11 @@ namespace FluentCloudMusic.DataModels.JSONModels
                 { "tracks", song.Id }
             };
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.PlaylistTracks, param);
-            var result = jsonResult.ToObject<PlaylistTracksResponse>(JsonUtil.Serializer);
-            return result.Code == 200;
+            var result = jsonResult.ToObject<PlaylistTracksResponse>();
+            result.CheckCode();
         }
 
-        public async Task<bool> DeleteAsync(Song song)
+        public async Task DeleteAsync(Song song)
         {
             var param = new Dictionary<string, object>()
             {
@@ -57,8 +57,8 @@ namespace FluentCloudMusic.DataModels.JSONModels
                 { "tracks", song.Id }
             };
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.PlaylistTracks, param);
-            var result = jsonResult.ToObject<PlaylistTracksResponse>(JsonUtil.Serializer);
-            return result.Code == 200;
+            var result = jsonResult.ToObject<PlaylistTracksResponse>();
+            result.CheckCode();
         }
     }
 

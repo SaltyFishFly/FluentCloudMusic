@@ -1,4 +1,5 @@
-﻿using FluentCloudMusic.DataModels.JSONModels;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.Pages;
 using FluentCloudMusic.Services;
@@ -113,7 +114,7 @@ namespace FluentCloudMusic.Controls
         {
             var playlist = new List<ISong>(ItemsSource);
             int index = ItemsSource.IndexOf((sender as FrameworkElement).DataContext as Song);
-            _ = MainPage.Player.PlayAsync(playlist, index);
+            _ = App.Player.PlayAsync(playlist, index);
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)
@@ -128,13 +129,16 @@ namespace FluentCloudMusic.Controls
 
         private async void PlaylistButton_Click(object sender, RoutedEventArgs e)
         {
-            var playlist = (sender as MenuFlyoutItem).Tag as Playlist;
-            var song = (sender as MenuFlyoutItem).DataContext as Song;
-            if (playlist == null || song == null) return;
+            try
+            {
+                var playlist = (sender as MenuFlyoutItem).Tag as Playlist;
+                var song = (sender as MenuFlyoutItem).DataContext as Song;
+                if (playlist == null || song == null) return;
 
-            var result = await playlist.AddAsync(song);
-            if (!result) return;
-            new Toast() { Content = ResourceUtil.Get("/Messages/AddedToPlaylistMessage") }.ShowAsync();
+                await playlist.AddAsync(song);
+                new Toast() { Content = ResourceUtil.Get("/Messages/AddedToPlaylistMessage") }.ShowAsync();
+            }
+            catch (ResponseCodeErrorException) { }
         }
 
         private void MenuFlyout_Opened(object sender, object e)

@@ -1,4 +1,5 @@
-﻿using FluentCloudMusic.DataModels;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.DataModels;
 using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.DataModels.ViewModels;
@@ -41,15 +42,17 @@ namespace FluentCloudMusic.Pages
 
         public async void Search(SearchRequest request)
         {
-            CurrentRequest = request;
+            try
+            {
+                CurrentRequest = request;
 
-            var (isSuccess, pageCount, songs) = await NetworkService.SearchAsync(request);
-            if (!isSuccess) return;
+                var (pageCount, songs) = await NetworkService.SearchAsync(request);
+                CurrentRequestViewModel.MaxPage = pageCount;
 
-            CurrentRequestViewModel.MaxPage = pageCount;
-            Songs.Clear();
-
-            foreach (var item in songs) Songs.Add(item);
+                Songs.Clear();
+                foreach (var item in songs) Songs.Add(item);
+            }
+            catch (ResponseCodeErrorException) { }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -60,7 +63,7 @@ namespace FluentCloudMusic.Pages
         private void PlayAllButtonClickedEvent(object sender, RoutedEventArgs e)
         {
             var playlist = new List<ISong>(Songs);
-            _ = MainPage.Player.PlayAsync(playlist);
+            _ = App.Player.PlayAsync(playlist);
         }
 
         private void PreviousPageButton_Click(object sender, RoutedEventArgs e)

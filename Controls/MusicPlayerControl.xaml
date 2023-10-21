@@ -15,6 +15,7 @@
             <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter"/>
             <converters:DoubleToStringConverter x:Key="DoubleToStringConverter"/>
             <converters:PlayModeToSymbolConverter x:Key="PlayModeToSymbolConverter"/>
+            <converters:VolumeSliderValueConverter x:Key="VolumeSliderValueConverter"/>
             <converters:VolumeSliderToolTipConverter x:Key="VolumeSliderToolTipConverter"/>
             <converters:MediaPlaybackStateToBoolConverter x:Key="MediaPlaybackStateToBoolConverter"/>
             <converters:MediaPlaybackStateToSymbolConverter x:Key="MediaPlaybackStateToSymbolConverter"/>
@@ -43,7 +44,7 @@
                     Width="44"
                     Height="44"
                     Style="{StaticResource MusicPlayerButtonStyle}"
-                    IsEnabled="{x:Bind Path=HasPrevious,Mode=OneWay}"
+                    IsEnabled="{x:Bind Path=_Player.HasPrevious,Mode=OneWay}"
                     Click="PreviousButton_Click">
                     <SymbolIcon
                         x:Name="PreviousButton_Icon"
@@ -54,18 +55,18 @@
                     Width="44"
                     Height="44"
                     Style="{StaticResource MusicPlayerButtonStyle}"
-                    IsEnabled="{x:Bind Path=PlayState,Converter={StaticResource MediaPlaybackStateToBoolConverter},Mode=OneWay}"
+                    IsEnabled="{x:Bind Path=_Player.PlayState,Converter={StaticResource MediaPlaybackStateToBoolConverter},Mode=OneWay}"
                     Click="PlayButton_Click">
                     <SymbolIcon
                         x:Name="PlayButton_Icon"
-                        Symbol="{x:Bind Path=PlayState,Converter={StaticResource MediaPlaybackStateToSymbolConverter},Mode=OneWay}"/>
+                        Symbol="{x:Bind Path=_Player.PlayState,Converter={StaticResource MediaPlaybackStateToSymbolConverter},Mode=OneWay}"/>
                 </Button>
                 <Button
                     x:Name="NextButton"
                     Width="44"
                     Height="44"
                     Style="{StaticResource MusicPlayerButtonStyle}"
-                    IsEnabled="{x:Bind Path=HasNext,Mode=OneWay}"
+                    IsEnabled="{x:Bind Path=_Player.HasNext,Mode=OneWay}"
                     Click="NextButton_Click">
                     <SymbolIcon
                         x:Name="NextButton_Icon"
@@ -78,8 +79,8 @@
                 Padding="4,0,4,0"
                 VerticalAlignment="Center"
                 Minimum="0"
-                Maximum="{x:Bind Path=NaturalDuration, Converter={StaticResource TimeSpanToDoubleConverter}, Mode=OneWay}"
-                Value="{x:Bind Path=Position, Converter={StaticResource TimeSpanToDoubleConverter}, Mode=OneWay}"
+                Maximum="{x:Bind Path=_Player.NaturalDuration,Converter={StaticResource TimeSpanToDoubleConverter}, Mode=OneWay}"
+                Value="{x:Bind Path=ViewModel.Position,Converter={StaticResource TimeSpanToDoubleConverter},Mode=OneWay}"
                 ThumbToolTipValueConverter="{StaticResource DoubleToStringConverter}"
                 Loaded="Timeline_Loaded"
                 PointerCaptureLost="Timeline_PointerCaptureLost"/>
@@ -89,7 +90,7 @@
                 Padding="4,0,4,4"
                 VerticalAlignment="Center"
                 FontSize="16"
-                Text="{x:Bind Path=Timeline.Maximum, Converter={StaticResource DoubleToStringConverter}, Mode=OneWay}"/>
+                Text="{x:Bind Path=Timeline.Maximum,Converter={StaticResource DoubleToStringConverter},Mode=OneWay}"/>
             <StackPanel
                 Grid.Column="3"
                 Orientation="Horizontal"
@@ -102,7 +103,7 @@
                     Click="PlayModeButton_Click">
                     <SymbolIcon
                         x:Name="PlayModeButton_Icon"
-                        Symbol="{x:Bind Path=PlayMode,Mode=OneWay,Converter={StaticResource PlayModeToSymbolConverter}}"/>
+                        Symbol="{x:Bind Path=_Player.PlayMode,Converter={StaticResource PlayModeToSymbolConverter},Mode=OneWay}"/>
                 </Button>
                 <Button
                     x:Name="VolumeButton"
@@ -123,7 +124,7 @@
                                     Orientation="Vertical"
                                     Minimum="0"
                                     Maximum="1000"
-                                    Value="{x:Bind Path=Volume, Mode=TwoWay}"
+                                    Value="{x:Bind Path=_Player.Volume,Converter={StaticResource VolumeSliderValueConverter},Mode=TwoWay}"
                                     ThumbToolTipValueConverter="{StaticResource VolumeSliderToolTipConverter}"
                                     PointerCaptureLost="VolumeSlider_PointerCaptureLost"/>
                             </StackPanel>

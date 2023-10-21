@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using muxc = Microsoft.UI.Xaml.Controls;
+using winui = Microsoft.UI.Xaml.Controls;
 
 namespace FluentCloudMusic
 {
@@ -34,18 +34,18 @@ namespace FluentCloudMusic
             { "ItemSettings"       , typeof(SettingsPage)       },
         };
 
-        public static MusicPlayerControl Player;
+        public static MusicPlayerControl Player { get; set; }
 
         private static new Frame Frame;
 
-        public readonly ObservableCollection<muxc.NavigationViewItem> CreatedPlaylistButtons;
+        public readonly ObservableCollection<winui.NavigationViewItem> CreatedPlaylistButtons;
 
-        public readonly ObservableCollection<muxc.NavigationViewItem> BookmarkedPlaylistButtons;
+        public readonly ObservableCollection<winui.NavigationViewItem> BookmarkedPlaylistButtons;
 
         public MainPage()
         {
-            CreatedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
-            BookmarkedPlaylistButtons = new ObservableCollection<muxc.NavigationViewItem>();
+            CreatedPlaylistButtons = new ObservableCollection<winui.NavigationViewItem>();
+            BookmarkedPlaylistButtons = new ObservableCollection<winui.NavigationViewItem>();
 
             InitializeComponent();
 
@@ -54,21 +54,12 @@ namespace FluentCloudMusic
             AccountService.Login += OnLogin;
             AccountService.Logout += OnLogout;
             MainNav.SelectedItem = ItemDiscover;
-
-            _ = AccountService.CheckLoginStatusAsync();
         }
 
         public static bool Navigate(Type sourcePageType, object parameter, NavigationTransitionInfo infoOverride = null)
         {
             if (Frame == null) return false;
             return Frame.Navigate(sourcePageType, parameter, infoOverride);
-        }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            AccountService.Login -= OnLogin;
-            AccountService.Logout -= OnLogout;
-            Player.Dispose();
         }
 
         /// <summary>
@@ -83,7 +74,7 @@ namespace FluentCloudMusic
 
             playlists?.ForEach(playlist =>
             {
-                var item = new muxc.NavigationViewItem
+                var item = new winui.NavigationViewItem
                 {
                     Name = "ItemPlaylist",
                     Tag = playlist,
@@ -111,7 +102,7 @@ namespace FluentCloudMusic
             {
                 return MainNav.MenuItems
                     .Concat(MainNav.FooterMenuItems)
-                    .OfType<muxc.NavigationViewItem>()
+                    .OfType<winui.NavigationViewItem>()
                     .First(item =>
                     {
                         NavButtons.TryGetValue(item.Name, out Type itemPageType);
@@ -129,7 +120,7 @@ namespace FluentCloudMusic
             }
         }
 
-        private void OnLogin(Profile profile)
+        private void OnLogin(Account profile)
         {
             GeneratePlaylistButtons();
             ContentFrame.Navigate(typeof(DiscoverPage), null);
@@ -142,7 +133,7 @@ namespace FluentCloudMusic
             ContentFrame.BackStack.Clear();
         }
 
-        private void MainNav_BackRequested(muxc.NavigationView sender, muxc.NavigationViewBackRequestedEventArgs args)
+        private void MainNav_BackRequested(winui.NavigationView sender, winui.NavigationViewBackRequestedEventArgs args)
         {
             ContentFrame.GoBack();
         }
@@ -163,7 +154,7 @@ namespace FluentCloudMusic
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        private void MainNav_SelectionChanged(muxc.NavigationView sender, muxc.NavigationViewSelectionChangedEventArgs args)
+        private void MainNav_SelectionChanged(winui.NavigationView sender, winui.NavigationViewSelectionChangedEventArgs args)
         {
             var item = args.SelectedItemContainer;
             if (item == null) return;
@@ -176,7 +167,7 @@ namespace FluentCloudMusic
 
         private void ItemCreatePlaylist_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            
+            Navigate(typeof(PlaylistPage), new Playlist { Id = "823689905" });
         }
 
         /// <summary>

@@ -1,9 +1,8 @@
-﻿using FluentCloudMusic.DataModels.JSONModels;
+﻿using FluentCloudMusic.DataModels;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
-using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Utils;
 using NeteaseCloudMusicApi;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,15 +10,15 @@ namespace FluentCloudMusic.Services
 {
     public static class AccountService
     {
-        public static readonly UserProfile UserProfile = new UserProfile();
+        public static readonly User UserProfile = new User();
 
-        public delegate void LoginEventHandler(Profile profile);
+        public delegate void LoginEventHandler(Account profile);
         public delegate void LogoutEventHandler();
 
         public static event LoginEventHandler Login;
         public static event LogoutEventHandler Logout;
 
-        public static async Task<int> LoginAsync(string countryCode, string account, string password)
+        public static async Task LoginAsync(string countryCode, string account, string password)
         {
             var parameters = new Dictionary<string, object>()
             {
@@ -29,57 +28,42 @@ namespace FluentCloudMusic.Services
             };
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginCellphone, parameters);
-            var result = jsonResult.ToObject<LoginCellphoneResponse>(JsonUtil.Serializer);
+            var result = jsonResult.ToObject<LoginCellphoneResponse>();
+            result.CheckCode(() => StorageService.RemoveSetting("LoginCookie"));
 
-            if (result.Code != 200)
-            {
-                StorageService.RemoveSetting("LoginCookie");
-                return result.Code;
-            }
             StorageService.SetSetting("LoginCookie", App.API.Cookies.GetString());
 
-            UserProfile.Source = result.Profile;
+            UserProfile.Account = result.Profile;
             Login(result.Profile);
-
-            return result.Code;
         }
 
-        public static async Task<int> CheckLoginStatusAsync()
+        public static async Task LoginByCookieAsync()
         {
-            if (!StorageService.HasSetting("LoginCookie")) return -1;
+            if (!StorageService.HasSetting("LoginCookie")) return;
 
             string loginCookie = StorageService.GetSetting<string>("LoginCookie");
             App.API.Cookies.LoadFromString(loginCookie);
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.LoginStatus);
-            var result = jsonResult.ToObject<LoginStatusResponse>(JsonUtil.Serializer);
+            var result = jsonResult.ToObject<LoginStatusResponse>();
+            result.CheckCode(() => StorageService.RemoveSetting("LoginCookie"));
 
-            if (result.Code != 200)
-            {
-                StorageService.RemoveSetting("LoginCookie");
-                return result.Code;
-            }
             StorageService.SetSetting("LoginCookie", App.API.Cookies.GetString());
 
-            UserProfile.Source = result.Profile;
+            UserProfile.Account = result.Profile;
             Login(result.Profile);
-
-            return result.Code;
         }
 
-        public static async Task<bool> LogoutAsync()
+        public static async Task LogoutAsync()
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.Logout);
-            var code = jsonResult["code"].Value<int>();
+            var result = jsonResult.ToObject<BaseResponse>();
+            result.CheckCode();
 
-            if (code != 200) return false;
-            
             StorageService.RemoveSetting("LoginCookie");
 
-            UserProfile.Source = null;
+            UserProfile.Account = null;
             Logout();
-
-            return true;
         }
     }
 }

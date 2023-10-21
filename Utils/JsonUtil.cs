@@ -6,29 +6,21 @@ using System.Reflection;
 
 namespace FluentCloudMusic.Utils
 {
-    public static class JsonUtil
-    {
-        public static readonly JsonSerializer Serializer = new JsonSerializer()
-        {
-            ContractResolver = new MultipleJsonPropertyContractResolver()
-        };
-    }
-
     [AttributeUsage(AttributeTargets.Property)]
-    public class MultipleJsonProperty : Attribute
+    public class JsonMultipleProperty : Attribute
     {
         public string PreferredName { get; }
 
-        public string[] FallbackReadNames { get; }
+        public string[] FallbackNames { get; }
 
-        public MultipleJsonProperty(string preferredProperty, params string[] fallbackProperties)
+        public JsonMultipleProperty(string preferredProperty, params string[] fallbackProperties)
         {
             PreferredName = preferredProperty;
-            FallbackReadNames = fallbackProperties;
+            FallbackNames = fallbackProperties;
         }
     }
 
-    public class MultipleJsonPropertyContractResolver : CamelCasePropertyNamesContractResolver
+    public class JsonMultiplePropertyContractResolver : CamelCasePropertyNamesContractResolver
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
@@ -36,18 +28,18 @@ namespace FluentCloudMusic.Utils
             var properties = new List<JsonProperty>();
             foreach (var member in members)
             {
-                var property = CreateProperty(member, memberSerialization);
-                properties.Add(property);
+                var preferred = CreateProperty(member, memberSerialization);
+                properties.Add(preferred);
 
-                var fallbackAttribute = member.GetCustomAttribute<MultipleJsonProperty>();
-                if (fallbackAttribute == null) continue;
+                var attribute = member.GetCustomAttribute<JsonMultipleProperty>();
+                if (attribute == null) continue;
 
-                property.PropertyName = fallbackAttribute.PreferredName;
-                foreach (var alternateName in fallbackAttribute.FallbackReadNames)
+                preferred.PropertyName = attribute.PreferredName;
+                foreach (var name in attribute.FallbackNames)
                 {
-                    var fallbackProperty = CreateProperty(member, memberSerialization);
-                    fallbackProperty.PropertyName = alternateName;
-                    properties.Add(fallbackProperty);
+                    var fallback = CreateProperty(member, memberSerialization);
+                    fallback.PropertyName = name;
+                    properties.Add(fallback);
                 }
             }
             return properties;

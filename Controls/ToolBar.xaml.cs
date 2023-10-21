@@ -10,10 +10,10 @@ namespace FluentCloudMusic.Controls
         public delegate void ButtonClickEventHandler(object sender, RoutedEventArgs e);
         public delegate void AutoSuggestBoxQuerySubmittedEventHandler(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs e);
 
-        public event ButtonClickEventHandler PlayAllButtonClickedEvent;
-        public event ButtonClickEventHandler ShareButtonClickedEvent;
-        public event ButtonClickEventHandler DownloadButtonClickedEvent;
-        public event AutoSuggestBoxQuerySubmittedEventHandler FilterInputBoxQuerySubmittedEvent;
+        public event ButtonClickEventHandler PlayAllButtonClicked;
+        public event ButtonClickEventHandler ShareButtonClicked;
+        public event ButtonClickEventHandler DownloadButtonClicked;
+        public event AutoSuggestBoxQuerySubmittedEventHandler FilterInputBoxQuerySubmitted;
 
         public static readonly DependencyProperty IsPlayAllButtonEnabledProperty =
             DependencyProperty.Register("IsPlayAllButtonEnabled", typeof(bool), typeof(SongListView), new PropertyMetadata(true));
@@ -51,15 +51,15 @@ namespace FluentCloudMusic.Controls
         }
 
         private void PlayAllButton_Click(object sender, RoutedEventArgs args) => 
-            PlayAllButtonClickedEvent?.Invoke(sender, args);
+            PlayAllButtonClicked?.Invoke(sender, args);
 
         private void ShareButton_Click(object sender, RoutedEventArgs args) => 
-            ShareButtonClickedEvent?.Invoke(sender, args);
+            ShareButtonClicked?.Invoke(sender, args);
 
         private void DownloadButton_Click(object sender, RoutedEventArgs args) => 
-            DownloadButtonClickedEvent?.Invoke(sender, args);
+            DownloadButtonClicked?.Invoke(sender, args);
 
         private void FilterInputBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) => 
-            FilterInputBoxQuerySubmittedEvent?.Invoke(sender, args);
+            FilterInputBoxQuerySubmitted?.Invoke(sender, args);
     }
 }

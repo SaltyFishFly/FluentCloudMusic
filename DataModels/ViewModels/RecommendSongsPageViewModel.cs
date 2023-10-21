@@ -1,4 +1,5 @@
-﻿using FluentCloudMusic.DataModels.JSONModels;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 
@@ -10,8 +11,12 @@ namespace FluentCloudMusic.DataModels.ViewModels
 
         public async void LoadContents()
         {
-            var songs = await SongService.GetDailyRecommendSongsAsync();
-            songs?.ForEach(song => Songs.Add(song));
+            try
+            {
+                var songs = await SongService.GetDailyRecommendSongsAsync();
+                songs?.ForEach(song => Songs.Add(song));
+            }
+            catch (ResponseCodeErrorException) { }
         }
     }
 }

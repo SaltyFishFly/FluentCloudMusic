@@ -1,4 +1,5 @@
-﻿using FluentCloudMusic.Controls;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.Controls;
 using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.DataModels.ViewModels;
@@ -33,18 +34,19 @@ namespace FluentCloudMusic.Pages
             var anim = ConnectedAnimationService.GetForCurrentView().GetAnimation("DailyRecommendPlaylistsToPlaylistPageAnimation");
             anim?.TryStart(SongListHeader.CoverImage);
 
-            var (isSuccess, playlistInfo, songs) = await PlaylistService.GetPlaylistDetailAsync(Playlist.Id);
-            if (isSuccess)
+            try
             {
+                var (playlistInfo, songs) = await PlaylistService.GetPlaylistDetailAsync(Playlist.Id);
                 Playlist.Source = playlistInfo;
                 foreach (var song in songs) Songs.Add(song);
             }
+            catch (ResponseCodeErrorException) { }
         }
 
         private void PlayAllButton_Click(object sender, RoutedEventArgs e)
         {
             var playlist = new List<ISong>(Songs);
-            _ = MainPage.Player.PlayAsync(playlist);
+            _ = App.Player.PlayAsync(playlist);
         }
 
         private void ShareButton_Click(object sender, RoutedEventArgs e)

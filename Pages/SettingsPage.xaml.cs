@@ -27,7 +27,7 @@ namespace FluentCloudMusic.Pages
             if (index == -1) return;
 
             StorageService.SetSetting(ThemeSetting, index);
-            App.UpdateTheme();
+            App.ReloadTheme();
         }
     }
 }

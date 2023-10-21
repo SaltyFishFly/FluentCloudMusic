@@ -60,7 +60,7 @@ namespace FluentCloudMusic.Controls
         {
             var playlist = new List<ISong>(ItemsSource);
             int index = ItemsSource.IndexOf((sender as FrameworkElement).DataContext as UserCloudSong);
-            _ = MainPage.Player.PlayAsync(playlist, index);
+            _ = App.Player.PlayAsync(playlist, index);
         }
 
         private void ArtistNameButton_Click(object sender, RoutedEventArgs e)

@@ -26,7 +26,7 @@
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
-    <AppxBundle>Always</AppxBundle>
+    <AppxBundle>Never</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
@@ -129,7 +129,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classes\SMTCController.cs" />
+    <Compile Include="Classes\MusicPlayer.cs" />
     <Compile Include="Controls\AnimatedImage.xaml.cs">
       <DependentUpon>AnimatedImage.xaml</DependentUpon>
     </Compile>
@@ -143,22 +143,26 @@
     <Compile Include="Converters\MediaPlaybackStateToBoolConverter.cs" />
     <Compile Include="Converters\MediaPlaybackStateToSymbolConverter.cs" />
     <Compile Include="Converters\VersionToStringConverter.cs" />
+    <Compile Include="Converters\VolumeSliderValueConverter.cs" />
     <Compile Include="DataModels\DataSource.cs" />
+    <Compile Include="Classes\Exceptions.cs" />
     <Compile Include="DataModels\JSONModels\Album.cs" />
     <Compile Include="DataModels\JSONModels\Playlist.cs" />
     <Compile Include="DataModels\JSONModels\Responses\AlbumResponse.cs" />
     <Compile Include="DataModels\JSONModels\Artist.cs" />
     <Compile Include="DataModels\JSONModels\Responses\ArtistDetailResponse.cs" />
+    <Compile Include="DataModels\JSONModels\Responses\BaseResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\CloudSearchResponse.cs" />
     <Compile Include="DataModels\JSONModels\ISong.cs" />
     <Compile Include="DataModels\JSONModels\Responses\LoginCellphoneResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\LoginStatusResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\PlaylistDetailResponse.cs" />
-    <Compile Include="DataModels\JSONModels\Profile.cs" />
+    <Compile Include="DataModels\JSONModels\Account.cs" />
     <Compile Include="DataModels\JSONModels\Responses\PlaylistTracksResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\RecommendResourcesResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\RecommendSongsResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\SongDetailResponse.cs" />
+    <Compile Include="DataModels\JSONModels\Responses\SongUrlV1Response.cs" />
     <Compile Include="DataModels\JSONModels\Responses\UserCloudResponse.cs" />
     <Compile Include="DataModels\JSONModels\Responses\UserPlaylistResponse.cs" />
     <Compile Include="DataModels\JSONModels\UserCloudSong.cs" />
@@ -166,17 +170,15 @@
     <Compile Include="DataModels\ViewModels\AlbumPageViewModel.cs" />
     <Compile Include="DataModels\ViewModels\ArtistPageViewModel.cs" />
     <Compile Include="DataModels\ViewModels\DiscoverPageViewModel.cs" />
+    <Compile Include="DataModels\ViewModels\MusicPlayerControlViewModel.cs" />
     <Compile Include="DataModels\ViewModels\PlaylistPageViewModel.cs" />
     <Compile Include="DataModels\ViewModels\RecommendSongsPageViewModel.cs" />
     <Compile Include="DataModels\ViewModels\SearchPageViewModel.cs" />
-    <Compile Include="DataModels\UserProfile.cs" />
+    <Compile Include="DataModels\User.cs" />
     <Compile Include="DataModels\ViewModels\SectionViewModel.cs" />
     <Compile Include="Pages\RecommendSongsPage.xaml.cs">
       <DependentUpon>RecommendSongsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\AlbumService.cs" />
-    <Compile Include="Services\ArtistService.cs" />
-    <Compile Include="Services\CacheService.cs" />
     <Compile Include="Services\PlaylistService.cs" />
     <Compile Include="Services\SongService.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />

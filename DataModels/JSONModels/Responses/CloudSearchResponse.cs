@@ -1,9 +1,7 @@
 ﻿namespace FluentCloudMusic.DataModels.JSONModels.Responses
 {
-    public class CloudSearchResponse
+    public class CloudSearchResponse : BaseResponse
     {
-        public int Code { get; set; }
-
         public CloudSearchResponseResult Result { get; set; }
 
         public class CloudSearchResponseResult

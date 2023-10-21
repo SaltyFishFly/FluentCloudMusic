@@ -18,14 +18,14 @@
         <controls:SongListView.Header>
             <StackPanel>
                 <controls:ResourceDetailPresenter
-                    ImageSource="{x:Bind Path=Album.ImageUrl,Mode=OneWay}"
-                    Title="{x:Bind Path=Album.Name,Mode=OneWay}"
-                    Description="{x:Bind Path=Album.Description,Mode=OneWay}"/>
+                    ImageSource="{x:Bind Path=ViewModel.ImageUrl,Mode=OneWay}"
+                    Title="{x:Bind Path=ViewModel.Name,Mode=OneWay}"
+                    Description="{x:Bind Path=ViewModel.Description,Mode=OneWay}"/>
                 <controls:ToolBar
                     Margin="16,4,16,16"
-                    PlayAllButtonClickedEvent="PlayAllButton_Click"
-                    ShareButtonClickedEvent="ShareButton_Click"
-                    DownloadButtonClickedEvent="DownloadButtonClickedEvent"/>
+                    PlayAllButtonClicked="PlayAllButton_Click"
+                    ShareButtonClicked="ShareButton_Click"
+                    DownloadButtonClicked="DownloadButtonClickedEvent"/>
             </StackPanel>
         </controls:SongListView.Header>
     </controls:SongListView>

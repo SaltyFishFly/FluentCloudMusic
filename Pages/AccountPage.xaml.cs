@@ -10,9 +10,9 @@ namespace FluentCloudMusic.Pages
             InitializeComponent();
         }
 
-        private void LogoutButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void LogoutButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            _ = AccountService.LogoutAsync();
+            await AccountService.LogoutAsync();
         }
     }
 }

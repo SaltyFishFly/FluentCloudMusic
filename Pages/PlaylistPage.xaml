@@ -23,10 +23,10 @@
                     Description="{x:Bind Path=Playlist.Description,Mode=OneWay}"/>
                 <controls:ToolBar
                     Margin="16,4,16,16"
-                    PlayAllButtonClickedEvent="PlayAllButton_Click"
-                    ShareButtonClickedEvent="ShareButton_Click"
-                    DownloadButtonClickedEvent="DownloadButtonClickedEvent"
-                    FilterInputBoxQuerySubmittedEvent="FilterInputBox_QuerySubmitted"/>
+                    PlayAllButtonClicked="PlayAllButton_Click"
+                    ShareButtonClicked="ShareButton_Click"
+                    DownloadButtonClicked="DownloadButtonClickedEvent"
+                    FilterInputBoxQuerySubmitted="FilterInputBox_QuerySubmitted"/>
             </StackPanel>
         </controls:SongListView.Header>
     </controls:SongListView>

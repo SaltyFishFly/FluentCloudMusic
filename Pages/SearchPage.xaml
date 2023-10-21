@@ -19,7 +19,7 @@
                 Margin="16"
                 IsShareButtonEnabled="False"
                 IsDownloadButtonEnabled="False"
-                PlayAllButtonClickedEvent="PlayAllButtonClickedEvent"/>
+                PlayAllButtonClicked="PlayAllButtonClickedEvent"/>
         </controls:SongListView.Header>
         <controls:SongListView.Footer>
             <Grid

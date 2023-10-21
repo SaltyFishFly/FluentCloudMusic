@@ -1,10 +1,8 @@
 ﻿namespace FluentCloudMusic.DataModels.JSONModels.Responses
 {
 
-    public class PlaylistDetailResponse
+    public class PlaylistDetailResponse : BaseResponse
     {
-        public int Code { get; set; }
-
         public Playlist Playlist { get; set; }
     }
 }

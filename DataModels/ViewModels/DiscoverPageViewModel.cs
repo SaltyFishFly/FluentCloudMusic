@@ -1,4 +1,5 @@
-﻿using FluentCloudMusic.DataModels.JSONModels;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -41,14 +42,18 @@ namespace FluentCloudMusic.DataModels.ViewModels
             RecommendPlaylists.Clear();
             RecommendSongs.Clear();
 
-            var playlists = await PlaylistService.GetDailyRecommendPlaylistsAsync();
-            var songs = await SongService.GetDailyRecommendSongsAsync();
+            try
+            {
+                var playlists = await PlaylistService.GetDailyRecommendPlaylistsAsync();
+                var songs = await SongService.GetDailyRecommendSongsAsync();
 
-            playlists?.ForEach(playlist => RecommendPlaylists.Add(playlist));
-            RecommendPlaylistsLoaded = true;
+                playlists?.ForEach(playlist => RecommendPlaylists.Add(playlist));
+                RecommendPlaylistsLoaded = true;
 
-            songs?.GetRange(0, 5).ForEach(song => RecommendSongs.Add(song));
-            RecommendSongsLoaded = true;
+                songs?.GetRange(0, 5).ForEach(song => RecommendSongs.Add(song));
+                RecommendSongsLoaded = true;
+            }
+            catch (ResponseCodeErrorException) { }
         }
 
         private void Notify(string caller = null)

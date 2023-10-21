@@ -1,6 +1,6 @@
-﻿using FluentCloudMusic.DataModels.JSONModels;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.ViewModels;
-using FluentCloudMusic.Services;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -19,12 +19,15 @@ namespace FluentCloudMusic.Pages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            Artist.Source = e.Parameter as Artist;
+            try
+            {
+                var artist = e.Parameter as Artist;
+                Artist.Source = artist;
 
-            var (isSuccess, artist) = await ArtistService.GetArtistDetailAsync(Artist.Id);
-            if (!isSuccess) return;
-
-            Artist.Source = artist;
+                var detailedArtist = await artist.GetDetailAsync();
+                Artist.Source = detailedArtist;
+            }
+            catch (ResponseCodeErrorException) { }
         }
     }
 }

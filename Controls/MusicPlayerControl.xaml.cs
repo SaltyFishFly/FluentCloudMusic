@@ -1,13 +1,9 @@
 ﻿using FluentCloudMusic.Classes;
-using FluentCloudMusic.DataModels.JSONModels.Responses;
+using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading.Tasks;
-using Windows.Media.Playback;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -20,202 +16,72 @@ namespace FluentCloudMusic.Controls
         RepeatList, RepeatOne, Shuffle
     }
 
-    public sealed partial class MusicPlayerControl : UserControl, INotifyPropertyChanged
+    public sealed partial class MusicPlayerControl : UserControl
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public const double VolumeSliderScalingFactor = 1000.0;
 
-        public static MusicPlayerControl Instance { get; private set; }
+        private readonly MusicPlayer _Player;
+        private readonly MusicPlayerControlViewModel ViewModel;
 
-        public MediaPlayer Player { get; private set; }
-        public List<ISong> PlaybackItemList { get; private set; } = new List<ISong>();
-        public List<ISong> ShuffledPlaybackItemList { get; private set; } = new List<ISong>();
-        public MediaPlaybackState PlayState { get => Player.PlaybackSession.PlaybackState; }
-        public TimeSpan NaturalDuration { get => Player.PlaybackSession.NaturalDuration; }
-        public TimeSpan Position
-        {
-            get => Player.PlaybackSession.Position;
-            set => Player.PlaybackSession.Position = value;
-        }
-        public int PlayIndex 
-        {
-            get => _PlayIndex;
-            private set
-            {
-                _PlayIndex = value;
-                Notify(nameof(HasPrevious));
-                Notify(nameof(HasNext));
-            }
-        }
-        public PlayMode PlayMode
-        {
-            get => _PlayMode;
-            private set
-            {
-                _PlayMode = value;
-                Notify(nameof(PlayMode));
-            }
-        }
-        // VolumeSlider的范围为[0.0, 1000.0]，需要映射到Player.Volume的范围[0.0, 1.0]
-        public double Volume
-        {
-            get => Player.Volume * 1000;
-            private set
-            {
-                Player.Volume = value / 1000;
-                Notify(nameof(Volume));
-            }
-        }
-        public bool HasPrevious => PlayIndex > 0;
-        public bool HasNext => PlayIndex < PlaybackItemList.Count - 1;
-
-        private int _PlayIndex;
-        private PlayMode _PlayMode;
-        private bool IsDragging;
-        private SMTCController SMTCController;
-        
         public MusicPlayerControl()
         {
-            Instance = this;
-
-            Player = new MediaPlayer
-            {
-                AudioCategory = MediaPlayerAudioCategory.Media,
-                AutoPlay = true,
-                IsLoopingEnabled = false,
-            };
-            Player.PlaybackSession.PositionChanged += 
-                (sender, args) => { if (!IsDragging) DispatcherNotify(nameof(Position)); };
-            Player.PlaybackSession.NaturalDurationChanged += 
-                (sender, args) => DispatcherNotify(nameof(NaturalDuration));
-            Player.PlaybackSession.PlaybackStateChanged +=
-                (sender, args) => DispatcherNotify(nameof(PlayState));
-            Player.MediaEnded += Player_MediaEnded;
-
-            SMTCController = new SMTCController(this);
-
-            PlayMode = StorageService.HasSetting("PlayMode") ? StorageService.GetSetting<PlayMode>("PlayMode") : PlayMode.RepeatList;
-            Volume = StorageService.HasSetting("Volume") ? StorageService.GetSetting<double>("Volume") : 500.0;
+            _Player = App.Player;
+            ViewModel = new MusicPlayerControlViewModel() { Source = _Player };
 
             InitializeComponent();
-        }
 
-        public async Task PlayAsync(List<ISong> songs, int startIndex = 0)
-        {
-            PlaybackItemList = songs;
-            ShuffledPlaybackItemList = songs.Shuffle(startIndex);
-            await PlayAsync(startIndex);
-        }
-
-        public void SwitchPlayStatus()
-        {
-            switch (Player.PlaybackSession.PlaybackState)
-            {
-                case MediaPlaybackState.Playing:
-                    Player.Pause();
-                    break;
-                case MediaPlaybackState.Paused:
-                    Player.Play();
-                    break;
-            }
-        }
-
-        public async Task Previous()
-        {
-            if (!HasPrevious) return;
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await PlayAsync(--PlayIndex));
-        }
-
-        public async Task Next()
-        {
-            if (!HasNext) return;
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await PlayAsync(++PlayIndex));
-        }
-
-        public async Task Replay()
-        {
-            if (!HasNext) return;
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => await PlayAsync(PlayIndex));
-        }
-
-        public void Dispose()
-        {
-            Player.Dispose();
-        }
-
-        private async Task PlayAsync(int index)
-        {
-            if (PlaybackItemList.Count <= index) return;
-
-            PlayIndex = index;
-            Player.Source =
-                PlayMode == PlayMode.Shuffle ?
-                await ShuffledPlaybackItemList[index].ToMediaPlaybackItem() :
-                await PlaybackItemList[index].ToMediaPlaybackItem();
-
-            Player.Play();
-        }
-
-        private void Player_MediaEnded(MediaPlayer sender, object args)
-        {
-            if (PlayMode == PlayMode.RepeatOne) _ = Replay();
-            else _ = Next();
+            _Player.PlayMode =
+                StorageService.HasSetting("PlayMode") ?
+                StorageService.GetSetting<PlayMode>("PlayMode") :
+                PlayMode.RepeatList;
+            _Player.Volume = 
+                StorageService.HasSetting("Volume") ?
+                StorageService.GetSetting<double>("Volume") :
+                0.5;
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            SwitchPlayStatus();
+            _Player.SwitchPlayStatus();
         }
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
         {
-            _ = Previous();
+            _ = _Player.Previous();
         }
 
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-            _ = Next();
+            _ = _Player.Next();
         }
 
         private void Timeline_Loaded(object sender, RoutedEventArgs e)
         {
             var thumb = VisualTreeUtil.FindChildByName(Timeline, "HorizontalThumb") as Thumb;
-            thumb.DragStarted += (sender, args) => IsDragging = true;
-            thumb.DragCompleted += (sender, args) => IsDragging = false;
+            thumb.DragStarted += (s, a) => ViewModel.IsDragging = true;
+            thumb.DragCompleted += (s, a) => ViewModel.IsDragging = false;
         }
 
         private void Timeline_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
         {
-            Position = TimeSpan.FromSeconds(Timeline.Value);
+            _Player.Position = TimeSpan.FromSeconds(Timeline.Value);
         }
 
         private void PlayModeButton_Click(object sender, RoutedEventArgs e)
         {
-            PlayMode = PlayMode switch
+            _Player.PlayMode = _Player.PlayMode switch
             {
                 PlayMode.RepeatList => PlayMode.RepeatOne,
                 PlayMode.RepeatOne => PlayMode.Shuffle,
                 PlayMode.Shuffle => PlayMode.RepeatList,
                 _ => throw new InvalidEnumArgumentException()
             };
-            StorageService.SetSetting("PlayMode", (int)PlayMode);
+            StorageService.SetSetting("PlayMode", (int)_Player.PlayMode);
         }
 
         private void VolumeSlider_PointerCaptureLost(object sender, PointerRoutedEventArgs e)
         {
-            StorageService.SetSetting("Volume", VolumeSlider.Value);
-        }
-
-        private void DispatcherNotify(string caller)
-        {
-            _ = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                Notify(caller);
-            });
-        }
-
-        private void Notify(string caller)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
+            StorageService.SetSetting("Volume", _Player.Volume);
         }
     }
 }

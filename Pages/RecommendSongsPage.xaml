@@ -16,7 +16,8 @@
             <StackPanel>
                 <controls:ToolBar
                     Margin="16"
-                    IsShareButtonEnabled="False"/>
+                    IsShareButtonEnabled="False"
+                    PlayAllButtonClicked="PlayAllButtonClicked"/>
             </StackPanel>
         </controls:SongListView.Header>
     </controls:SongListView>

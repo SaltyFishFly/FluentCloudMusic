@@ -1,12 +1,10 @@
 ﻿namespace FluentCloudMusic.DataModels.JSONModels.Responses
 {
 
-    public class LoginCellphoneResponse
+    public class LoginCellphoneResponse : BaseResponse
     {
-        public int Code { get; set; }
-
         public int LoginType { get; set; }
 
-        public Profile Profile { get; set; }
+        public Account Profile { get; set; }
     }
 }

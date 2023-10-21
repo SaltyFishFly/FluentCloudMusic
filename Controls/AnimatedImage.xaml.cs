@@ -9,7 +9,7 @@ namespace FluentCloudMusic.Controls
         public event EventHandler<RoutedEventArgs> ImageOpened;
 
         public static DependencyProperty SourceProperty
-            = DependencyProperty.Register("Source", typeof(string), typeof(AnimatedImage), new PropertyMetadata(null));
+            = DependencyProperty.Register("Account", typeof(string), typeof(AnimatedImage), new PropertyMetadata(null));
 
         private bool FirstLoad;
 

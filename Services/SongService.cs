@@ -1,15 +1,14 @@
-﻿using FluentCloudMusic.DataModels.JSONModels;
+﻿using FluentCloudMusic.Classes;
+using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
 using FluentCloudMusic.Utils;
 using NeteaseCloudMusicApi;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
-using Windows.Storage.Streams;
 
 namespace FluentCloudMusic.Services
 {
@@ -18,32 +17,27 @@ namespace FluentCloudMusic.Services
         public static async Task<List<Song>> GetDailyRecommendSongsAsync()
         {
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.RecommendSongs);
-            var result = jsonResult.ToObject<RecommendSongsResponse>(JsonUtil.Serializer);
-            return result.Code == 200 ? result.Data.DailySongs.ToList() : new List<Song>();
+            var result = jsonResult.ToObject<RecommendSongsResponse>();
+            result.CheckCode();
+
+            return result.Data.DailySongs.ToList();
         }
 
-        public static async Task<(bool isSuccess, MediaPlaybackItem result)> GetNeteaseSongUrl(ISong song)
+        public static async Task<MediaPlaybackItem> GetNeteaseSongUrl(ISong song)
         {
-            if (song == null || !song.HasCopyright) return (false, null);
+            if (song == null) throw new ArgumentNullException();
+            if (!song.HasCopyright) throw new NoCopyrightException();
 
             var parameters = new Dictionary<string, object> { { "id", song.Id }, { "level", "standard" } };
 
             var jsonResult = await App.API.RequestAsync(CloudMusicApiProviders.SongUrlV1, parameters);
-            var code = jsonResult["code"].Value<int>();
+            var result = jsonResult.ToObject<SongUrlV1Response>();
+            result.CheckCode();
 
-            if (code != 200 || jsonResult["data"].First["url"].ToString() == string.Empty) return (false, null);
+            var item = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri(result.Data.First().Url)));
+            item.SetMetadata(song);
 
-            var result = new MediaPlaybackItem(MediaSource.CreateFromUri(new Uri(jsonResult["data"].First["url"].ToString())));
-
-            var metadata = result.GetDisplayProperties();
-            metadata.Type = Windows.Media.MediaPlaybackType.Music;
-            metadata.MusicProperties.Title = $"{song.Name}{song.Description}";
-            metadata.MusicProperties.Artist = song.ArtistName;
-            metadata.MusicProperties.AlbumTitle = song.AlbumName;
-            metadata.Thumbnail = RandomAccessStreamReference.CreateFromUri(new Uri(song.ImageUrl));
-            result.ApplyDisplayProperties(metadata);
-
-            return (true, result);
+            return item;
         }
     }
 }

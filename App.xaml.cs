@@ -1,7 +1,10 @@
-﻿using FluentCloudMusic.Controls;
+﻿using FluentCloudMusic.Classes;
 using FluentCloudMusic.Pages;
 using FluentCloudMusic.Services;
+using FluentCloudMusic.Utils;
 using NeteaseCloudMusicApi;
+using Newtonsoft.Json;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -11,13 +14,18 @@ using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 
 namespace FluentCloudMusic
 {
     sealed partial class App : Application
     {
         public static CloudMusicApi API = new CloudMusicApi();
+        public static MusicPlayer Player
+        {
+            get => _Player.Value;
+        }
+
+        private static readonly Lazy<MusicPlayer> _Player = new Lazy<MusicPlayer>();
 
         public App()
         {
@@ -26,29 +34,42 @@ namespace FluentCloudMusic
             Suspending += OnSuspending;
         }
 
-        public static void UpdateTheme()
+        public static void ReloadTheme()
         {
             if (!StorageService.HasSetting(SettingsPage.ThemeSetting)) return;
 
-            var theme = StorageService.GetSetting<ElementTheme>(SettingsPage.ThemeSetting);
-            (Window.Current.Content as FrameworkElement).RequestedTheme = theme;
+            var theme = StorageService.GetSetting<int>(SettingsPage.ThemeSetting);
+            (Window.Current.Content as FrameworkElement).RequestedTheme = (ElementTheme)theme;
         }
 
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             CoreApplication.EnablePrelaunch(false);
 
-            TransparentTitleBar();
+            SetDefaultJsonSerializer();
+            SetTitleBarTransparency(true);
             SetWindowMinSize(500, 400);
             InitRootFrame();
-            UpdateTheme();
+            // BUG: 启用快捷键会导致应用内无法输入空格
+            // RegisterGlobalHotkeys();
+            ReloadTheme();
 
             Window.Current.Activate();
+
+            await AccountService.LoginByCookieAsync();
         }
 
-        private void TransparentTitleBar()
+        private void SetDefaultJsonSerializer()
         {
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings()
+            {
+                ContractResolver = new JsonMultiplePropertyContractResolver()
+            };
+        }
+
+        private void SetTitleBarTransparency(bool flag)
+        {
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = flag;
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
@@ -67,21 +88,20 @@ namespace FluentCloudMusic
                 frame = new Frame();
                 Window.Current.Content = frame;
             }
-            frame.PreviewKeyDown += GlobalHotkey_Pressed;
-
             if (frame.Content == null)
             {
                 frame.Navigate(typeof(MainPage), null);
             }
         }
 
-        private void GlobalHotkey_Pressed(object sender, KeyRoutedEventArgs e)
+        private void RegisterGlobalHotkeys()
         {
-            if (e.Key == VirtualKey.Space)
+            var frame = Window.Current.Content as Frame;
+            if (frame == null) return;
+            frame.PreviewKeyDown += (sender, args) =>
             {
-                MusicPlayerControl.Instance.SwitchPlayStatus();
-                e.Handled = true;
-            }
+                if (args.Key == VirtualKey.Space) Player.SwitchPlayStatus();
+            };
         }
 
         private void OnSuspending(object sender, SuspendingEventArgs e)
