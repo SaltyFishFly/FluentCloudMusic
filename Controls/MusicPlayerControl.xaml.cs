@@ -1,5 +1,4 @@
 ﻿using FluentCloudMusic.Classes;
-using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Services;
 using FluentCloudMusic.Utils;
 using System;
@@ -21,12 +20,12 @@ namespace FluentCloudMusic.Controls
         public const double VolumeSliderScalingFactor = 1000.0;
 
         private readonly MusicPlayer _Player;
-        private readonly MusicPlayerControlViewModel ViewModel;
+        private readonly MusicPlayerControlPositionWrapper ViewModel;
 
         public MusicPlayerControl()
         {
             _Player = App.Player;
-            ViewModel = new MusicPlayerControlViewModel() { Source = _Player };
+            ViewModel = new MusicPlayerControlPositionWrapper() { Source = _Player };
 
             InitializeComponent();
 
@@ -58,8 +57,10 @@ namespace FluentCloudMusic.Controls
         private void Timeline_Loaded(object sender, RoutedEventArgs e)
         {
             var thumb = VisualTreeUtil.FindChildByName(Timeline, "HorizontalThumb") as Thumb;
-            thumb.DragStarted += (s, a) => ViewModel.IsDragging = true;
-            thumb.DragCompleted += (s, a) => ViewModel.IsDragging = false;
+            thumb.DragStarted +=
+                (s, a) => ViewModel.IsDragging = true;
+            thumb.DragCompleted +=
+                (s, a) => ViewModel.IsDragging = false;
         }
 
         private void Timeline_PointerCaptureLost(object sender, PointerRoutedEventArgs e)

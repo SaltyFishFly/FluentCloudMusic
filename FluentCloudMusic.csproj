@@ -12,21 +12,20 @@
     <AssemblyName>FluentCloudMusic</AssemblyName>
     <DefaultLanguage>zh-cn</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22000.0</TargetPlatformVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.22621.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.22000.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>
-    </PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>F672610012FECC833A20C9D175123A51A5C23428</PackageCertificateThumbprint>
     <PackageCertificateKeyFile>FluentCloudMusic_TemporaryKey.pfx</PackageCertificateKeyFile>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
-    <AppxBundle>Never</AppxBundle>
+    <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
@@ -167,15 +166,25 @@
     <Compile Include="DataModels\JSONModels\Responses\UserPlaylistResponse.cs" />
     <Compile Include="DataModels\JSONModels\UserCloudSong.cs" />
     <Compile Include="DataModels\JSONModels\Song.cs" />
-    <Compile Include="DataModels\ViewModels\AlbumPageViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\ArtistPageViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\DiscoverPageViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\MusicPlayerControlViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\PlaylistPageViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\RecommendSongsPageViewModel.cs" />
-    <Compile Include="DataModels\ViewModels\SearchPageViewModel.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\CloudMusicApi.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\CloudMusicApiProvider.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\CloudMusicApiProviders.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\Extensions.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\System\Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\Utils\Crypto.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\Utils\Extensions.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\Utils\Options.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\Utils\QuickHttp.cs" />
+    <Compile Include="Libraries\NeteaseCloudMusicApi\Utils\Request.cs" />
+    <Compile Include="ViewModels\AlbumPageViewModel.cs" />
+    <Compile Include="ViewModels\ArtistPageViewModel.cs" />
+    <Compile Include="ViewModels\DiscoverPageViewModel.cs" />
+    <Compile Include="Controls\MusicPlayerControlPositionWrapper.cs" />
+    <Compile Include="ViewModels\PlaylistPageViewModel.cs" />
+    <Compile Include="ViewModels\RecommendSongsPageViewModel.cs" />
+    <Compile Include="ViewModels\SearchPageViewModel.cs" />
     <Compile Include="DataModels\User.cs" />
-    <Compile Include="DataModels\ViewModels\SectionViewModel.cs" />
+    <Compile Include="ViewModels\SectionViewModel.cs" />
     <Compile Include="Pages\RecommendSongsPage.xaml.cs">
       <DependentUpon>RecommendSongsPage.xaml</DependentUpon>
     </Compile>
@@ -435,7 +444,7 @@
       <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.8.5</Version>
+      <Version>2.8.6</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
@@ -468,13 +477,6 @@
     <PRIResource Include="Strings\en-US\SettingsPage.resw" />
     <None Include="Todolist.md" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NeteaseCloudMusicApi\NeteaseCloudMusicApi\NeteaseCloudMusicApi.csproj">
-      <Project>{ee472092-fddc-4d75-bccd-ef47ae092604}</Project>
-      <Name>NeteaseCloudMusicApi</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

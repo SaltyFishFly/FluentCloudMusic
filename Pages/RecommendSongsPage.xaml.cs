@@ -1,5 +1,5 @@
 ﻿using FluentCloudMusic.DataModels.JSONModels.Responses;
-using FluentCloudMusic.DataModels.ViewModels;
+using FluentCloudMusic.ViewModels;
 using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

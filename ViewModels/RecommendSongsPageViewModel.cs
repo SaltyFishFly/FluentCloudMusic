@@ -3,7 +3,7 @@ using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.Services;
 using System.Collections.ObjectModel;
 
-namespace FluentCloudMusic.DataModels.ViewModels
+namespace FluentCloudMusic.ViewModels
 {
     public class RecommendSongsPageViewModel
     {

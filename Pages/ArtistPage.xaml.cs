@@ -1,6 +1,6 @@
 ﻿using FluentCloudMusic.Classes;
 using FluentCloudMusic.DataModels.JSONModels;
-using FluentCloudMusic.DataModels.ViewModels;
+using FluentCloudMusic.ViewModels;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 

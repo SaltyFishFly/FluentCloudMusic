@@ -2,8 +2,8 @@
 using FluentCloudMusic.DataModels;
 using FluentCloudMusic.DataModels.JSONModels;
 using FluentCloudMusic.DataModels.JSONModels.Responses;
-using FluentCloudMusic.DataModels.ViewModels;
 using FluentCloudMusic.Services;
+using FluentCloudMusic.ViewModels;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml;

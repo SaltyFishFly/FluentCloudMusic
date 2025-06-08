@@ -2,9 +2,9 @@
 using System;
 using System.ComponentModel;
 
-namespace FluentCloudMusic.DataModels.ViewModels
+namespace FluentCloudMusic.Controls
 {
-    public class MusicPlayerControlViewModel : INotifyPropertyChanged
+    public class MusicPlayerControlPositionWrapper : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -33,5 +33,4 @@ namespace FluentCloudMusic.DataModels.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
         }
     }
-
 }

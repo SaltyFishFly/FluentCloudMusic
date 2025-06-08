@@ -1,12 +1,13 @@
-﻿using System.ComponentModel;
+﻿using FluentCloudMusic.DataModels;
+using System.ComponentModel;
 
-namespace FluentCloudMusic.DataModels.ViewModels
+namespace FluentCloudMusic.ViewModels
 {
-    public class SectionViewModel : INotifyPropertyChanged
+    public class SearchPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Section Source
+        public SearchRequest Source
         {
             set
             {
@@ -29,7 +30,7 @@ namespace FluentCloudMusic.DataModels.ViewModels
         public bool HasPrev => _Source != null && _Source.Page > 1;
         public bool HasNext => _Source != null && _Source.Page < _MaxPage;
 
-        private Section _Source;
+        private SearchRequest _Source;
         private int _MaxPage;
 
         private void Notify(string caller = null)

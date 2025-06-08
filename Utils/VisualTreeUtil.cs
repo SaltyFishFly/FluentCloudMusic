@@ -12,10 +12,12 @@ namespace FluentCloudMusic.Utils
             for (int i = 0; i < childCount; i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
-                if (child is FrameworkElement element && element.Name == name) return child;
+                if (child is FrameworkElement elem && elem.Name == name) 
+                    return child;
 
                 var result = FindChildByName(child, name);
-                if (result != null) return result;
+                if (result != null) 
+                    return result;
             }
             return null;
         }

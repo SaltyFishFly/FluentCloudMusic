@@ -47,7 +47,7 @@ namespace FluentCloudMusic
             CoreApplication.EnablePrelaunch(false);
 
             SetDefaultJsonSerializer();
-            SetTitleBarTransparency(true);
+            TransparentTitleBar();
             SetWindowMinSize(500, 400);
             InitRootFrame();
             // BUG: 启用快捷键会导致应用内无法输入空格
@@ -61,15 +61,16 @@ namespace FluentCloudMusic
 
         private void SetDefaultJsonSerializer()
         {
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings()
-            {
-                ContractResolver = new JsonMultiplePropertyContractResolver()
-            };
+            JsonConvert.DefaultSettings = 
+                () => new JsonSerializerSettings()
+                {
+                    ContractResolver = new JsonMultiplePropertyContractResolver()
+                };
         }
 
-        private void SetTitleBarTransparency(bool flag)
+        private void TransparentTitleBar()
         {
-            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = flag;
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;

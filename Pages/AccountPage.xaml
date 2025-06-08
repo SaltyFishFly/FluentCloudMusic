@@ -30,15 +30,22 @@
                     Width="100"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    CornerRadius="50"
+                    CornerRadius="8"
                     Source="{x:Bind Path=services:AccountService.UserProfile.AvatarUrl, Mode=OneWay}"/>
-                <TextBlock
-                    Style="{StaticResource TitleTextBlockStyle}"
-                    Text="{x:Bind Path=services:AccountService.UserProfile.Nickname, Mode=OneWay}"/>
+                <StackPanel
+                    Spacing="8">
+                    <TextBlock
+                        Style="{StaticResource TitleTextBlockStyle}"
+                        Text="{x:Bind Path=services:AccountService.UserProfile.Nickname, Mode=OneWay}"/>
+                    <TextBlock
+                        Style="{StaticResource BodyTextBlockStyle}"
+                        Text="{x:Bind Path=services:AccountService.UserProfile.Signature, Mode=OneWay}"/>
+                </StackPanel>
             </StackPanel>
             <Button
                 x:Name="LogoutButton"
                 Grid.Column="2"
+                VerticalAlignment="Bottom"
                 Click="LogoutButton_Click">
                 <StackPanel
                     Orientation="Horizontal"

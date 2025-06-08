@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace FluentCloudMusic.DataModels
 {
-    // User指正在使用软件的用户
-    // Account指网易云音乐内的任意一个账户
+    // User -> 指正在使用软件的用户信息
+    // Account -> 指网易云音乐内的任意一个账户信息
     public class User : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -19,6 +19,7 @@ namespace FluentCloudMusic.DataModels
                 Notify(nameof(HasLogin));
                 Notify(nameof(UserId));
                 Notify(nameof(Nickname));
+                Notify(nameof(Signature));
                 Notify(nameof(AvatarUrl));
                 Notify(nameof(HasVip));
             }
@@ -26,6 +27,7 @@ namespace FluentCloudMusic.DataModels
         public bool HasLogin => _Account != null;
         public string UserId => HasLogin ? _Account.UserId : string.Empty;
         public string Nickname => HasLogin ? _Account.Nickname : string.Empty;
+        public string Signature => HasLogin ? _Account.Signature : string.Empty;
         public string AvatarUrl => HasLogin ? _Account.AvatarUrl : string.Empty;
         public bool HasVip => HasLogin && _Account.VipType != 0;
 

@@ -133,6 +133,14 @@ namespace FluentCloudMusic
             ContentFrame.BackStack.Clear();
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            var titlebar = (ContentControl)VisualTreeUtil.FindChildByName(MainNav, "HeaderContent");
+            titlebar.Padding = new Thickness(0);
+            titlebar.Margin = new Thickness(0);
+            Window.Current.SetTitleBar(AppTitleBar);
+        }
+
         private void MainNav_BackRequested(winui.NavigationView sender, winui.NavigationViewBackRequestedEventArgs args)
         {
             ContentFrame.GoBack();

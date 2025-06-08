@@ -10,7 +10,8 @@
     xmlns:pages="using:FluentCloudMusic.Pages"
     xmlns:converters="using:FluentCloudMusic.Converters"
     mc:Ignorable="d"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    Loaded="Page_Loaded">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -18,17 +19,20 @@
             <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         </ResourceDictionary>
     </Page.Resources>
-
+    
     <muxc:NavigationView
         x:Name="MainNav"
         x:Uid="/MainNav/MainNav"
-        IsPaneToggleButtonVisible="True"
-        IsBackEnabled="{x:Bind Path=ContentFrame.CanGoBack, Mode=OneWay}"
-        IsSettingsVisible="False"
-        PaneTitle="FluentNetease"
+        IsTabStop="False"
         PaneDisplayMode="Auto"
         OpenPaneLength="280"
         ExpandedModeThresholdWidth="1000"
+        IsTitleBarAutoPaddingEnabled="False"
+        IsBackEnabled="{x:Bind Path=ContentFrame.CanGoBack, Mode=OneWay}"
+        IsPaneToggleButtonVisible="True"
+        PaneTitle="FluentNetease"
+        IsSettingsVisible="False"
+        AlwaysShowHeader="True"
         SelectionChanged="MainNav_SelectionChanged"
         BackRequested="MainNav_BackRequested">
         <muxc:NavigationView.AutoSuggestBox>
@@ -39,11 +43,19 @@
                 QuerySubmitted="NavSearchBox_QuerySubmitted"/>
         </muxc:NavigationView.AutoSuggestBox>
         <muxc:NavigationView.Header>
-            <TextBlock
-                x:Name="HeaderText"
-                Margin="-36,0,0,0"
-                Text="Header"
-                FontWeight="Normal"/>
+            <StackPanel>
+                <Border
+                    x:Name="AppTitleBar"
+                    Height="48"
+                    HorizontalAlignment="Stretch"
+                    Background="Transparent"
+                    IsHitTestVisible="True"/>
+                <TextBlock
+                    x:Name="HeaderText"
+                    Margin="24,0,0,0"
+                    Text="Header"
+                    Style="{StaticResource TitleTextBlockStyle}"/>
+            </StackPanel>
         </muxc:NavigationView.Header>
         <muxc:NavigationView.MenuItems>
             <muxc:NavigationViewItem

@@ -2,13 +2,13 @@
 using FluentCloudMusic.Utils;
 using System.ComponentModel;
 
-namespace FluentCloudMusic.DataModels.ViewModels
+namespace FluentCloudMusic.ViewModels
 {
-    public class ArtistPageViewModel : INotifyPropertyChanged
+    public class AlbumPageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Artist Source
+        public Album Source
         {
             set
             {
@@ -26,7 +26,7 @@ namespace FluentCloudMusic.DataModels.ViewModels
         public string Description => _Source != null ? _Source.Description : string.Empty;
         public string ImageUrl => _Source != null ? _Source.ImageUrl : string.Empty;
 
-        private Artist _Source;
+        private Album _Source;
 
         private void Notify(string caller = null)
         {
